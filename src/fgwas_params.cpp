@@ -26,7 +26,7 @@ Fgwas_params::Fgwas_params(){
 	onlyp = false;
 	cond = false;
 	testcond_annot = "";
-	pairwise = false;
+	pairwise = true;
 	pheno1 = "NA";
 	pheno2 = "NA";
 }

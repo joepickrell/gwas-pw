@@ -77,7 +77,7 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-bin_PROGRAMS = fgwas$(EXEEXT)
+bin_PROGRAMS = gwas-pw$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp $(noinst_HEADERS)
@@ -92,11 +92,11 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_fgwas_OBJECTS = CmdLine.$(OBJEXT) fgwas.$(OBJEXT) \
-	gzstream.$(OBJEXT) SNP.$(OBJEXT) SNP_PW.$(OBJEXT) \
-	SNPs.$(OBJEXT) SNPs_PW.$(OBJEXT) fgwas_params.$(OBJEXT)
-fgwas_OBJECTS = $(am_fgwas_OBJECTS)
-fgwas_LDADD = $(LDADD)
+am_gwas_pw_OBJECTS = CmdLine.$(OBJEXT) gwas-pw.$(OBJEXT) \
+	gzstream.$(OBJEXT) SNP_PW.$(OBJEXT) SNPs_PW.$(OBJEXT) \
+	fgwas_params.$(OBJEXT)
+gwas_pw_OBJECTS = $(am_gwas_pw_OBJECTS)
+gwas_pw_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_$(V))
 am__v_P_ = $(am__v_P_$(AM_DEFAULT_VERBOSITY))
 am__v_P_0 = false
@@ -126,8 +126,8 @@ AM_V_CXXLD = $(am__v_CXXLD_$(V))
 am__v_CXXLD_ = $(am__v_CXXLD_$(AM_DEFAULT_VERBOSITY))
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(fgwas_SOURCES)
-DIST_SOURCES = $(fgwas_SOURCES)
+SOURCES = $(gwas_pw_SOURCES)
+DIST_SOURCES = $(gwas_pw_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -245,8 +245,8 @@ top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
 DISTCHECK_CONFIGURE_FLAGS = LDFLAGS=-L/opt/local/lib CXXFLAGS=-I/opt/local/include
-fgwas_SOURCES = CmdLine.cpp fgwas.cpp gzstream.cpp SNP.cpp SNP_PW.cpp SNPs.cpp SNPs_PW.cpp fgwas_params.cpp
-noinst_HEADERS = gzstream.h CmdLine.h SNP.h SNPs.h fgwas_params.h SNP_PW.h SNPs_PW.h
+gwas_pw_SOURCES = CmdLine.cpp gwas-pw.cpp gzstream.cpp SNP_PW.cpp SNPs_PW.cpp fgwas_params.cpp
+noinst_HEADERS = gzstream.h CmdLine.h fgwas_params.h SNP_PW.h SNPs_PW.h
 all: all-am
 
 .SUFFIXES:
@@ -324,9 +324,9 @@ uninstall-binPROGRAMS:
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 
-fgwas$(EXEEXT): $(fgwas_OBJECTS) $(fgwas_DEPENDENCIES) $(EXTRA_fgwas_DEPENDENCIES) 
-	@rm -f fgwas$(EXEEXT)
-	$(AM_V_CXXLD)$(CXXLINK) $(fgwas_OBJECTS) $(fgwas_LDADD) $(LIBS)
+gwas-pw$(EXEEXT): $(gwas_pw_OBJECTS) $(gwas_pw_DEPENDENCIES) $(EXTRA_gwas_pw_DEPENDENCIES) 
+	@rm -f gwas-pw$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(gwas_pw_OBJECTS) $(gwas_pw_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -335,12 +335,10 @@ distclean-compile:
 	-rm -f *.tab.c
 
 include ./$(DEPDIR)/CmdLine.Po
-include ./$(DEPDIR)/SNP.Po
 include ./$(DEPDIR)/SNP_PW.Po
-include ./$(DEPDIR)/SNPs.Po
 include ./$(DEPDIR)/SNPs_PW.Po
-include ./$(DEPDIR)/fgwas.Po
 include ./$(DEPDIR)/fgwas_params.Po
+include ./$(DEPDIR)/gwas-pw.Po
 include ./$(DEPDIR)/gzstream.Po
 
 .cpp.o:

@@ -37,7 +37,7 @@ public:
 	vector<pair<int, int> > chrsegments;
 	vector<double> seglambdas;
 	vector<vector<bool> > segannot;
-	vector<double> segpriors;
+	vector<vector<double> > segpriors;
 	void init_segpriors();
 	void set_segpriors();
 

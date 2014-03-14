@@ -40,8 +40,9 @@ SNPs_PW::SNPs_PW(Fgwas_params *p){
 
 	//initialize
 	snppri.clear();
-	//segpi = 0.001;
-	//init_segpriors();
+	pi.clear();
+	pi.push_back(1);pi.push_back(1);pi.push_back(1);pi.push_back(1);pi.push_back(1);
+	init_segpriors();
     phi = (1+sqrt(5))/2;
     resphi = 2-phi;
 	for (int i = 0; i < d.size(); i++){
@@ -118,7 +119,7 @@ vector<pair<int, int> > SNPs_PW::read_dmodel(string infile){
 	return toreturn;
 }
 
-/*
+
 void SNPs_PW::init_segpriors(){
 	segannot.clear();
 	segpriors.clear();
@@ -126,7 +127,9 @@ void SNPs_PW::init_segpriors(){
 	vector<double> segmeans;
 	vector<double> means2sort;
 	for (vector<pair<int, int> >::iterator it = segments.begin(); it != segments.end(); it++){
-		segpriors.push_back(segpi);
+		vector<double> sp;
+		sp.push_back(0.2);sp.push_back(0.2);sp.push_back(0.2);sp.push_back(0.2);sp.push_back(0.2);
+		segpriors.push_back(sp);
 		if (params->segannot.size() > 0){
 			double segmean = 0.0;
 			int total = 0;
@@ -155,7 +158,7 @@ void SNPs_PW::init_segpriors(){
 		segannot.push_back(annots);
 	}
 }
-*/
+
 void SNPs_PW::load_snps_pw(string infile, vector<string> annot, vector<string> dannot, vector<string> segannot){
 	igzstream in(infile.c_str()); //only gzipped files
 	vector<string> line;
@@ -286,6 +289,8 @@ void SNPs_PW::load_snps_pw(string infile, vector<string> annot, vector<string> d
     	}
     	string rs = line[rsindex];
     	string chr = line[chrindex];
+
+    	if (line[bf1index] == "NA" || line[bf2index]==  "NA") continue;
     	double bf1 = atof(line[bf1index].c_str());
     	double bf2 = atof(line[bf2index].c_str());
     	if (chr != oldchr) oldchr = chr;
@@ -479,18 +484,16 @@ pair< pair<int, int>, pair<double, double> > SNPs::get_cis_seglambda(int which){
 }
 */
 
-/*
-void SNPs::print(){
-	cout << "rs chr pos BF Z";
+void SNPs_PW::print(){
+	cout << "rs chr pos BF1 BF2";
 	for (int i =0; i < nannot; i++) cout << " "<< annotnames[i];
 	cout << "\n";
-	for (vector<SNP>::iterator it = d.begin(); it != d.end(); it++){
-		cout << it->id << " "<< it->chr << " "<< it->pos << " "<< it->BF <<  " "<< it->Z;
+	for (vector<SNP_PW>::iterator it = d.begin(); it != d.end(); it++){
+		cout << it->id << " "<< it->chr << " "<< it->pos << " "<< it->BF <<  " "<< it->BF2;
 		for (int i = 0; i < nannot; i++) cout << " "<< it->annot[i];
 		cout << "\n";
 	}
 }
-*/
 
 /*
 void SNPs::print(string outfile, string outfile2){
@@ -769,7 +772,6 @@ void SNPs::set_priors_cond(int which){
 }
 
 */
-/*
 double SNPs_PW::llk(){
 	double toreturn = 0;
 	for (int i = 0; i < segments.size(); i++) toreturn += llk(i);
@@ -777,7 +779,6 @@ double SNPs_PW::llk(){
 	return toreturn;
 }
 
-*/
 /*
 double SNPs::llk_xv(set<int> skip, bool penalize){
 	double toreturn = 0;
@@ -803,37 +804,38 @@ double SNPs::llk_ridge(){
 	return toreturn;
 }
 */
-/*
-double SNPs::llk(int which){
 
-	double toreturn;
+double SNPs_PW::llk(int which){
+
+	double toreturn = 0;
 
 	pair<int, int> seg = segments[which];
 
 	int st = seg.first;
 	int sp = seg.second;
+	double m1 = 0;
+	double m2 = 0;
+	double m3 = 0;
+	double m4 = 0;
 	double lsum = snppri[st]+ d[st].BF;
-	//double lsum = log(snppri[st])+ d[st].BF;
-	st++;
-	for (int i = st; i < sp ; i++){
-		double tmp2add = snppri[i]+ d[i].BF;
+	//for (int i = st; i < sp ; i++){
+	//	double tmp2add = snppri[i]+ d[i].BF;
 		//double tmp2add = log(snppri[i])+ d[i].BF;
-		if (!isfinite(tmp2add)){
-			cerr << "ERROR: likelihood of "<< tmp2add << " at SNP "<< d[i].id << " BF:"<< d[i].BF << " "<< snppri[i] << "\n";
-			exit(1);
-		}
-		lsum  = sumlog(lsum, tmp2add);
+	//	if (!isfinite(tmp2add)){
+	//		cerr << "ERROR: likelihood of "<< tmp2add << " at SNP "<< d[i].id << " BF:"<< d[i].BF << " "<< snppri[i] << "\n";
+	//		exit(1);
+	//	}
+	//	lsum  = sumlog(lsum, tmp2add);
 		//cout << tmp2add << " "<< snppri[i]<< " "<< d[i].BF << " "<< lsum << "\n";
-	}
-	if (params->finemap) return lsum;
-	toreturn = log(segpriors[which]) + lsum;
+	//}
+	//if (params->finemap) return lsum;
+	//toreturn = log(segpriors[which]) + lsum;
 	//cout << toreturn << "\n";
-	toreturn = sumlog(toreturn, log(1-segpriors[which]));
+	//toreturn = sumlog(toreturn, log(1-segpriors[which]));
 
 	return toreturn;
 }
 
-*/
 double SNPs_PW::sumlog(double logx, double logy){
         if (logx > logy) return logx + log(1 + exp(logy-logx));
         else return logy + log(1 + exp(logx-logy));
