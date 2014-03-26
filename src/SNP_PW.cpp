@@ -62,6 +62,9 @@ void SNP_PW::append_distannots(vector<vector<pair<int, int> > > dmodels){
 }
 
 double SNP_PW::get_x(vector<double> lambda){
+	//no annotations yet
+	return 0.0;
+	/*
 	if (lambda.size() != nannot){
 		cerr << "ERROR: SNP "<< id << ". Lambda has "<< lambda.size()<< " entries. nannot is " << nannot << "\n";
 		exit(1);
@@ -72,6 +75,7 @@ double SNP_PW::get_x(vector<double> lambda){
 		if (annot[i]) toreturn += lambda[i];
 	}
 	return toreturn;
+	*/
 }
 
 double SNP_PW::get_x_cond(vector<double> lambda, double lambdac){

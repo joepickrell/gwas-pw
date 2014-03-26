@@ -46,14 +46,16 @@ SNPs_PW::SNPs_PW(Fgwas_params *p){
     phi = (1+sqrt(5))/2;
     resphi = 2-phi;
 	for (int i = 0; i < d.size(); i++){
-		snppri.push_back(1.0);
-		snppost.push_back(0.0);
+		vector<double> sp;
+		sp.push_back(1.0);sp.push_back(1.0);sp.push_back(1.0);
+		snppri.push_back(sp);
+		snppost.push_back(1.0);
 	}
 	nannot = annotnames.size();
 	nsegannot = segannotnames.size();
 	for (int i = 0; i < nannot; i++)	lambdas.push_back(0);
 	for (int i = 0; i < nsegannot; i++) seglambdas.push_back(0);
-	//set_priors();
+	set_priors();
 }
 
 void SNPs_PW::check_input(){
@@ -121,15 +123,19 @@ vector<pair<int, int> > SNPs_PW::read_dmodel(string infile){
 
 
 void SNPs_PW::init_segpriors(){
-	segannot.clear();
+	//segannot.clear();
 	segpriors.clear();
-	segannotnames.clear();
-	vector<double> segmeans;
-	vector<double> means2sort;
+	alpha.clear();
+	alpha.push_back(1);alpha.push_back(1);alpha.push_back(1);alpha.push_back(1);alpha.push_back(1);
+	//segannotnames.clear();
+	//vector<double> segmeans;
+	//vector<double> means2sort;
+
 	for (vector<pair<int, int> >::iterator it = segments.begin(); it != segments.end(); it++){
 		vector<double> sp;
 		sp.push_back(0.2);sp.push_back(0.2);sp.push_back(0.2);sp.push_back(0.2);sp.push_back(0.2);
 		segpriors.push_back(sp);
+		/*
 		if (params->segannot.size() > 0){
 			double segmean = 0.0;
 			int total = 0;
@@ -140,7 +146,11 @@ void SNPs_PW::init_segpriors(){
 			segmeans.push_back( segmean / (double) total);
 			means2sort.push_back( segmean / (double) total);
 		}
+		*/
 	}
+
+
+	/*
 	if (params->segannot.size() < 1) return;
 
 	segannotnames.push_back(params->segannot[0] +"_lo");
@@ -157,6 +167,7 @@ void SNPs_PW::init_segpriors(){
 		else annots.push_back(false);
 		segannot.push_back(annots);
 	}
+	*/
 }
 
 void SNPs_PW::load_snps_pw(string infile, vector<string> annot, vector<string> dannot, vector<string> segannot){
@@ -616,12 +627,10 @@ void SNPs_PW::make_segments(int size){
 			}
 		}
 		int nseg = length/bestsize;
-		//cout << starti << " "<< endi << " "<< bestsize << " "<< nseg<< "\n";
 		for (int i = 0; i < nseg; i++){
 			int sstart = starti+i*bestsize;
 			int send = starti+i*bestsize+bestsize;
 			if (i > (nseg-2))	send = endi;
-			//cout << i << " "<< nseg << " "<< starti << " "<< endi << " "<< sstart << " "<< send << "\n";
 			segments.push_back(make_pair(sstart, send));
 			for (int i = sstart ; i < send ; i++) d[i].chunknumber = counter;
 			counter++;
@@ -660,7 +669,7 @@ void SNPs_PW::make_chrsegments(){
 		int tmppos = d[i].pos;
 		string tmpchr = d[i].chr;
 		if (tmpchr != startchr){
-			int end = i-1;
+			int end = i;
 			chrsegments.push_back(make_pair(start, end));
 			start = i;
 			startpos = d[i].pos;
@@ -668,7 +677,7 @@ void SNPs_PW::make_chrsegments(){
 		}
 		i++;
 	}
-	int end = i-1;
+	int end = i;
 	chrsegments.push_back(make_pair(start, end));
 }
 
@@ -686,14 +695,13 @@ void SNPs_PW::print_chrsegments(){
 
 }
 
-/*
-void SNPs::set_priors(){
+
+void SNPs_PW::set_priors(){
 
 	set_segpriors(); // a bit of computation for nothing if there's no segment annotations, spot for speed improvement if necessary
 	for (int i = 0; i < segments.size(); i++) set_priors(i);
 }
 
-*/
 
 /*
 void SNPs::set_priors_cond(){
@@ -702,47 +710,63 @@ void SNPs::set_priors_cond(){
 }
 */
 
-/*
-void SNPs::set_segpriors(){
+
+void SNPs_PW::set_segpriors(){
+	assert (alpha.size()==5);
+	vector<double> segp;
+	double s = 0;
+	for (int i = 0; i < alpha.size(); i++) {
+		segp.push_back(exp(alpha[i]));
+		s+= exp(alpha[i]);
+	}
+	for (int i = 0; i < alpha.size(); i++) pi[i] = segp[i]/s;
+
+
+	// priors now constant across segments
+	/*
 	for (int i = 0; i < segments.size(); i++){
+
 		double logitprior = log(segpi) - log(1-segpi);
 		for (int j = 0; j < nsegannot; j++){
 			if (segannot[i][j]) logitprior += seglambdas[j];
 		}
 		double prior = 1.0/  (1.0 + exp(-logitprior));
+
 		segpriors[i] = prior;
 	}
+	*/
 }
-*/
 
-/*
 
-void SNPs::set_priors(int which){
+
+
+void SNPs_PW::set_priors(int which){
 	pair<int, int> seg = segments[which];
 	int st = seg.first;
 	int sp = seg.second;
-	double sumxs = 0;
-	for (int i = st; i < sp ;i++) {
-		//cout << i << " "<< d[i].get_x(lambdas) << "\n";
-		//double tmpx = exp(d[i].get_x(lambdas));
+
+	double sumxs = d[st].get_x(lambdas);
+	vector<double> tmps;
+	tmps.push_back(sumxs);
+
+	for (int i = st+1; i < sp ;i++) {
 		double tmpx = d[i].get_x(lambdas);
-		snppri[i] = tmpx;
-		//sumxs += tmpx;
+		tmps.push_back(tmpx);
 		sumxs = sumlog(sumxs, tmpx);
 	}
+
 	for (int i = st; i <  sp ; i++) {
-		//snppri[i] = snppri[i]/sumxs;
 		//doing this in log space
-		snppri[i] = snppri[i] - sumxs;
-		if (!isfinite(snppri[i])){
-			cerr << "ERROR: prior for SNP "<< i << " is " << snppri[i] << "\n";
+		snppri.at(i).at(0)= tmps.at(i-st) - sumxs;
+		snppri.at(i).at(1)= tmps.at(i-st) - sumxs;
+		snppri.at(i).at(2)= tmps.at(i-st) - sumxs;
+		if (!isfinite(snppri[i][0]) || !isfinite(snppri[i][1]) || !isfinite(snppri[i][2]) ){
+			cerr << "ERROR: prior for SNP "<< i << " is " << snppri[i][0] <<" " << snppri[i][1]<< " "<< snppri[i][2] <<"\n";
 			exit(1);
 		}
-		//if (snppri[i] < DBL_MIN) snppri[i] = DBL_MIN;
-		//cout << i << " "<< snppri[i] << "\n";
 	}
 }
-*/
+
 
 /*
 void SNPs::set_priors_cond(int which){
@@ -808,31 +832,63 @@ double SNPs::llk_ridge(){
 double SNPs_PW::llk(int which){
 
 	double toreturn = 0;
-
 	pair<int, int> seg = segments[which];
 
 	int st = seg.first;
 	int sp = seg.second;
-	double m1 = 0;
-	double m2 = 0;
-	double m3 = 0;
-	double m4 = 0;
-	double lsum = snppri[st]+ d[st].BF;
-	//for (int i = st; i < sp ; i++){
-	//	double tmp2add = snppri[i]+ d[i].BF;
-		//double tmp2add = log(snppri[i])+ d[i].BF;
-	//	if (!isfinite(tmp2add)){
-	//		cerr << "ERROR: likelihood of "<< tmp2add << " at SNP "<< d[i].id << " BF:"<< d[i].BF << " "<< snppri[i] << "\n";
-	//		exit(1);
-	//	}
-	//	lsum  = sumlog(lsum, tmp2add);
-		//cout << tmp2add << " "<< snppri[i]<< " "<< d[i].BF << " "<< lsum << "\n";
-	//}
-	//if (params->finemap) return lsum;
-	//toreturn = log(segpriors[which]) + lsum;
-	//cout << toreturn << "\n";
-	//toreturn = sumlog(toreturn, log(1-segpriors[which]));
 
+	//initialize to ~0 (in log space)
+	double m1 = -1000;
+	double m2 = -1000;
+	double m3 = -1000;
+	double m4 = -1000;
+
+	//int counter = 0;
+	for (int i = st; i < sp ; i++){
+
+		//term 1: one associated SNP for pheno 1
+		double tmp2add1 = snppri.at(i).at(0)+ d[i].BF;
+		//cout << tmp2add1 << " "<< m1 << " 1\n";
+		m1 = sumlog(m1, tmp2add1);
+		//cout << m1 << "\n";
+
+		//term 2: one associated SNP for pheno 2
+		double tmp2add2 = snppri.at(i).at(1)+ d[i].BF2;
+		m2 = sumlog(m2, tmp2add2);
+
+		//term 3: one associated SNP, both phenos
+		double tmp2add3 = snppri.at(i).at(2)+ d[i].BF+d[i].BF2;
+		m3 = sumlog(m3, tmp2add3);
+
+		//term 4: two associated SNPs, both phenos
+
+		double tmp2add4 = -10000;
+		for (int j = i+1; j < sp ; j++){
+			double tmp2_4 = snppri.at(i).at(0)+snppri.at(j).at(1)+d[i].BF+d[j].BF2;
+			tmp2_4 += log( 1-exp(snppri.at(i).at(1))) + log(1-exp(snppri.at(j).at(0))) ;
+
+			double tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF+d[i].BF2;
+			tmp2_42+= log(1-exp(snppri.at(i).at(0)))+  log(1-exp(snppri.at(i).at(1))) ;
+
+			tmp2add4 = sumlog(tmp2add4, tmp2_4);
+
+			tmp2add4 = sumlog(tmp2add4, tmp2_42);
+
+		}
+		m4 = sumlog(m4, tmp2add4);
+		//if (d[i].id == "rs7526076")
+		//cout << tmp2add1 << " "<< tmp2add2 << " "<< tmp2add3 <<  " " << tmp2add4 << " "<< d[i].id << " "<< snppri.at(i).at(0) << " "<< d[i].BF << "\n";
+	}
+	//cout << counter << " cc\n";
+	double m0 = log(pi[0]);
+	//cout << m1 << " "<< m2 << " "<< m3 << " "<< m4<< "\n";
+	m1 = m1+log(pi[1]);
+	m2 = m2+log(pi[2]);
+	m3 = m3+log(pi[3]);
+	m4 = m4+log(pi[4]);
+	double tmp = 1+exp( (m1-m0) ) +  exp( (m2-m0) )+exp( (m3-m0) )+exp( (m4-m0) );
+	toreturn = m0 +log(tmp);
+	cout << m0 << " "<< m1 << " "<< m2 << " "<< m3 << " "<< m4 << " " << toreturn << "\n";
 	return toreturn;
 }
 
@@ -900,13 +956,14 @@ void SNPs::optimize_condlambda(){
 */
 
 
-/*
-void SNPs::GSL_optim(){
+void SNPs_PW::GSL_optim(){
+	/*
 	if (params->finemap){
 		GSL_optim_fine();
 		return;
 	}
-	int nparam = nannot+nsegannot+1;
+	*/
+	int nparam = alpha.size()-1;
 	size_t iter = 0;
 	double size;
     int status;
@@ -921,13 +978,11 @@ void SNPs::GSL_optim(){
     struct GSL_params p;
     p.d = this;
     lm.params = &p;
-    //cout << llk()<< "\n"; cout.flush();
     //
     // initialize parameters
     //
     x = gsl_vector_alloc (nparam);
-    gsl_vector_set(x, 0, log(segpi) - log(1-segpi));
-    for (int i = 0; i < nparam-1; i++)   gsl_vector_set(x, i+1, 1);
+    for (int i = 0; i < nparam; i++)   gsl_vector_set(x, i, log(alpha[i+1]));
 
     // set initial step sizes to 1
     ss = gsl_vector_alloc(nparam);
@@ -947,10 +1002,8 @@ void SNPs::GSL_optim(){
              size = gsl_multimin_fminimizer_size(s);
              status = gsl_multimin_test_size (size, 0.001);
              //cout << iter << " "<< iter %10 << "\n";
-             if (iter % 20 < 1 || iter < 2){
-            	 cout <<"iteration: "<< iter << " "<< segpi;
-            	 for (int i = 0; i < nsegannot; i++) cout <<  " "<< seglambdas[i];
-            	 for (int i = 0; i < nannot; i++) cout << " "<< lambdas[i];
+             if (iter % 20 < 1 || iter < 20){
+            	 cout <<"iteration: "<< iter << " "<< pi[0]<< " "<< pi[1]<< " "<< pi[2]<< " "<< pi[3]<< " "<< pi[4];
             	 cout << " "<< s->fval << " "<< size <<  "\n";
              }
 
@@ -960,9 +1013,8 @@ void SNPs::GSL_optim(){
              cerr << "WARNING: failed to converge\n";
              //exit(1);
      }
-     segpi = 1.0 /  (1.0 + exp (- gsl_vector_get(s->x, 0)));
-     for (int i = 0; i < nsegannot; i++) seglambdas[i] = gsl_vector_get(s->x, i+1);
-     for (int i = 0; i < nannot; i++) lambdas[i] = gsl_vector_get(s->x, i+nsegannot+1);
+     //segpi = 1.0 /  (1.0 + exp (- gsl_vector_get(s->x, 0)));
+     for (int i = 0; i <  nparam; i++) alpha[i+1] = exp(gsl_vector_get(s->x, i));
 
 
      gsl_multimin_fminimizer_free (s);
@@ -970,7 +1022,7 @@ void SNPs::GSL_optim(){
      gsl_vector_free(ss);
 }
 
-
+/*
 void SNPs::GSL_xv_optim(set<int> toskip, bool penalize){
 	int nparam = nannot+nsegannot+1;
 	size_t iter = 0;
@@ -1489,24 +1541,20 @@ int SNPs::golden_section_l0(double min, double guess, double max, double tau){
         }
 }
 
-
+*/
 double GSL_llk(const gsl_vector *x, void *params ){
 	//first set times
-	int na = ((struct GSL_params *) params)->d->nannot;
-	int ns = ((struct GSL_params *) params)->d->nsegannot;
-	((struct GSL_params *) params)->d->segpi = 1.0 /  (1.0 + exp (- gsl_vector_get(x, 0)));
-
-	for (int i = 0; i < ns; i++){
-		((struct GSL_params *) params)->d->seglambdas[i] = gsl_vector_get(x, i+1);
-	}
+	int na = ((struct GSL_params *) params)->d->alpha.size()-1;
 
 	for (int i = 0; i < na; i++){
-		((struct GSL_params *) params)->d->lambdas[i] = gsl_vector_get(x, i+ns+1);
+		((struct GSL_params *) params)->d->alpha[i+1] = gsl_vector_get(x, i);
 	}
+
 	((struct GSL_params *) params)->d->set_priors();
 	return -((struct GSL_params *) params)->d->llk();
 }
 
+/*
 double GSL_llk_xv(const gsl_vector *x, void *params ){
 	//first set times
 	int na = ((struct GSL_params *) params)->d->nannot;

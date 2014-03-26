@@ -25,6 +25,7 @@
 #include <gsl/gsl_vector.h>
 #include <boost/algorithm/string.hpp>
 #include "CmdLine.h"
+#include <assert.h>
 using namespace std;
 
 class Fgwas_params{

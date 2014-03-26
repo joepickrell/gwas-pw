@@ -21,7 +21,7 @@ public:
 	void load_snps_pw(string, vector<string>, vector<string>, vector<string>);
 
 	//snp annotations
-	vector<double> snppri;
+	vector<vector<double> > snppri; //needs prior influencing trait 1, prior trait 2, prior both
 	vector<double> snppost;
 	vector<double> lambdas;
 	vector<string> annotnames;
@@ -97,6 +97,11 @@ public:
 	int golden_section_l0(double, double, double, double);
 
 	void check_input();
+};
+
+
+struct GSL_params{
+        SNPs_PW *d;
 };
 
 extern double GSL_llk(const gsl_vector *, void *GSL_params);
