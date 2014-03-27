@@ -16,7 +16,7 @@ SNPs_PW::SNPs_PW(){
 SNPs_PW::SNPs_PW(Fgwas_params *p){
 	params = p;
 	params->print_stdout();
-
+	precomputed = false;
 	//read distance models
 	for (vector<string>::iterator it = params->distmodels.begin(); it != params->distmodels.end(); it++) dmodels.push_back( read_dmodel(*it));
 
@@ -797,9 +797,11 @@ void SNPs::set_priors_cond(int which){
 
 */
 double SNPs_PW::llk(){
+	if (!precomputed) seg_toadd.clear();
 	double toreturn = 0;
 	for (int i = 0; i < segments.size(); i++) toreturn += llk(i);
 	data_llk = toreturn;
+	if (!precomputed) precomputed = true;
 	return toreturn;
 }
 
@@ -832,6 +834,22 @@ double SNPs::llk_ridge(){
 double SNPs_PW::llk(int which){
 
 	double toreturn = 0;
+	if (precomputed){
+		double m1 = seg_toadd.at(which).at(0);
+		double m2 = seg_toadd.at(which).at(1);
+		double m3 = seg_toadd.at(which).at(2);
+		double m4 = seg_toadd.at(which).at(3);
+		double m0 = log(pi[0]);
+		//cout << m1 << " "<< m2 << " "<< m3 << " "<< m4<< "\n";
+		m1 = m1+log(pi[1]);
+		m2 = m2+log(pi[2]);
+		m3 = m3+log(pi[3]);
+		m4 = m4+log(pi[4]);
+		double tmp = 1+exp( (m1-m0) ) +  exp( (m2-m0) )+exp( (m3-m0) )+exp( (m4-m0) );
+		toreturn = m0 +log(tmp);
+		//cout << m0 << " "<< m1 << " "<< m2 << " "<< m3 << " "<< m4 << " " << toreturn << "\n";
+		return toreturn;
+	}
 	pair<int, int> seg = segments[which];
 
 	int st = seg.first;
@@ -876,19 +894,24 @@ double SNPs_PW::llk(int which){
 
 		}
 		m4 = sumlog(m4, tmp2add4);
-		//if (d[i].id == "rs7526076")
-		//cout << tmp2add1 << " "<< tmp2add2 << " "<< tmp2add3 <<  " " << tmp2add4 << " "<< d[i].id << " "<< snppri.at(i).at(0) << " "<< d[i].BF << "\n";
 	}
-	//cout << counter << " cc\n";
+	vector<double> toadd;
+	toadd.push_back(m1);toadd.push_back(m2);toadd.push_back(m3);toadd.push_back(m4);
+	seg_toadd.push_back(toadd);
+
 	double m0 = log(pi[0]);
 	//cout << m1 << " "<< m2 << " "<< m3 << " "<< m4<< "\n";
 	m1 = m1+log(pi[1]);
 	m2 = m2+log(pi[2]);
 	m3 = m3+log(pi[3]);
 	m4 = m4+log(pi[4]);
-	double tmp = 1+exp( (m1-m0) ) +  exp( (m2-m0) )+exp( (m3-m0) )+exp( (m4-m0) );
-	toreturn = m0 +log(tmp);
-	cout << m0 << " "<< m1 << " "<< m2 << " "<< m3 << " "<< m4 << " " << toreturn << "\n";
+	//double tmp = 1+exp( (m1-m0) ) +  exp( (m2-m0) )+exp( (m3-m0) )+exp( (m4-m0) );
+	//toreturn = m0 +log(tmp);
+
+	//testing
+	double tmp = 1+exp(m0-m3)+ exp(m1-m3)+exp(m2-m3)+exp(m4-m3);
+	toreturn = m3+log(tmp);
+	//cout << m0 << " "<< m1 << " "<< m2 << " "<< m3 << " "<< m4 << " " << toreturn << "\n";
 	return toreturn;
 }
 

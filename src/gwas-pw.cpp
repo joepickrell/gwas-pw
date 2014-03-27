@@ -93,7 +93,7 @@ int main(int argc, char *argv[]){
 
     SNPs_PW s(&p);
     cout << s.llk() << "\n";
-    //s.GSL_optim();
+    s.GSL_optim();
 	return 0;
 }
 

@@ -45,6 +45,10 @@ public:
 	void append_dannotnames(string, vector<pair<int, int> >);
 	vector<pair<int, int> > read_dmodel(string);
 
+	//pre-computing likelihoods
+	vector<vector<double> > seg_toadd;
+	bool precomputed;
+
 	//10-fold cross-validation
 	double cross10(bool);
 	vector<set<int> > make_cross10();
