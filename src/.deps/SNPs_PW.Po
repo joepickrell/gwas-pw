@@ -632,7 +632,8 @@ SNPs_PW.o: SNPs_PW.cpp SNPs_PW.h SNP_PW.h \
   /opt/local/include/boost/algorithm/string/detail/formatter.hpp \
   /opt/local/include/boost/algorithm/string/erase.hpp CmdLine.h \
   fgwas_params.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/set
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/set \
+  /opt/local/include/gsl/gsl_rng.h /opt/local/include/gsl/gsl_randist.h
 
 SNPs_PW.h:
 
@@ -1919,3 +1920,7 @@ CmdLine.h:
 fgwas_params.h:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/set:
+
+/opt/local/include/gsl/gsl_rng.h:
+
+/opt/local/include/gsl/gsl_randist.h:

@@ -262,6 +262,7 @@ fgwas_params.o: fgwas_params.cpp fgwas_params.h \
   /opt/local/include/gsl/gsl_minmax.h \
   /opt/local/include/gsl/gsl_vector.h \
   /opt/local/include/gsl/gsl_multimin.h /opt/local/include/gsl/gsl_min.h \
+  /opt/local/include/gsl/gsl_rng.h /opt/local/include/gsl/gsl_randist.h \
   /opt/local/include/boost/algorithm/string.hpp \
   /opt/local/include/boost/algorithm/string/std_containers_traits.hpp \
   /opt/local/include/boost/config.hpp \
@@ -1172,6 +1173,10 @@ gzstream.h:
 /opt/local/include/gsl/gsl_multimin.h:
 
 /opt/local/include/gsl/gsl_min.h:
+
+/opt/local/include/gsl/gsl_rng.h:
+
+/opt/local/include/gsl/gsl_randist.h:
 
 /opt/local/include/boost/algorithm/string.hpp:
 

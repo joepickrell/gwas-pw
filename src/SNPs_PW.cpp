@@ -945,7 +945,7 @@ double SNPs_PW::dirichlet_lndens(vector<double> alphas, vector<double> thetas){
 	for (int i = 0; i < 5; i++){
 		t[i] = thetas[i];
 		a[i] = alphas[i];
-		//cout << K << " "<< t[i] << " "<< a[i] << "\n";
+
 	}
 
 	double toreturn = gsl_ran_dirichlet_lnpdf(K, a, t);
