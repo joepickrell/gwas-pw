@@ -90,10 +90,31 @@ int main(int argc, char *argv[]){
     	p.loquant = atof(cmdline.GetArgument("-dens", 1).c_str());
     	p.hiquant = atof(cmdline.GetArgument("-dens", 2).c_str());
     }
+    if (cmdline.HasSwitch("-seed")){
+    	p.seed = atoi(cmdline.GetArgument("-seed", 0).c_str());
+    }
+    else p.seed = unsigned( time(NULL));
+
+      //random number generator
+    const gsl_rng_type * T;
+    gsl_rng * r;
+    gsl_rng_env_setup();
+    T = gsl_rng_ranlxs2;
+    r = gsl_rng_alloc(T);
+    int seed = (int) time(0);
+    gsl_rng_set(r, p.seed);
+
 
     SNPs_PW s(&p);
-    cout << s.llk() << "\n";
-    s.GSL_optim();
+    //for (int i = 0; i < 5; i++) cout << s.alpha[i] << " b4\n";
+    vector<double> t = s.propose_alpha(r);
+    //for (int i = 0; i < 5; i++) cout << s.alpha[i] << " after\n";
+    //for (int i = 0; i < 5; i++) cout << t[i] << " ";
+    double lnlk = s.dirichlet_lndens(s.alpha, t);
+
+    cout <<  lnlk << "\n";
+    //cout << s.llk() << "\n";
+    //s.GSL_optim();
 	return 0;
 }
 

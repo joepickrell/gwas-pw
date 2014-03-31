@@ -23,6 +23,8 @@
 #include <gsl/gsl_multiroots.h>
 #include <gsl/gsl_multimin.h>
 #include <gsl/gsl_vector.h>
+#include <gsl/gsl_rng.h>
+#include <gsl/gsl_randist.h>
 #include <boost/algorithm/string.hpp>
 #include "CmdLine.h"
 #include <assert.h>
@@ -52,6 +54,9 @@ public:
 	string testcond_annot;
 	bool pairwise;
 	string pheno1, pheno2; //for pairwise
+	int burnin;
+	double alpha_prop;
+	int seed;
 };
 
 

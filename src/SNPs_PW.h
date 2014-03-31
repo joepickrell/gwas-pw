@@ -49,6 +49,11 @@ public:
 	vector<vector<double> > seg_toadd;
 	bool precomputed;
 
+	//
+	void MCMC(gsl_rng *);
+	void MCMC_update(gsl_rng *);
+	vector<double> propose_alpha(gsl_rng *);
+	double dirichlet_lndens(vector<double>, vector<double>);
 	//10-fold cross-validation
 	double cross10(bool);
 	vector<set<int> > make_cross10();

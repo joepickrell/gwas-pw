@@ -29,6 +29,8 @@ Fgwas_params::Fgwas_params(){
 	pairwise = true;
 	pheno1 = "NA";
 	pheno2 = "NA";
+	burnin = 10000;
+	alpha_prop = 1.0;
 }
 
 void Fgwas_params::print_stdout(){

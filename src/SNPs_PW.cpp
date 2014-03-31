@@ -126,7 +126,7 @@ void SNPs_PW::init_segpriors(){
 	//segannot.clear();
 	segpriors.clear();
 	alpha.clear();
-	alpha.push_back(1);alpha.push_back(1);alpha.push_back(1);alpha.push_back(1);alpha.push_back(1);
+	alpha.push_back(10);alpha.push_back(10);alpha.push_back(10);alpha.push_back(10);alpha.push_back(10);
 	//segannotnames.clear();
 	//vector<double> segmeans;
 	//vector<double> means2sort;
@@ -845,8 +845,8 @@ double SNPs_PW::llk(int which){
 		m2 = m2+log(pi[2]);
 		m3 = m3+log(pi[3]);
 		m4 = m4+log(pi[4]);
-		double tmp = 1+exp( (m1-m0) ) +  exp( (m2-m0) )+exp( (m3-m0) )+exp( (m4-m0) );
-		toreturn = m0 +log(tmp);
+		double tmp = 1+exp(m0-m3)+ exp(m1-m3)+exp(m2-m3)+exp(m4-m3);
+		toreturn = m3+log(tmp);
 		//cout << m0 << " "<< m1 << " "<< m2 << " "<< m3 << " "<< m4 << " " << toreturn << "\n";
 		return toreturn;
 	}
@@ -911,7 +911,7 @@ double SNPs_PW::llk(int which){
 	//testing
 	double tmp = 1+exp(m0-m3)+ exp(m1-m3)+exp(m2-m3)+exp(m4-m3);
 	toreturn = m3+log(tmp);
-	//cout << m0 << " "<< m1 << " "<< m2 << " "<< m3 << " "<< m4 << " " << toreturn << "\n";
+	cout << m0 << " "<< m1 << " "<< m2 << " "<< m3 << " "<< m4 << " " << toreturn << " "<< which << "\n";
 	return toreturn;
 }
 
@@ -920,6 +920,48 @@ double SNPs_PW::sumlog(double logx, double logy){
         else return logy + log(1 + exp(logx-logy));
 }
 
+void SNPs_PW::MCMC(gsl_rng *r){
+	for (int i = 0; i < params->burnin; i++) MCMC_update(r);
+
+}
+
+void SNPs_PW::MCMC_update(gsl_rng *r){
+
+	vector<double> tmpalpha;
+	double tmpllk = data_llk;
+	for (int i = 0; i < alpha.size(); i++) tmpalpha.push_back(alpha[i]);
+	vector<double> newalpha = propose_alpha(r);
+	for (int i = 0; i < 5; i++) alpha[i] = newalpha[i];
+	set_priors();
+	llk();
+
+
+}
+
+double SNPs_PW::dirichlet_lndens(vector<double> alphas, vector<double> thetas){
+	size_t K = alphas.size();
+	double t[5];
+	double a[5];
+	for (int i = 0; i < 5; i++){
+		t[i] = thetas[i];
+		a[i] = alphas[i];
+		//cout << K << " "<< t[i] << " "<< a[i] << "\n";
+	}
+
+	double toreturn = gsl_ran_dirichlet_lnpdf(K, a, t);
+	return toreturn;
+}
+
+vector<double> SNPs_PW::propose_alpha(gsl_rng *r){
+	vector<double> toreturn;
+	double t[5];
+	double a[5] = {alpha[0]* params->alpha_prop, alpha[1]*params->alpha_prop, alpha[2]*params->alpha_prop, alpha[3]*params->alpha_prop, alpha[4]*params->alpha_prop};
+	size_t K = 5;
+	gsl_ran_dirichlet(r, K, a, t);
+	for (int i =0 ; i < 5; i++) toreturn.push_back(t[i]);
+	return toreturn;
+
+}
 /*
 void SNPs::set_post(){
 	for (int i = 0; i < segments.size(); i++) set_post(i);
