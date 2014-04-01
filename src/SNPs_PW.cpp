@@ -926,10 +926,16 @@ double SNPs_PW::sumlog(double logx, double logy){
 
 void SNPs_PW::MCMC(gsl_rng *r){
 	llk();
-	for (int i = 0; i < params->burnin; i++) MCMC_update(r);
 	string outMCMC = params->outstem+".MCMC";
 	ofstream outr(outMCMC.c_str());
 	outr << "i pi_0 pi_1 pi_2 pi_3 pi_4 lk\n";
+	for (int i = 0; i < params->burnin; i++) {
+		MCMC_update(r);
+		if (i % params->sampfreq ==0) {
+			cout << i << " "<< pi[0]<< " "<< pi[1]<< " "<<pi[2] << " "<< pi[3] << " "<< pi[4]<< " "<< data_llk << "\n";
+			outr << "#"<< i << " "<< pi[0]<< " "<< pi[1]<< " "<<pi[2] << " "<< pi[3] << " "<< pi[4]<< " "<< data_llk << "\n";
+		}
+	}
 	int nsamp = 0;
 	int naccept = 0;
 	for (int i = 0; i < params->nsamp; i++){
