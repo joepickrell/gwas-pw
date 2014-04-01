@@ -30,7 +30,14 @@ Fgwas_params::Fgwas_params(){
 	pheno1 = "NA";
 	pheno2 = "NA";
 	burnin = 10000;
-	alpha_prop = 1.0;
+	nsamp = 100000;
+	sampfreq = 10;
+	MCMC_gauss_SD = sqrt(1.0/5.0);
+	//alpha_prop = 50.0;
+	for (int i = 0; i < 5; i++) {
+		alpha_prior.push_back(0);
+	}
+	alpha_prior[0] = 1;
 }
 
 void Fgwas_params::print_stdout(){

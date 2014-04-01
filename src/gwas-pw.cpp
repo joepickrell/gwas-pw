@@ -16,8 +16,8 @@ void printopts(){
         cout << "-i [file name] input file w/ Z-scores\n";
         cout << "-phenos [string] [string] names of the phenotypes\n";
         cout << "-o [string] stem for names of output files\n";
-        cout << "-w [string] which annotation(s) to use. Separate multiple annotations with plus signs\n";
-        cout << "-dists [string:string] the name of the distance annotation(s) and the file(s) containing the distance model(s)\n";
+        //cout << "-w [string] which annotation(s) to use. Separate multiple annotations with plus signs\n";
+        //cout << "-dists [string:string] the name of the distance annotation(s) and the file(s) containing the distance model(s)\n";
         cout << "-k [integer] block size in number of SNPs (5000)\n";
         cout << "\n";
 }
@@ -94,7 +94,12 @@ int main(int argc, char *argv[]){
     	p.seed = atoi(cmdline.GetArgument("-seed", 0).c_str());
     }
     else p.seed = unsigned( time(NULL));
-
+    if (cmdline.HasSwitch("-nburn")){
+     	p.burnin = atoi(cmdline.GetArgument("-nburn", 0).c_str());
+    }
+    if (cmdline.HasSwitch("-nsamp")){
+      	p.nsamp = atoi(cmdline.GetArgument("-nsamp", 0).c_str());
+     }
       //random number generator
     const gsl_rng_type * T;
     gsl_rng * r;
@@ -106,15 +111,13 @@ int main(int argc, char *argv[]){
 
 
     SNPs_PW s(&p);
-    //for (int i = 0; i < 5; i++) cout << s.alpha[i] << " b4\n";
-    vector<double> t = s.propose_alpha(r);
-    //for (int i = 0; i < 5; i++) cout << s.alpha[i] << " after\n";
-    //for (int i = 0; i < 5; i++) cout << t[i] << " ";
-    double lnlk = s.dirichlet_lndens(s.alpha, t);
-
-    cout <<  lnlk << "\n";
-    //cout << s.llk() << "\n";
-    //s.GSL_optim();
+    s.GSL_optim();
+	string outML = p.outstem+".MLE";
+	ofstream outr(outML.c_str());
+	for (int i = 0; i < 5; i++){
+		outr << "pi"<< i <<" "<< s.pi[i]<< "\n";
+	}
+    s.MCMC(r);
 	return 0;
 }
 

@@ -55,8 +55,11 @@ public:
 	bool pairwise;
 	string pheno1, pheno2; //for pairwise
 	int burnin;
-	double alpha_prop;
+	int nsamp;
+	int sampfreq;
+	vector<double> alpha_prior;
 	int seed;
+	double MCMC_gauss_SD;
 };
 
 

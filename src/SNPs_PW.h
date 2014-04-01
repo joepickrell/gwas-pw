@@ -28,9 +28,12 @@ public:
 	int nannot;
 	vector<vector<pair<int, int> > > dmodels; // hold the distance models
 	double condlambda; //for conditional analysis
-	//segment annotations
+
+	//for the MCMC, need to set priors
+	vector<double> logist_params;
 	vector<double> alpha;
 	vector<double> pi;
+	//segment annotations
 	int nsegannot;
 	vector<string> segannotnames;
 	vector<pair<int, int> > segments;
@@ -49,11 +52,13 @@ public:
 	vector<vector<double> > seg_toadd;
 	bool precomputed;
 
-	//
+	//MCMC
 	void MCMC(gsl_rng *);
-	void MCMC_update(gsl_rng *);
+	int MCMC_update(gsl_rng *);
 	vector<double> propose_alpha(gsl_rng *);
 	double dirichlet_lndens(vector<double>, vector<double>);
+	double lndgauss(double, double);
+	double lnvecdens(vector<double>, vector<double>);
 	//10-fold cross-validation
 	double cross10(bool);
 	vector<set<int> > make_cross10();

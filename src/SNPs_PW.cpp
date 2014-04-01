@@ -51,6 +51,7 @@ SNPs_PW::SNPs_PW(Fgwas_params *p){
 		snppri.push_back(sp);
 		snppost.push_back(1.0);
 	}
+
 	nannot = annotnames.size();
 	nsegannot = segannotnames.size();
 	for (int i = 0; i < nannot; i++)	lambdas.push_back(0);
@@ -126,7 +127,10 @@ void SNPs_PW::init_segpriors(){
 	//segannot.clear();
 	segpriors.clear();
 	alpha.clear();
-	alpha.push_back(10);alpha.push_back(10);alpha.push_back(10);alpha.push_back(10);alpha.push_back(10);
+	for (int i = 0; i < 5; i++) {
+		alpha.push_back(params->alpha_prior[i]);
+	}
+	//alpha.push_back(10);alpha.push_back(10);alpha.push_back(10);alpha.push_back(10);alpha.push_back(10);
 	//segannotnames.clear();
 	//vector<double> segmeans;
 	//vector<double> means2sort;
@@ -698,7 +702,7 @@ void SNPs_PW::print_chrsegments(){
 
 void SNPs_PW::set_priors(){
 
-	set_segpriors(); // a bit of computation for nothing if there's no segment annotations, spot for speed improvement if necessary
+	set_segpriors(); // right now only segment priors, constant across segments
 	for (int i = 0; i < segments.size(); i++) set_priors(i);
 }
 
@@ -911,7 +915,7 @@ double SNPs_PW::llk(int which){
 	//testing
 	double tmp = 1+exp(m0-m3)+ exp(m1-m3)+exp(m2-m3)+exp(m4-m3);
 	toreturn = m3+log(tmp);
-	cout << m0 << " "<< m1 << " "<< m2 << " "<< m3 << " "<< m4 << " " << toreturn << " "<< which << "\n";
+	cout << alpha[4] << " "<< pi[4] << " "<< m0 << " "<< m1 << " "<< m2 << " "<< m3 << " "<< m4 << " " << toreturn << " "<< which << "\n";
 	return toreturn;
 }
 
@@ -921,21 +925,80 @@ double SNPs_PW::sumlog(double logx, double logy){
 }
 
 void SNPs_PW::MCMC(gsl_rng *r){
+	llk();
 	for (int i = 0; i < params->burnin; i++) MCMC_update(r);
-
+	string outMCMC = params->outstem+".MCMC";
+	ofstream outr(outMCMC.c_str());
+	outr << "i pi_0 pi_1 pi_2 pi_3 pi_4 lk\n";
+	int nsamp = 0;
+	int naccept = 0;
+	for (int i = 0; i < params->nsamp; i++){
+		naccept+= MCMC_update(r);
+		nsamp++;
+		if (i % params->sampfreq ==0) {
+			cout << i << " "<< pi[0]<< " "<< pi[1]<< " "<<pi[2] << " "<< pi[3] << " "<< pi[4]<< " "<< data_llk << "\n";
+			outr << i << " "<< pi[0]<< " "<< pi[1]<< " "<<pi[2] << " "<< pi[3] << " "<< pi[4]<< " "<< data_llk << "\n";
+		}
+	}
+	outr << "#" << (double) naccept / (double) nsamp << " :acceptance probability\n";
 }
 
-void SNPs_PW::MCMC_update(gsl_rng *r){
-
+int SNPs_PW::MCMC_update(gsl_rng *r){
+	// return 1 if update accepted, 0 otw
+	//save old values of alpha, pi
 	vector<double> tmpalpha;
+	vector<double> tmppi;
 	double tmpllk = data_llk;
-	for (int i = 0; i < alpha.size(); i++) tmpalpha.push_back(alpha[i]);
+	for (int i = 0; i < alpha.size(); i++) {
+		tmpalpha.push_back(alpha[i]);
+		tmppi.push_back(pi[i]);
+	}
+
+	//propose new alpha, reset priors
 	vector<double> newalpha = propose_alpha(r);
 	for (int i = 0; i < 5; i++) alpha[i] = newalpha[i];
 	set_priors();
 	llk();
 
+	//prior on initial alphas
+	double tmppi_lk = lnvecdens(tmpalpha, params->alpha_prior);
+	//prior on new alphas
+	double pi_lk = lnvecdens(alpha, params->alpha_prior);
 
+
+	//compute acceptance prob
+	double num = data_llk+ pi_lk;
+	double denom = tmpllk+ tmppi_lk;
+	double diff = num - denom;
+	double acceptance = exp(diff);
+	if (acceptance > 1) return 1;
+
+	//generate random unif
+	double unif = gsl_rng_uniform(r);
+	if (unif < acceptance) return 1;
+	else{
+		for (int i = 0; i < 5; i++) alpha[i] = tmpalpha[i];
+		set_priors();
+		llk();
+	}
+	return 0;
+
+
+}
+
+double SNPs_PW::lnvecdens(vector<double> current, vector<double> prior){
+	vector<double> tmp;
+	for (int i = 0; i < 5; i++) tmp.push_back( lndgauss(current[i]-prior[i], 1));
+	double toreturn = tmp[0];
+	for (int i = 1; i < 5; i++) toreturn+= tmp[i];
+	return toreturn;
+}
+
+double SNPs_PW::lndgauss(double dif, double se){
+        double toreturn = 0;
+        toreturn += -log (se * sqrt(2.0*M_PI));
+        toreturn += -(dif*dif) /(2*se*se);
+        return toreturn;
 }
 
 double SNPs_PW::dirichlet_lndens(vector<double> alphas, vector<double> thetas){
@@ -945,7 +1008,6 @@ double SNPs_PW::dirichlet_lndens(vector<double> alphas, vector<double> thetas){
 	for (int i = 0; i < 5; i++){
 		t[i] = thetas[i];
 		a[i] = alphas[i];
-
 	}
 
 	double toreturn = gsl_ran_dirichlet_lnpdf(K, a, t);
@@ -953,14 +1015,23 @@ double SNPs_PW::dirichlet_lndens(vector<double> alphas, vector<double> thetas){
 }
 
 vector<double> SNPs_PW::propose_alpha(gsl_rng *r){
+	//Propose new alphas, normally distributed around old alphas
+	vector<double> toreturn;
+	for (int i = 0; i < 5; i++){
+		double tmp = gsl_ran_gaussian(r, params->MCMC_gauss_SD);
+		toreturn.push_back(alpha[i]+ tmp);
+	}
+	return toreturn;
+	//Dirichlet (had problems with hitting the edge of the simplex)
+	/*
 	vector<double> toreturn;
 	double t[5];
-	double a[5] = {alpha[0]* params->alpha_prop, alpha[1]*params->alpha_prop, alpha[2]*params->alpha_prop, alpha[3]*params->alpha_prop, alpha[4]*params->alpha_prop};
+	double a[5] = {alpha[0]* segments.size(), alpha[1]*segments.size(), alpha[2]*segments.size(), alpha[3]*segments.size(), alpha[4]*segments.size()};
 	size_t K = 5;
 	gsl_ran_dirichlet(r, K, a, t);
-	for (int i =0 ; i < 5; i++) toreturn.push_back(t[i]);
+	for (int i =0 ; i < 5; i++) toreturn.push_back(t[i] * segments.size());
 	return toreturn;
-
+	*/
 }
 /*
 void SNPs::set_post(){
@@ -1047,7 +1118,7 @@ void SNPs_PW::GSL_optim(){
     // initialize parameters
     //
     x = gsl_vector_alloc (nparam);
-    for (int i = 0; i < nparam; i++)   gsl_vector_set(x, i, log(alpha[i+1]));
+    for (int i = 0; i < nparam; i++)   gsl_vector_set(x, i, alpha[i+1]);
 
     // set initial step sizes to 1
     ss = gsl_vector_alloc(nparam);
