@@ -117,6 +117,7 @@ int main(int argc, char *argv[]){
 	for (int i = 0; i < 5; i++){
 		outr << "pi"<< i <<" "<< s.pi[i]<< "\n";
 	}
+	outr.close();
     s.MCMC(r);
 	return 0;
 }
