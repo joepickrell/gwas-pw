@@ -19,6 +19,9 @@ void printopts(){
         //cout << "-w [string] which annotation(s) to use. Separate multiple annotations with plus signs\n";
         //cout << "-dists [string:string] the name of the distance annotation(s) and the file(s) containing the distance model(s)\n";
         cout << "-k [integer] block size in number of SNPs (5000)\n";
+        cout << "-nburn [integer] iterations of burn-in (10000)\n";
+        cout << "-nsamp [integer] iterations of sampling (100000)\n";
+        cout << "-jumpsd [float] SD of normally distributed MCMC jumps (0.44)\n";
         cout << "\n";
 }
 
@@ -100,6 +103,10 @@ int main(int argc, char *argv[]){
     if (cmdline.HasSwitch("-nsamp")){
       	p.nsamp = atoi(cmdline.GetArgument("-nsamp", 0).c_str());
      }
+    if (cmdline.HasSwitch("-jumpsd")){
+      	p.MCMC_gauss_SD = atof(cmdline.GetArgument("-jumpsd", 0).c_str());
+     }
+
       //random number generator
     const gsl_rng_type * T;
     gsl_rng * r;

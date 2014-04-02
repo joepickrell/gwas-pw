@@ -26,13 +26,16 @@ SNPs_PW::SNPs_PW(Fgwas_params *p){
 		cerr<< "ERROR: in pairwise, parameter file says this isn't a pairwise run\n";
 		exit(1);
 	}
+	cout << "here\n"; cout.flush();
 	//make segments
 	if (params->finemap) make_segments_finemap();
 	else{
+		cout << "here 1\n"; cout.flush();
 		make_chrsegments();
+		cout << "here 1.1\n"; cout.flush();
 		make_segments(params->K);
 	}
-
+	cout << "here2\b"; cout.flush();
 	//double-check input quality
 	check_input();
 
@@ -665,6 +668,7 @@ void SNPs_PW::make_segments_finemap(){
 
 void SNPs_PW::make_chrsegments(){
 	chrsegments.clear();
+	cout << d.size() << "\n";
 	int i = 0;
 	int start = i;
 	int startpos = d[i].pos;
