@@ -357,34 +357,69 @@ void SNPs_PW::append_dannotnames(string name, vector<pair<int, int> > model){
 	}
 }
 
-/*
-vector<pair< pair<int, int>, pair<double, double> > > SNPs::get_cis(){
+
+vector<pair< pair<int, int>, pair<double, double> > > SNPs_PW::get_cis(){
 	vector<pair<pair<int, int>, pair<double, double> > > toreturn;
-	double startsegpi = segpi;
-	vector<double> startlambdas;
-	vector<double> startseglambdas;
-	for (vector<double>::iterator it = lambdas.begin(); it != lambdas.end(); it++) startlambdas.push_back(*it);
-	for (vector<double>::iterator it = seglambdas.begin(); it != seglambdas.end(); it++) startseglambdas.push_back(*it);
-	if (!params->finemap) {
-		toreturn.push_back(get_cis_segpi());
-		segpi = startsegpi;
-		set_priors();
-		for (int i = 0; i < seglambdas.size(); i++){
-			toreturn.push_back(get_cis_seglambda(i));
-			seglambdas[i] = startseglambdas[i];
-			set_priors();
-		}
-	}
-	segpi = startsegpi;
-	for (int i = 0; i < lambdas.size(); i++){
-		toreturn.push_back(get_cis_lambda(i));
-		lambdas[i] = startlambdas[i];
+	vector<double> startalphas;
+	for (vector<double>::iterator it = alpha.begin(); it != alpha.end(); it++) startalphas.push_back(*it);
+	for (int i = 0; i < alpha.size(); i++){
+		toreturn.push_back(get_cis_alpha(i));
+		alpha[i] = startalphas[i];
 		set_priors();
 	}
 	return toreturn;
 }
 
-*/
+
+
+pair< pair<int, int>, pair<double, double> > SNPs_PW::get_cis_alpha(int which){
+	pair< pair<int, int>, pair<double, double> > toreturn;
+	double tau = 0.001;
+	double startlk = llk();
+	double thold = startlk - 2;
+	cout <<  startlk << " "<< thold << "\n";
+	double min = -20.0;
+	double max = 20.0;
+	double test = alpha[which];
+	if (test > max) max = test+20.0;
+	if (test < min) min = test-20.0;
+	if (max < 0) max = 20.0;
+	if (min > 0) min = -20.0;
+
+	//upper
+	double hi;
+	int convhi = 1;
+	int convlo = 1;
+	alpha[which] = max;
+	set_priors();
+
+	if (llk() > thold) hi = pi[which];
+	else{
+		alpha[which] = test;
+		double start = (test+max)/2;
+
+		convhi = golden_section_alpha_ci(test, start, max, tau, which, thold);
+		hi = pi[which];
+	}
+	cout << hi << " "<< llk() << " hi\n";
+
+	//lower
+	double lo;
+	alpha[which] = min;
+	set_priors();
+	if (llk() > thold) lo = pi[which];
+	else{
+		alpha[which] = test;
+		double start = (test+min)/2;
+		convlo = golden_section_alpha_ci(min, start, test, tau, which, thold);
+		lo = pi[which];
+	}
+	cout << lo << " "<< llk() << " lo\n";
+	pair<int, int> conv = make_pair(convlo, convhi);
+	pair<double, double> ci = make_pair(lo, hi);
+	return make_pair(conv, ci);
+}
+
 
 /*
 
@@ -1538,15 +1573,16 @@ int SNPs::golden_section_condlambda_ci(double min, double guess, double max, dou
         }
 }
 
+*/
 
-int SNPs::golden_section_lambda_ci(double min, double guess, double max, double tau, int which, double target){
+int SNPs_PW::golden_section_alpha_ci(double min, double guess, double max, double tau, int which, double target){
         double x;
 
         if ( (max - guess) > (guess - min)) x = guess + resphi *( max - guess);
         else x = guess - resphi *(guess-min);
         if (fabs(max-min) < tau * (fabs(guess)+fabs(max))) {
                 double new_segpi = (min+max)/2;
-                lambdas[which] =  new_segpi;
+                alpha[which] =  new_segpi;
                 set_priors();
                 data_llk = llk();
                 double tmpdiff = data_llk- target;
@@ -1555,29 +1591,29 @@ int SNPs::golden_section_lambda_ci(double min, double guess, double max, double 
                 else return 0;
         }
 
-        lambdas[which] = x;
+        alpha[which] = x;
         set_priors();
         double f_x = llk()-target;
         f_x = f_x*f_x;
        // double x_llk = llk();
 
-        lambdas[which] = guess;
+        alpha[which] = guess;
         set_priors();
         double f_guess = llk()-target;
         f_guess = f_guess*f_guess;
        // double guess_llk = llk();
         cout << x << " " <<  guess << " "<< f_x << " "<< f_guess  << " "<< max << " "<< min << "\n";
         if (f_x < f_guess){
-                if ( (max-guess) > (guess-min) )        return golden_section_lambda_ci(guess, x, max, tau, which, target);
-                else return golden_section_lambda_ci(min, x, guess, tau, which, target);
+                if ( (max-guess) > (guess-min) )        return golden_section_alpha_ci(guess, x, max, tau, which, target);
+                else return golden_section_alpha_ci(min, x, guess, tau, which, target);
         }
         else{
-                if ( (max - guess) > (guess - min)  ) return golden_section_lambda_ci(min, guess, x, tau, which, target);
-                else return golden_section_lambda_ci(x, guess, max, tau, which, target);
+                if ( (max - guess) > (guess - min)  ) return golden_section_alpha_ci(min, guess, x, tau, which, target);
+                else return golden_section_alpha_ci(x, guess, max, tau, which, target);
         }
 }
 
-
+/*
 int SNPs::golden_section_seglambda_ci(double min, double guess, double max, double tau, int which, double target){
         double x;
 

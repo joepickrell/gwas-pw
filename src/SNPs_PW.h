@@ -100,12 +100,13 @@ public:
 	pair<pair<int, int>, pair<double, double> > get_cis_segpi();
 	pair<pair<int, int>, pair<double, double> > get_cis_condlambda();
 	pair<pair<int, int>, pair<double, double> > get_cis_lambda(int);
+	pair<pair<int, int>, pair<double, double> > get_cis_alpha(int);
 	pair<pair<int, int>, pair<double, double> > get_cis_seglambda(int);
 
 	int golden_section_segpi(double, double, double, double);
 	int golden_section_condlambda(double, double, double, double);
 	int golden_section_segpi_ci(double, double, double, double, double, int *);
-	int golden_section_lambda_ci(double, double, double, double, int, double);
+	int golden_section_alpha_ci(double, double, double, double, int, double);
 	int golden_section_condlambda_ci(double, double, double, double, double);
 	int golden_section_seglambda_ci(double, double, double, double, int, double);
 	int golden_section_l0(double, double, double, double);
