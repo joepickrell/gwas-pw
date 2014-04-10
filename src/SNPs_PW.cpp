@@ -26,16 +26,13 @@ SNPs_PW::SNPs_PW(Fgwas_params *p){
 		cerr<< "ERROR: in pairwise, parameter file says this isn't a pairwise run\n";
 		exit(1);
 	}
-	cout << "here\n"; cout.flush();
 	//make segments
 	if (params->finemap) make_segments_finemap();
 	else{
-		cout << "here 1\n"; cout.flush();
 		make_chrsegments();
-		cout << "here 1.1\n"; cout.flush();
 		make_segments(params->K);
 	}
-	cout << "here2\b"; cout.flush();
+
 	//double-check input quality
 	check_input();
 
@@ -377,14 +374,16 @@ pair< pair<int, int>, pair<double, double> > SNPs_PW::get_cis_alpha(int which){
 	double tau = 0.001;
 	double startlk = llk();
 	double thold = startlk - 2;
-	cout <<  startlk << " "<< thold << "\n";
+
 	double min = -20.0;
 	double max = 20.0;
 	double test = alpha[which];
-	if (test > max) max = test+20.0;
-	if (test < min) min = test-20.0;
-	if (max < 0) max = 20.0;
-	if (min > 0) min = -20.0;
+	//cout <<  startlk << " "<< thold << " "<< test<< "\n";
+	//for (int i = 0; i < 5; i++) cout << alpha[i] <<  " "<< pi[i] << " "<<  i << "\n";
+	//if (test > max) max = test+20.0;
+	//if (test < min) min = test-20.0;
+	//if (max < 0) max = 20.0;
+	//if (min > 0) min = -20.0;
 
 	//upper
 	double hi;
@@ -404,9 +403,12 @@ pair< pair<int, int>, pair<double, double> > SNPs_PW::get_cis_alpha(int which){
 		hi = pi[which];
 	}
 	cout << hi << " "<< llk() << " hi\n";
-
+	//for (int i = 0; i < 5; i++) cout << alpha[i] <<  " "<< pi[i] << " "<<  i << "\n";
 	//lower
 
+	alpha[which] = test;
+	set_priors();
+	//cout << llk()<< " " << startlk << " "<< thold << "\n";
 	alpha[which] = min;
 	set_priors();
 	if (llk() > thold) lo = pi[which];
@@ -706,7 +708,6 @@ void SNPs_PW::make_segments_finemap(){
 
 void SNPs_PW::make_chrsegments(){
 	chrsegments.clear();
-	cout << d.size() << "\n";
 	int i = 0;
 	int start = i;
 	int startpos = d[i].pos;
@@ -1187,7 +1188,7 @@ void SNPs_PW::GSL_optim(){
              status = gsl_multimin_test_size (size, 0.001);
              //cout << iter << " "<< iter %10 << "\n";
              if (iter % 20 < 1 || iter < 20){
-            	 cout <<"iteration: "<< iter << " "<< pi[0]<< " "<< pi[1]<< " "<< pi[2]<< " "<< pi[3]<< " "<< pi[4];
+            	 cout <<"iteration: "<< iter << " "<< alpha[0]<< " "<< alpha[1]<< " "<< alpha[2]<< " "<< alpha[3]<< " "<< alpha[4];
             	 cout << " "<< s->fval << " "<< size <<  "\n";
              }
 
@@ -1198,7 +1199,10 @@ void SNPs_PW::GSL_optim(){
              //exit(1);
      }
      //segpi = 1.0 /  (1.0 + exp (- gsl_vector_get(s->x, 0)));
-     for (int i = 0; i <  nparam; i++) alpha[i+1] = exp(gsl_vector_get(s->x, i));
+     for (int i = 0; i <  nparam; i++) {
+    	 alpha[i+1] = gsl_vector_get(s->x, i);
+    	 //cout << "finished alpha "<< i+1 << " "<< alpha[i+1] << "\n";
+     }
 
 
      gsl_multimin_fminimizer_free (s);
@@ -1596,16 +1600,18 @@ int SNPs_PW::golden_section_alpha_ci(double min, double guess, double max, doubl
 
         alpha[which] = x;
         set_priors();
-        double f_x = llk()-target;
+        double l_x = llk();
+        double f_x = l_x-target;
         f_x = f_x*f_x;
        // double x_llk = llk();
 
         alpha[which] = guess;
         set_priors();
-        double f_guess = llk()-target;
+        double l_guess = llk();
+        double f_guess = l_guess-target;
         f_guess = f_guess*f_guess;
        // double guess_llk = llk();
-        cout << x << " " <<  guess << " "<< f_x << " "<< f_guess  << " "<< max << " "<< min << "\n";
+        cout << x << " " <<  guess << " "<< f_x << " "<< f_guess  << " "<< max << " "<< min << " "<< l_x << " "<< l_guess<< " "<< target <<"\n";
         if (f_x < f_guess){
                 if ( (max-guess) > (guess-min) )        return golden_section_alpha_ci(guess, x, max, tau, which, target);
                 else return golden_section_alpha_ci(min, x, guess, tau, which, target);
