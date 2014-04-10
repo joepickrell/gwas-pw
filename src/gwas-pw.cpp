@@ -140,7 +140,7 @@ int main(int argc, char *argv[]){
 	string outML = p.outstem+".MLE";
 	ofstream outr(outML.c_str());
 	for (int i = 0; i < 5; i++){
-		outr << "pi"<< i <<" "<< cis.at(i).second.first << " "<< ml[i]<< " "<< cis.at(i).second.second << "\n";
+		outr << "pi_"<< i <<" "<< cis.at(i).second.first << " "<< ml[i]<< " "<< cis.at(i).second.second << "\n";
 	}
 	outr.close();
     s.MCMC(r);

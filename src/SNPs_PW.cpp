@@ -388,6 +388,7 @@ pair< pair<int, int>, pair<double, double> > SNPs_PW::get_cis_alpha(int which){
 
 	//upper
 	double hi;
+	double lo;
 	int convhi = 1;
 	int convlo = 1;
 	alpha[which] = max;
@@ -396,6 +397,7 @@ pair< pair<int, int>, pair<double, double> > SNPs_PW::get_cis_alpha(int which){
 	if (llk() > thold) hi = pi[which];
 	else{
 		alpha[which] = test;
+		set_priors();
 		double start = (test+max)/2;
 
 		convhi = golden_section_alpha_ci(test, start, max, tau, which, thold);
@@ -404,12 +406,13 @@ pair< pair<int, int>, pair<double, double> > SNPs_PW::get_cis_alpha(int which){
 	cout << hi << " "<< llk() << " hi\n";
 
 	//lower
-	double lo;
+
 	alpha[which] = min;
 	set_priors();
 	if (llk() > thold) lo = pi[which];
 	else{
 		alpha[which] = test;
+		set_priors();
 		double start = (test+min)/2;
 		convlo = golden_section_alpha_ci(min, start, test, tau, which, thold);
 		lo = pi[which];
