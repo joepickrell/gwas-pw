@@ -133,11 +133,14 @@ int main(int argc, char *argv[]){
 
     SNPs_PW s(&p);
     s.GSL_optim();
+    vector<double> ml;
+    for (int i = 0; i < 5; i++)ml.push_back(s.pi[i]);
+
     vector<pair<pair<int, int>, pair<double, double> > > cis = s.get_cis();
 	string outML = p.outstem+".MLE";
 	ofstream outr(outML.c_str());
 	for (int i = 0; i < 5; i++){
-		outr << "pi"<< i <<" "<< cis.at(i).second.first << " "<< s.pi[i]<< " "<< cis.at(i).second.second << "\n";
+		outr << "pi"<< i <<" "<< cis.at(i).second.first << " "<< ml[i]<< " "<< cis.at(i).second.second << "\n";
 	}
 	outr.close();
     s.MCMC(r);
