@@ -30,8 +30,13 @@ public:
 	int pos;
 
 	double Z; // Z-score
+	double Z2;
+
+	double f, N1, N2;
+	double V1, V2, W;
 	double BF; // Bayes factor
 	double BF2; // second BF for pairwise
+	double BF3; // third BF for both
 	int chunknumber;
 	float dens;
 	vector<bool> annot;
@@ -39,9 +44,15 @@ public:
 	vector<int> dists;
 	bool condannot;
 	void append_distannots(vector<vector<pair<int, int> > >); // convert distances to annotations according to distance models
+	double approx_v2();
+	double approx_v1();
+	double calc_logBF1();
+	double calc_logBF2();
+	double calc_logBF3(double);
 	int nannot;
 	double get_x(vector<double>);
 	double get_x_cond(vector<double>, double);
+	double ln_MVN(vector<double>, vector<vector<double> >);
 };
 
 

@@ -92,3 +92,79 @@ double SNP_PW::get_x_cond(vector<double> lambda, double lambdac){
 	return toreturn;
 }
 
+
+double SNP_PW::calc_logBF1(){
+	double toreturn = 0;
+	double r = W/ (V1+W);
+	toreturn += -log ( sqrt(1-r) );
+	toreturn += - (Z*Z*r/2);
+	return -toreturn;
+}
+
+
+double SNP_PW::calc_logBF2(){
+	double toreturn = 0;
+	double r = W/ (V2+W);
+	toreturn += -log ( sqrt(1-r) );
+	toreturn += - (Z2*Z2*r/2);
+	return -toreturn;
+}
+
+
+double SNP_PW::calc_logBF3( double C){
+	double toreturn = 0;
+	//vector<>
+}
+
+double SNP_PW::approx_v1(){
+	double toreturn;
+	toreturn = 2*f*(1-f) * (double) N1;
+	toreturn = 1.0/toreturn;
+	return toreturn;
+}
+
+
+double SNP_PW::approx_v2(){
+	double toreturn;
+	toreturn = 2*f*(1-f) * (double) N2;
+	toreturn = 1.0/toreturn;
+	return toreturn;
+}
+
+double SNP_PW::ln_MVN(vector<double> beta, vector<vector<double> > S){
+	// log bivariate normal density
+	// assume mu = [0,0]
+	// S = covariance matrix
+	// beta = [\hat \beta_1, \hat \beta_2]
+
+
+	double toreturn = 0;
+
+	//determinant
+	double det = S.at(0).at(0) * S.at(1).at(1) - S.at(0).at(1)*S.at(1).at(0);
+	cout << "det " << det << "\n";
+	//invert
+	vector<vector<double> > invS;
+	vector<double> tmp (2,0.0);
+	vector<double> tmp2 (2, 0.0);
+	invS.push_back(tmp); invS.push_back(tmp2);
+	invS.at(0).at(0) = S.at(1).at(1) / det;
+	invS.at(1).at(1) = S.at(0).at(0)/ det;
+	invS.at(0).at(1) = -S.at(0).at(1)/ det;
+	invS.at(1).at(0) = -S.at(1).at(0)/ det;
+	cout << "\n";
+	for (int i = 0; i <2 ; i++){
+		for (int j = 0; j < 2; j++){
+			cout << invS[i][j]<< " ";
+		}
+		cout << "\n";
+	}
+	//exponent
+	double t = beta.at(0)*beta.at(0)*invS.at(0).at(0) + beta.at(1)*beta.at(1)*invS.at(1).at(1) + 2*beta.at(0)*beta.at(1)*invS.at(0).at(1);
+	cout << "\nt "<< t<< "\n\n";
+	// density
+	toreturn = -log(2*M_PI) - log(sqrt(det));
+	toreturn+= -0.5 * t;
+	return toreturn;
+}
+
