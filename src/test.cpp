@@ -20,6 +20,7 @@ int main(){
 	s.W = 0.3;
 	s.Z = -3.0;
 	s.Z2 = -8.0;
+
 	cout << s.calc_logBF1(0) << " "<< s.calc_logBF1(-0.1) << " "<< s.calc_logBF1(0.1) << " "<< s.calc_logBF1(0.4)<< "\n";
 	cout << s.calc_logBF2(0) << " "<< s.calc_logBF2(-0.1) << " "<< s.calc_logBF2(0.1) << " "<< s.calc_logBF2(0.4)<< "\n";
 	cout << s.calc_logBF3(0) << " "<< s.calc_logBF3(-0.1) << " "<< s.calc_logBF3(0.1) << " "<< s.calc_logBF3(0.4)<< "\n";
