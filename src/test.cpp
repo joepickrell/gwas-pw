@@ -13,18 +13,16 @@ int main(){
 
 	SNP_PW s;
 	vector<double> m;
-	m.push_back(0.5);
-	m.push_back(-3);
-	vector<vector<double> > C;
-	vector<double> tmp, tmp2;
-	tmp.push_back(0.4);
-	tmp.push_back(0.1);
-	tmp2.push_back(0.1);
-	tmp2.push_back(0.4);
-	C.push_back(tmp);
-	C.push_back(tmp2);
-
-	cout << s.ln_MVN(m, C) << "\n";
+	m.push_back(-2.0);
+	m.push_back(-3.0);
+	s.V1 = 0.001;
+	s.V2 = 0.002;
+	s.W = 0.3;
+	s.Z = -3.0;
+	s.Z2 = -8.0;
+	cout << s.calc_logBF1(0) << " "<< s.calc_logBF1(-0.1) << " "<< s.calc_logBF1(0.1) << " "<< s.calc_logBF1(0.4)<< "\n";
+	cout << s.calc_logBF2(0) << " "<< s.calc_logBF2(-0.1) << " "<< s.calc_logBF2(0.1) << " "<< s.calc_logBF2(0.4)<< "\n";
+	cout << s.calc_logBF3(0) << " "<< s.calc_logBF3(-0.1) << " "<< s.calc_logBF3(0.1) << " "<< s.calc_logBF3(0.4)<< "\n";
 	//Fgwas_params p;
 	//p.wannot.push_back("wgEncodeDukeDnase8988T");
 	//p.wannot.push_back("wgEncodeDukeDnaseAoSMC");

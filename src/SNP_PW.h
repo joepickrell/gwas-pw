@@ -46,8 +46,8 @@ public:
 	void append_distannots(vector<vector<pair<int, int> > >); // convert distances to annotations according to distance models
 	double approx_v2();
 	double approx_v1();
-	double calc_logBF1();
-	double calc_logBF2();
+	double calc_logBF1(double);
+	double calc_logBF2(double);
 	double calc_logBF3(double);
 	int nannot;
 	double get_x(vector<double>);

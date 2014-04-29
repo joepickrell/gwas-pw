@@ -93,27 +93,42 @@ double SNP_PW::get_x_cond(vector<double> lambda, double lambdac){
 }
 
 
-double SNP_PW::calc_logBF1(){
+double SNP_PW::calc_logBF1(double C){
 	double toreturn = 0;
 	double r = W/ (V1+W);
-	toreturn += -log ( sqrt(1-r) );
-	toreturn += - (Z*Z*r/2);
-	return -toreturn;
+	toreturn += log ( sqrt(1-r) );
+
+	double tmp = Z*Z*r- 2*C*Z*Z2*(1-sqrt(1-r));
+	toreturn += tmp/ (2*(1-C*C)) ;
+
+	//toreturn += - (Z*Z*r/2);
+	return toreturn;
 }
 
 
-double SNP_PW::calc_logBF2(){
+double SNP_PW::calc_logBF2(double C){
 	double toreturn = 0;
 	double r = W/ (V2+W);
-	toreturn += -log ( sqrt(1-r) );
-	toreturn += - (Z2*Z2*r/2);
-	return -toreturn;
+	toreturn += log ( sqrt(1-r) );
+
+	double tmp = Z2*Z2*r- 2*C*Z*Z2*(1-sqrt(1-r));
+	toreturn += tmp/ (2*(1-C*C)) ;
+
+	//toreturn += - (Z*Z*r/2);
+	return toreturn;
 }
 
 
 double SNP_PW::calc_logBF3( double C){
 	double toreturn = 0;
-	//vector<>
+	double r1 = W/ (V1+W);
+	double r2 = W/ (V2+W);
+	toreturn += log ( sqrt(1-r1) ) + log(sqrt(1-r2));
+
+	double tmp = Z*Z*r1+Z2*Z2*r2- 2*C*Z*Z2*(1-sqrt(1-r1)*sqrt(1-r2));
+	toreturn += tmp/ (2*(1-C*C)) ;
+
+	return toreturn;
 }
 
 double SNP_PW::approx_v1(){
