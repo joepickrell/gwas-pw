@@ -23,6 +23,7 @@ void printopts(){
         cout << "-nsamp [integer] iterations of sampling (100000)\n";
         cout << "-jumpsd [float] SD of normally distributed MCMC jumps (0.44)\n";
         cout << "-prior [float] [float] [float] [float] [float] logistic normal prior on fractions (0,0,0,0,0)\n";
+        cout << "-cor [float] correlation btw measurements of quantitative traits (0)\n";
         cout << "\n";
 }
 
@@ -107,6 +108,9 @@ int main(int argc, char *argv[]){
     if (cmdline.HasSwitch("-jumpsd")){
       	p.MCMC_gauss_SD = atof(cmdline.GetArgument("-jumpsd", 0).c_str());
      }
+    if (cmdline.HasSwitch("-cor")){
+        	p.cor = atof(cmdline.GetArgument("-cor", 0).c_str());
+       }
     if (cmdline.HasSwitch("-prior")){
     	if (cmdline.GetArgumentCount("-prior") != 5) {
     		cerr << "ERROR: -prior needs 5 entries, "<< cmdline.GetArgumentCount("-prior") << " given\n";

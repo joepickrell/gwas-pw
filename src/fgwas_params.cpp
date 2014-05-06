@@ -37,6 +37,7 @@ Fgwas_params::Fgwas_params(){
 	for (int i = 0; i < 5; i++) {
 		alpha_prior.push_back(0);
 	}
+	cor = 0;
 }
 
 void Fgwas_params::print_stdout(){

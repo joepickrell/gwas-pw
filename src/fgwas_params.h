@@ -60,6 +60,7 @@ public:
 	vector<double> alpha_prior;
 	int seed;
 	double MCMC_gauss_SD;
+	double cor;
 };
 
 

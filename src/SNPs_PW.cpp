@@ -250,7 +250,7 @@ void SNPs_PW::load_snps_pw(string infile, vector<string> annot, vector<string> d
    		segannotindex = header_index[segannot[0]];
    	}
    	// get indices for the rs, maf, chr, pos, N, Ncase, Ncontrol,
-   	int rsindex, chrindex, posindex, segnumberindex, condindex, bf1index, bf2index;
+   	int rsindex, chrindex, posindex, segnumberindex, condindex, Z1index, Z2index, V1index, V2index;
 
    	if (header_index.find("SNPID") == header_index.end()){
    		cerr << "ERROR: cannot find SNPID in header\n";
@@ -270,18 +270,28 @@ void SNPs_PW::load_snps_pw(string infile, vector<string> annot, vector<string> d
    	}
    	else posindex = header_index["POS"];
 
- 	if (header_index.find("BF_"+params->pheno1) == header_index.end()){
- 		cerr << "ERROR: cannot find BF_"+params->pheno1+" in header\n";
+ 	if (header_index.find("Z_"+params->pheno1) == header_index.end()){
+ 		cerr << "ERROR: cannot find Z_"+params->pheno1+" in header\n";
  		exit(1);
  	}
-	else bf1index = header_index["BF_"+params->pheno1];
+	else Z1index = header_index["Z_"+params->pheno1];
 
-	if (header_index.find("BF_"+params->pheno2) == header_index.end()){
- 		cerr << "ERROR: cannot find BF_"+params->pheno2+" in header\n";
+	if (header_index.find("V_"+params->pheno1) == header_index.end()){
+ 		cerr << "ERROR: cannot find V_"+params->pheno1+" in header\n";
  		exit(1);
  	}
-	else bf2index = header_index["BF_"+params->pheno2];
+	else V1index = header_index["V_"+params->pheno1];
 
+	if (header_index.find("Z_"+params->pheno2) == header_index.end()){
+ 		cerr << "ERROR: cannot find Z_"+params->pheno2+" in header\n";
+ 		exit(1);
+ 	}
+	else Z2index = header_index["Z_"+params->pheno2];
+	if (header_index.find("V_"+params->pheno2) == header_index.end()){
+ 		cerr << "ERROR: cannot find V_"+params->pheno2+" in header\n";
+ 		exit(1);
+ 	}
+	else V2index = header_index["V_"+params->pheno2];
 
 	if (header_index.find("SEGNUMBER") == header_index.end() && params->finemap){
    		cerr << "ERROR: cannot find SEGNUMBER in header\n";
@@ -305,9 +315,11 @@ void SNPs_PW::load_snps_pw(string infile, vector<string> annot, vector<string> d
     	string rs = line[rsindex];
     	string chr = line[chrindex];
 
-    	if (line[bf1index] == "NA" || line[bf2index]==  "NA") continue;
-    	double bf1 = atof(line[bf1index].c_str());
-    	double bf2 = atof(line[bf2index].c_str());
+    	if (line[Z1index] == "NA" || line[Z2index]==  "NA") continue;
+    	double Z1 = atof(line[Z1index].c_str());
+    	double Z2 = atof(line[Z2index].c_str());
+    	double V1 = atof(line[V1index].c_str());
+    	double V2 = atof(line[V2index].c_str());
     	if (chr != oldchr) oldchr = chr;
     	if (params->dropchr and chr == params->chrtodrop) continue;
     	int pos = atoi(line[posindex].c_str());
@@ -325,7 +337,7 @@ void SNPs_PW::load_snps_pw(string infile, vector<string> annot, vector<string> d
     		dists.push_back( atoi(line[*it].c_str()));
     	}
 
-    	SNP_PW s(rs, chr , pos, bf1, bf2, an, dists, dmodels);
+    	SNP_PW s(rs, chr , pos, Z1, Z2, V1, V2, an, dists, dmodels, params->V, params->cor);
     	if (params->finemap){
     		int snumber = atoi(line[segnumberindex].c_str());
     		s.chunknumber = snumber;
@@ -547,7 +559,7 @@ void SNPs_PW::print(){
 	for (int i =0; i < nannot; i++) cout << " "<< annotnames[i];
 	cout << "\n";
 	for (vector<SNP_PW>::iterator it = d.begin(); it != d.end(); it++){
-		cout << it->id << " "<< it->chr << " "<< it->pos << " "<< it->BF <<  " "<< it->BF2;
+		cout << it->id << " "<< it->chr << " "<< it->pos << " "<< it->BF1 <<  " "<< it->BF2 << " "<< it->BF3;
 		for (int i = 0; i < nannot; i++) cout << " "<< it->annot[i];
 		cout << "\n";
 	}
@@ -912,7 +924,7 @@ double SNPs_PW::llk(int which){
 	for (int i = st; i < sp ; i++){
 
 		//term 1: one associated SNP for pheno 1
-		double tmp2add1 = snppri.at(i).at(0)+ d[i].BF;
+		double tmp2add1 = snppri.at(i).at(0)+ d[i].BF1;
 		//cout << tmp2add1 << " "<< m1 << " 1\n";
 		m1 = sumlog(m1, tmp2add1);
 		//cout << m1 << "\n";
@@ -922,17 +934,17 @@ double SNPs_PW::llk(int which){
 		m2 = sumlog(m2, tmp2add2);
 
 		//term 3: one associated SNP, both phenos
-		double tmp2add3 = snppri.at(i).at(2)+ d[i].BF+d[i].BF2;
+		double tmp2add3 = snppri.at(i).at(2)+ d[i].BF3;
 		m3 = sumlog(m3, tmp2add3);
 
 		//term 4: two associated SNPs, both phenos
 
 		double tmp2add4 = -10000;
 		for (int j = i+1; j < sp ; j++){
-			double tmp2_4 = snppri.at(i).at(0)+snppri.at(j).at(1)+d[i].BF+d[j].BF2;
+			double tmp2_4 = snppri.at(i).at(0)+snppri.at(j).at(1)+d[i].BF1+d[j].BF2;
 			tmp2_4 += log( 1-exp(snppri.at(i).at(1))) + log(1-exp(snppri.at(j).at(0))) ;
 
-			double tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF+d[i].BF2;
+			double tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF1+d[i].BF2;
 			tmp2_42+= log(1-exp(snppri.at(i).at(0)))+  log(1-exp(snppri.at(i).at(1))) ;
 
 			tmp2add4 = sumlog(tmp2add4, tmp2_4);

@@ -24,17 +24,17 @@ using namespace std;
 class SNP_PW{
 public:
 	SNP_PW();
-	SNP_PW(string, string, int, double, double, vector<bool>, vector<int>, vector<vector<pair<int, int> > >); //for pairwise
+	SNP_PW(string, string, int, double, double, double, double, vector<bool>, vector<int>, vector<vector<pair<int, int> > >, double, double); //for pairwise
 	string id;
 	string chr;
 	int pos;
 
-	double Z; // Z-score
+	double Z1; // Z-score
 	double Z2;
 
 	double f, N1, N2;
 	double V1, V2, W;
-	double BF; // Bayes factor
+	double BF1; // Bayes factor
 	double BF2; // second BF for pairwise
 	double BF3; // third BF for both
 	int chunknumber;

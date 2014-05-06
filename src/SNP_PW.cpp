@@ -11,13 +11,16 @@ SNP_PW::SNP_PW(){
 
 
 
-SNP_PW::SNP_PW(string rs, string c, int p, double b1, double b2, vector<bool> an, vector<int> ds, vector<vector<pair<int, int> > > dmodels){
+SNP_PW::SNP_PW(string rs, string c, int p, double Z, double ZZ, double V, double VV, vector<bool> an, vector<int> ds, vector<vector<pair<int, int> > > dmodels, double prior, double cor){
 	//for pairwise
 	id = rs;
 	chr = c;
 	pos = p;
-	BF = b1;
-	BF2 = b2;
+	Z1 = Z;
+	Z2 = ZZ;
+	V1 = V;
+	V2 = VV;
+	W = prior;
 	for (vector<bool>::iterator it = an.begin(); it != an.end(); it++) {
 		annot.push_back(*it);
 		if (*it) annot_weight.push_back(1.0);
@@ -33,6 +36,9 @@ SNP_PW::SNP_PW(string rs, string c, int p, double b1, double b2, vector<bool> an
 	// append distance annotations
 	append_distannots(dmodels);
 	nannot = annot.size();
+	BF1 = calc_logBF1(cor);
+	BF2 = calc_logBF2(cor);
+	BF3 = calc_logBF3(cor);
 }
 
 
@@ -98,7 +104,7 @@ double SNP_PW::calc_logBF1(double C){
 	double r = W/ (V1+W);
 	toreturn += log ( sqrt(1-r) );
 
-	double tmp = Z*Z*r- 2*C*Z*Z2*(1-sqrt(1-r));
+	double tmp = Z1*Z1*r- 2*C*Z1*Z2*(1-sqrt(1-r));
 	toreturn += tmp/ (2*(1-C*C)) ;
 
 	//toreturn += - (Z*Z*r/2);
@@ -111,7 +117,7 @@ double SNP_PW::calc_logBF2(double C){
 	double r = W/ (V2+W);
 	toreturn += log ( sqrt(1-r) );
 
-	double tmp = Z2*Z2*r- 2*C*Z*Z2*(1-sqrt(1-r));
+	double tmp = Z2*Z2*r- 2*C*Z1*Z2*(1-sqrt(1-r));
 	toreturn += tmp/ (2*(1-C*C)) ;
 
 	//toreturn += - (Z*Z*r/2);
@@ -125,7 +131,7 @@ double SNP_PW::calc_logBF3( double C){
 	double r2 = W/ (V2+W);
 	toreturn += log ( sqrt(1-r1) ) + log(sqrt(1-r2));
 
-	double tmp = Z*Z*r1+Z2*Z2*r2- 2*C*Z*Z2*(1-sqrt(1-r1)*sqrt(1-r2));
+	double tmp = Z1*Z1*r1+Z2*Z2*r2- 2*C*Z1*Z2*(1-sqrt(1-r1)*sqrt(1-r2));
 	toreturn += tmp/ (2*(1-C*C)) ;
 
 	return toreturn;
