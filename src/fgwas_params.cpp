@@ -31,6 +31,7 @@ Fgwas_params::Fgwas_params(){
 	pheno2 = "NA";
 	burnin = 10000;
 	nsamp = 100000;
+	overlap = false;
 	sampfreq = 10;
 	MCMC_gauss_SD = sqrt(1.0/5.0);
 	//alpha_prop = 50.0;

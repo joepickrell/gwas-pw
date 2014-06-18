@@ -201,7 +201,7 @@ BOOST_LDFLAGS = -L/opt/local/lib
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
-CPPFLAGS =  -I/opt/local/include
+CPPFLAGS = -I/opt/local/include -I/opt/local/include -Igtest-1.7.0/include/
 CXX = g++
 CXXDEPMODE = depmode=gcc3
 CXXFLAGS = -g -O2

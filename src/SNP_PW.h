@@ -51,7 +51,7 @@ public:
 	double calc_logBF3(double);
 	int nannot;
 	double get_x(vector<double>);
-	double get_x_cond(vector<double>, double);
+	//double get_x_cond(vector<double>, double);
 	double ln_MVN(vector<double>, vector<vector<double> >);
 };
 

@@ -49,7 +49,7 @@ public:
 	vector<pair<int, int> > read_dmodel(string);
 
 	//pre-computing likelihoods
-	vector<vector<double> > seg_toadd;
+	vector<vector<double> > seg_toadd; //contains the relative likelihoods for all 5 models
 	bool precomputed;
 
 	//MCMC

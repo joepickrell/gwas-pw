@@ -23,7 +23,7 @@ void printopts(){
         cout << "-nsamp [integer] iterations of sampling (100000)\n";
         cout << "-jumpsd [float] SD of normally distributed MCMC jumps (0.44)\n";
         cout << "-prior [float] [float] [float] [float] [float] logistic normal prior on fractions (0,0,0,0,0)\n";
-        cout << "-cor [float] correlation btw measurements of quantitative traits (0)\n";
+        cout << "-cor [float] correlation btw measurements of quantitative traits for studies of a single cohort [defaults to separate cohorts]\n";
         cout << "\n";
 }
 
@@ -36,25 +36,28 @@ int main(int argc, char *argv[]){
         printopts();
         exit(1);
     }
+    //get the input file
     if (cmdline.HasSwitch("-i")) p.infile = cmdline.GetArgument("-i", 0).c_str();
     else{
         printopts();
         exit(1);
     }
+    //get the output file
     if (cmdline.HasSwitch("-o")) p.outstem = cmdline.GetArgument("-o", 0);
+
+    //set K
     if (cmdline.HasSwitch("-k")) p.K = atoi(cmdline.GetArgument("-k", 0).c_str());
-    if (cmdline.HasSwitch("-cc")) {
-    	p.cc = true;
-    	p.V = 0.5;
-    }
-    if (cmdline.HasSwitch("-p")) p.ridge_penalty = atof(cmdline.GetArgument("-p", 0).c_str());
-    if (cmdline.HasSwitch("-xv")) p.xv = true;
+
+    //if (cmdline.HasSwitch("-p")) p.ridge_penalty = atof(cmdline.GetArgument("-p", 0).c_str());
+    //if (cmdline.HasSwitch("-xv")) p.xv = true;
     if (cmdline.HasSwitch("-print")) p.print = true;
-    if (cmdline.HasSwitch("-onlyp")) p.onlyp = true;
-    if (cmdline.HasSwitch("-cond")){
-    	p.cond = true;
-    	p.testcond_annot = cmdline.GetArgument("-cond", 0);
-    }
+    //if (cmdline.HasSwitch("-onlyp")) p.onlyp = true;
+    //if (cmdline.HasSwitch("-cond")){
+    //	p.cond = true;
+    //	p.testcond_annot = cmdline.GetArgument("-cond", 0);
+    //}
+
+    //names of the phenotypes, expecting header like NAME1_Z NAME1_V NAME2_Z NAME2_V
     if (cmdline.HasSwitch("-phenos")){
      	p.pairwise = true;
      	p.pheno1 = cmdline.GetArgument("-phenos", 0);
@@ -64,6 +67,7 @@ int main(int argc, char *argv[]){
         printopts();
         exit(1);
     }
+    /*
     if (cmdline.HasSwitch("-w")){
     	vector<string> strs;
     	string s = cmdline.GetArgument("-w", 0);
@@ -95,6 +99,7 @@ int main(int argc, char *argv[]){
     	p.loquant = atof(cmdline.GetArgument("-dens", 1).c_str());
     	p.hiquant = atof(cmdline.GetArgument("-dens", 2).c_str());
     }
+    */
     if (cmdline.HasSwitch("-seed")){
     	p.seed = atoi(cmdline.GetArgument("-seed", 0).c_str());
     }
@@ -110,6 +115,7 @@ int main(int argc, char *argv[]){
      }
     if (cmdline.HasSwitch("-cor")){
         	p.cor = atof(cmdline.GetArgument("-cor", 0).c_str());
+        	p.overlap = true;
        }
     if (cmdline.HasSwitch("-prior")){
     	if (cmdline.GetArgumentCount("-prior") != 5) {

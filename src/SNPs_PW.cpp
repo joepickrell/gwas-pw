@@ -113,6 +113,7 @@ vector<pair<int, int> > SNPs_PW::read_dmodel(string infile){
     	}
     	int start = atoi(line[0].c_str());
     	int stop = atoi(line[1].c_str());
+    	assert(stop < start);
     	if (stop < start){
     		cerr <<"ERROR: in distance model "<< infile<< " , " << start << " is after "<< stop << "\n";
     		exit(1);
@@ -320,12 +321,15 @@ void SNPs_PW::load_snps_pw(string infile, vector<string> annot, vector<string> d
     	double Z2 = atof(line[Z2index].c_str());
     	double V1 = atof(line[V1index].c_str());
     	double V2 = atof(line[V2index].c_str());
+    	assert(V1 >0);
+    	assert(V2 >0);
     	if (chr != oldchr) oldchr = chr;
     	if (params->dropchr and chr == params->chrtodrop) continue;
     	int pos = atoi(line[posindex].c_str());
     	vector<bool> an;
     	vector<int> dists;
     	for (vector<int>::iterator it = annot_index.begin(); it != annot_index.end(); it++){
+    		assert(line[*it] == "1" || line[*it] == "0");
     		if (line[*it] == "1") an.push_back(true);
     		else if (line[*it] == "0") an.push_back(false);
     		else{
@@ -771,6 +775,7 @@ void SNPs::set_priors_cond(){
 
 
 void SNPs_PW::set_segpriors(){
+	// 5 models, prior on model i = exp(a_i)/ sum_j(exp)a_j))
 	assert (alpha.size()==5);
 	vector<double> segp;
 	double s = 0;
@@ -942,10 +947,8 @@ double SNPs_PW::llk(int which){
 		double tmp2add4 = -10000;
 		for (int j = i+1; j < sp ; j++){
 			double tmp2_4 = snppri.at(i).at(0)+snppri.at(j).at(1)+d[i].BF1+d[j].BF2;
-			tmp2_4 += log( 1-exp(snppri.at(i).at(1))) + log(1-exp(snppri.at(j).at(0))) ;
 
 			double tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF1+d[i].BF2;
-			tmp2_42+= log(1-exp(snppri.at(i).at(0)))+  log(1-exp(snppri.at(i).at(1))) ;
 
 			tmp2add4 = sumlog(tmp2add4, tmp2_4);
 

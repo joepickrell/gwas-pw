@@ -633,7 +633,249 @@ SNPs_PW.o: SNPs_PW.cpp SNPs_PW.h SNP_PW.h \
   /opt/local/include/boost/algorithm/string/erase.hpp CmdLine.h \
   fgwas_params.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/set \
-  /opt/local/include/gsl/gsl_rng.h /opt/local/include/gsl/gsl_randist.h
+  /opt/local/include/gsl/gsl_rng.h /opt/local/include/gsl/gsl_randist.h \
+  /opt/local/include/boost/numeric/ublas/matrix_sparse.hpp \
+  /opt/local/include/boost/numeric/ublas/vector_sparse.hpp \
+  /opt/local/include/boost/numeric/ublas/storage_sparse.hpp \
+  /opt/local/include/boost/serialization/collection_size_type.hpp \
+  /opt/local/include/boost/serialization/strong_typedef.hpp \
+  /opt/local/include/boost/operators.hpp \
+  /opt/local/include/boost/serialization/level.hpp \
+  /opt/local/include/boost/type_traits/is_fundamental.hpp \
+  /opt/local/include/boost/type_traits/is_base_and_derived.hpp \
+  /opt/local/include/boost/serialization/level_enum.hpp \
+  /opt/local/include/boost/serialization/split_free.hpp \
+  /opt/local/include/boost/serialization/serialization.hpp \
+  /opt/local/include/boost/serialization/pfto.hpp \
+  /opt/local/include/boost/serialization/access.hpp \
+  /opt/local/include/boost/serialization/is_bitwise_serializable.hpp \
+  /opt/local/include/boost/serialization/nvp.hpp \
+  /opt/local/include/boost/serialization/tracking.hpp \
+  /opt/local/include/boost/mpl/equal_to.hpp \
+  /opt/local/include/boost/mpl/aux_/comparison_op.hpp \
+  /opt/local/include/boost/mpl/aux_/numeric_op.hpp \
+  /opt/local/include/boost/mpl/numeric_cast.hpp \
+  /opt/local/include/boost/mpl/tag.hpp \
+  /opt/local/include/boost/mpl/aux_/has_tag.hpp \
+  /opt/local/include/boost/mpl/aux_/numeric_cast_utils.hpp \
+  /opt/local/include/boost/mpl/aux_/config/forwarding.hpp \
+  /opt/local/include/boost/mpl/aux_/msvc_eti_base.hpp \
+  /opt/local/include/boost/mpl/aux_/is_msvc_eti_arg.hpp \
+  /opt/local/include/boost/mpl/aux_/preprocessed/gcc/equal_to.hpp \
+  /opt/local/include/boost/mpl/greater.hpp \
+  /opt/local/include/boost/mpl/aux_/preprocessed/gcc/greater.hpp \
+  /opt/local/include/boost/serialization/tracking_enum.hpp \
+  /opt/local/include/boost/serialization/type_info_implementation.hpp \
+  /opt/local/include/boost/serialization/traits.hpp \
+  /opt/local/include/boost/serialization/split_member.hpp \
+  /opt/local/include/boost/serialization/base_object.hpp \
+  /opt/local/include/boost/type_traits/is_polymorphic.hpp \
+  /opt/local/include/boost/serialization/force_include.hpp \
+  /opt/local/include/boost/serialization/void_cast_fwd.hpp \
+  /opt/local/include/boost/serialization/wrapper.hpp \
+  /opt/local/include/boost/serialization/array.hpp \
+  /opt/local/include/boost/array.hpp /opt/local/include/boost/swap.hpp \
+  /opt/local/include/boost/utility/swap.hpp \
+  /opt/local/include/boost/functional/hash_fwd.hpp \
+  /opt/local/include/boost/functional/hash/hash_fwd.hpp \
+  /opt/local/include/boost/serialization/map.hpp \
+  /opt/local/include/boost/serialization/utility.hpp \
+  /opt/local/include/boost/serialization/collections_save_imp.hpp \
+  /opt/local/include/boost/serialization/version.hpp \
+  /opt/local/include/boost/mpl/less.hpp \
+  /opt/local/include/boost/mpl/aux_/preprocessed/gcc/less.hpp \
+  /opt/local/include/boost/mpl/comparison.hpp \
+  /opt/local/include/boost/mpl/not_equal_to.hpp \
+  /opt/local/include/boost/mpl/aux_/preprocessed/gcc/not_equal_to.hpp \
+  /opt/local/include/boost/mpl/less_equal.hpp \
+  /opt/local/include/boost/mpl/aux_/preprocessed/gcc/less_equal.hpp \
+  /opt/local/include/boost/mpl/greater_equal.hpp \
+  /opt/local/include/boost/mpl/aux_/preprocessed/gcc/greater_equal.hpp \
+  /opt/local/include/boost/serialization/item_version_type.hpp \
+  /opt/local/include/boost/serialization/collections_load_imp.hpp \
+  /opt/local/include/boost/archive/detail/basic_iarchive.hpp \
+  /opt/local/include/boost/noncopyable.hpp \
+  /opt/local/include/boost/archive/basic_archive.hpp \
+  /opt/local/include/boost/archive/detail/auto_link_archive.hpp \
+  /opt/local/include/boost/archive/detail/decl.hpp \
+  /opt/local/include/boost/config/auto_link.hpp \
+  /opt/local/include/boost/archive/detail/abi_prefix.hpp \
+  /opt/local/include/boost/config/abi_prefix.hpp \
+  /opt/local/include/boost/archive/detail/abi_suffix.hpp \
+  /opt/local/include/boost/config/abi_suffix.hpp \
+  /opt/local/include/boost/serialization/detail/stack_constructor.hpp \
+  /opt/local/include/boost/aligned_storage.hpp \
+  /opt/local/include/boost/type_traits/type_with_alignment.hpp \
+  /opt/local/include/boost/preprocessor/list/for_each_i.hpp \
+  /opt/local/include/boost/preprocessor/tuple/to_list.hpp \
+  /opt/local/include/boost/preprocessor/list/transform.hpp \
+  /opt/local/include/boost/preprocessor/list/append.hpp \
+  /opt/local/include/boost/numeric/ublas/storage.hpp \
+  /opt/local/include/boost/numeric/ublas/exception.hpp \
+  /opt/local/include/boost/numeric/ublas/detail/config.hpp \
+  /opt/local/include/boost/numeric/ublas/fwd.hpp \
+  /opt/local/include/boost/numeric/ublas/detail/definitions.hpp \
+  /opt/local/include/boost/numeric/ublas/traits.hpp \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/complex \
+  /opt/local/include/boost/config/no_tr1/cmath.hpp \
+  /opt/local/include/boost/numeric/ublas/detail/iterator.hpp \
+  /opt/local/include/boost/numeric/ublas/detail/returntype_deduction.hpp \
+  /opt/local/include/boost/mpl/vector/vector20.hpp \
+  /opt/local/include/boost/mpl/vector/vector10.hpp \
+  /opt/local/include/boost/mpl/vector/vector0.hpp \
+  /opt/local/include/boost/mpl/vector/aux_/at.hpp \
+  /opt/local/include/boost/mpl/at_fwd.hpp \
+  /opt/local/include/boost/mpl/vector/aux_/tag.hpp \
+  /opt/local/include/boost/mpl/aux_/config/typeof.hpp \
+  /opt/local/include/boost/mpl/long.hpp \
+  /opt/local/include/boost/mpl/long_fwd.hpp \
+  /opt/local/include/boost/mpl/vector/aux_/front.hpp \
+  /opt/local/include/boost/mpl/front_fwd.hpp \
+  /opt/local/include/boost/mpl/vector/aux_/push_front.hpp \
+  /opt/local/include/boost/mpl/push_front_fwd.hpp \
+  /opt/local/include/boost/mpl/vector/aux_/item.hpp \
+  /opt/local/include/boost/mpl/vector/aux_/pop_front.hpp \
+  /opt/local/include/boost/mpl/pop_front_fwd.hpp \
+  /opt/local/include/boost/mpl/vector/aux_/push_back.hpp \
+  /opt/local/include/boost/mpl/push_back_fwd.hpp \
+  /opt/local/include/boost/mpl/vector/aux_/pop_back.hpp \
+  /opt/local/include/boost/mpl/pop_back_fwd.hpp \
+  /opt/local/include/boost/mpl/vector/aux_/back.hpp \
+  /opt/local/include/boost/mpl/back_fwd.hpp \
+  /opt/local/include/boost/mpl/vector/aux_/clear.hpp \
+  /opt/local/include/boost/mpl/clear_fwd.hpp \
+  /opt/local/include/boost/mpl/vector/aux_/vector0.hpp \
+  /opt/local/include/boost/mpl/vector/aux_/iterator.hpp \
+  /opt/local/include/boost/mpl/iterator_tags.hpp \
+  /opt/local/include/boost/mpl/plus.hpp \
+  /opt/local/include/boost/mpl/aux_/arithmetic_op.hpp \
+  /opt/local/include/boost/mpl/aux_/largest_int.hpp \
+  /opt/local/include/boost/mpl/aux_/preprocessed/gcc/plus.hpp \
+  /opt/local/include/boost/mpl/minus.hpp \
+  /opt/local/include/boost/mpl/aux_/preprocessed/gcc/minus.hpp \
+  /opt/local/include/boost/mpl/advance_fwd.hpp \
+  /opt/local/include/boost/mpl/distance_fwd.hpp \
+  /opt/local/include/boost/mpl/prior.hpp \
+  /opt/local/include/boost/mpl/vector/aux_/O1_size.hpp \
+  /opt/local/include/boost/mpl/O1_size_fwd.hpp \
+  /opt/local/include/boost/mpl/vector/aux_/size.hpp \
+  /opt/local/include/boost/mpl/size_fwd.hpp \
+  /opt/local/include/boost/mpl/vector/aux_/empty.hpp \
+  /opt/local/include/boost/mpl/empty_fwd.hpp \
+  /opt/local/include/boost/mpl/vector/aux_/begin_end.hpp \
+  /opt/local/include/boost/mpl/begin_end_fwd.hpp \
+  /opt/local/include/boost/mpl/vector/aux_/include_preprocessed.hpp \
+  /opt/local/include/boost/mpl/vector/aux_/preprocessed/typeof_based/vector10.hpp \
+  /opt/local/include/boost/mpl/vector/aux_/preprocessed/typeof_based/vector20.hpp \
+  /opt/local/include/boost/mpl/at.hpp \
+  /opt/local/include/boost/mpl/aux_/at_impl.hpp \
+  /opt/local/include/boost/mpl/begin_end.hpp \
+  /opt/local/include/boost/mpl/aux_/begin_end_impl.hpp \
+  /opt/local/include/boost/mpl/sequence_tag_fwd.hpp \
+  /opt/local/include/boost/mpl/aux_/has_begin.hpp \
+  /opt/local/include/boost/mpl/aux_/traits_lambda_spec.hpp \
+  /opt/local/include/boost/mpl/sequence_tag.hpp \
+  /opt/local/include/boost/mpl/advance.hpp \
+  /opt/local/include/boost/mpl/negate.hpp \
+  /opt/local/include/boost/mpl/aux_/advance_forward.hpp \
+  /opt/local/include/boost/mpl/aux_/preprocessed/gcc/advance_forward.hpp \
+  /opt/local/include/boost/mpl/aux_/advance_backward.hpp \
+  /opt/local/include/boost/mpl/aux_/preprocessed/gcc/advance_backward.hpp \
+  /opt/local/include/boost/mpl/deref.hpp \
+  /opt/local/include/boost/mpl/aux_/msvc_type.hpp \
+  /opt/local/include/boost/type_traits.hpp \
+  /opt/local/include/boost/type_traits/add_cv.hpp \
+  /opt/local/include/boost/type_traits/add_lvalue_reference.hpp \
+  /opt/local/include/boost/type_traits/aligned_storage.hpp \
+  /opt/local/include/boost/type_traits/common_type.hpp \
+  /opt/local/include/boost/typeof/typeof.hpp \
+  /opt/local/include/boost/typeof/message.hpp \
+  /opt/local/include/boost/typeof/native.hpp \
+  /opt/local/include/boost/type_traits/conditional.hpp \
+  /opt/local/include/boost/type_traits/decay.hpp \
+  /opt/local/include/boost/type_traits/remove_bounds.hpp \
+  /opt/local/include/boost/type_traits/extent.hpp \
+  /opt/local/include/boost/type_traits/floating_point_promotion.hpp \
+  /opt/local/include/boost/type_traits/has_new_operator.hpp \
+  /opt/local/include/boost/type_traits/has_nothrow_assign.hpp \
+  /opt/local/include/boost/type_traits/has_trivial_assign.hpp \
+  /opt/local/include/boost/type_traits/has_nothrow_constructor.hpp \
+  /opt/local/include/boost/type_traits/has_trivial_constructor.hpp \
+  /opt/local/include/boost/type_traits/has_nothrow_copy.hpp \
+  /opt/local/include/boost/type_traits/has_nothrow_destructor.hpp \
+  /opt/local/include/boost/type_traits/has_operator.hpp \
+  /opt/local/include/boost/type_traits/has_bit_and.hpp \
+  /opt/local/include/boost/type_traits/detail/has_binary_operator.hpp \
+  /opt/local/include/boost/type_traits/is_base_of.hpp \
+  /opt/local/include/boost/type_traits/has_bit_and_assign.hpp \
+  /opt/local/include/boost/type_traits/has_bit_or.hpp \
+  /opt/local/include/boost/type_traits/has_bit_or_assign.hpp \
+  /opt/local/include/boost/type_traits/has_bit_xor.hpp \
+  /opt/local/include/boost/type_traits/has_bit_xor_assign.hpp \
+  /opt/local/include/boost/type_traits/has_complement.hpp \
+  /opt/local/include/boost/type_traits/detail/has_prefix_operator.hpp \
+  /opt/local/include/boost/type_traits/has_dereference.hpp \
+  /opt/local/include/boost/type_traits/has_divides.hpp \
+  /opt/local/include/boost/type_traits/has_divides_assign.hpp \
+  /opt/local/include/boost/type_traits/has_equal_to.hpp \
+  /opt/local/include/boost/type_traits/has_greater.hpp \
+  /opt/local/include/boost/type_traits/has_greater_equal.hpp \
+  /opt/local/include/boost/type_traits/has_left_shift.hpp \
+  /opt/local/include/boost/type_traits/has_left_shift_assign.hpp \
+  /opt/local/include/boost/type_traits/has_less.hpp \
+  /opt/local/include/boost/type_traits/has_less_equal.hpp \
+  /opt/local/include/boost/type_traits/has_logical_and.hpp \
+  /opt/local/include/boost/type_traits/has_logical_not.hpp \
+  /opt/local/include/boost/type_traits/has_logical_or.hpp \
+  /opt/local/include/boost/type_traits/has_minus.hpp \
+  /opt/local/include/boost/type_traits/has_minus_assign.hpp \
+  /opt/local/include/boost/type_traits/has_modulus.hpp \
+  /opt/local/include/boost/type_traits/has_modulus_assign.hpp \
+  /opt/local/include/boost/type_traits/has_multiplies.hpp \
+  /opt/local/include/boost/type_traits/has_multiplies_assign.hpp \
+  /opt/local/include/boost/type_traits/has_negate.hpp \
+  /opt/local/include/boost/type_traits/has_not_equal_to.hpp \
+  /opt/local/include/boost/type_traits/has_plus.hpp \
+  /opt/local/include/boost/type_traits/has_plus_assign.hpp \
+  /opt/local/include/boost/type_traits/has_post_decrement.hpp \
+  /opt/local/include/boost/type_traits/detail/has_postfix_operator.hpp \
+  /opt/local/include/boost/type_traits/has_post_increment.hpp \
+  /opt/local/include/boost/type_traits/has_pre_decrement.hpp \
+  /opt/local/include/boost/type_traits/has_pre_increment.hpp \
+  /opt/local/include/boost/type_traits/has_right_shift.hpp \
+  /opt/local/include/boost/type_traits/has_right_shift_assign.hpp \
+  /opt/local/include/boost/type_traits/has_unary_minus.hpp \
+  /opt/local/include/boost/type_traits/has_unary_plus.hpp \
+  /opt/local/include/boost/type_traits/has_trivial_move_assign.hpp \
+  /opt/local/include/boost/type_traits/has_trivial_move_constructor.hpp \
+  /opt/local/include/boost/type_traits/has_virtual_destructor.hpp \
+  /opt/local/include/boost/type_traits/is_complex.hpp \
+  /opt/local/include/boost/type_traits/is_compound.hpp \
+  /opt/local/include/boost/type_traits/is_copy_constructible.hpp \
+  /opt/local/include/boost/type_traits/is_empty.hpp \
+  /opt/local/include/boost/type_traits/is_floating_point.hpp \
+  /opt/local/include/boost/type_traits/is_member_object_pointer.hpp \
+  /opt/local/include/boost/type_traits/is_nothrow_move_assignable.hpp \
+  /opt/local/include/boost/type_traits/is_nothrow_move_constructible.hpp \
+  /opt/local/include/boost/type_traits/is_object.hpp \
+  /opt/local/include/boost/type_traits/is_stateless.hpp \
+  /opt/local/include/boost/type_traits/is_virtual_base_of.hpp \
+  /opt/local/include/boost/type_traits/make_signed.hpp \
+  /opt/local/include/boost/type_traits/rank.hpp \
+  /opt/local/include/boost/type_traits/remove_extent.hpp \
+  /opt/local/include/boost/type_traits/remove_all_extents.hpp \
+  /opt/local/include/boost/type_traits/remove_volatile.hpp \
+  /opt/local/include/boost/type_traits/integral_promotion.hpp \
+  /opt/local/include/boost/type_traits/promote.hpp \
+  /opt/local/include/boost/numeric/ublas/vector_expression.hpp \
+  /opt/local/include/boost/numeric/ublas/expression_types.hpp \
+  /opt/local/include/boost/numeric/ublas/functional.hpp \
+  /opt/local/include/boost/numeric/ublas/detail/vector_assign.hpp \
+  /opt/local/include/boost/numeric/ublas/vector.hpp \
+  /opt/local/include/boost/numeric/ublas/matrix_expression.hpp \
+  /opt/local/include/boost/numeric/ublas/detail/matrix_assign.hpp \
+  /opt/local/include/boost/numeric/ublas/matrix.hpp \
+  /opt/local/include/boost/numeric/ublas/io.hpp
 
 SNPs_PW.h:
 
@@ -1924,3 +2166,489 @@ fgwas_params.h:
 /opt/local/include/gsl/gsl_rng.h:
 
 /opt/local/include/gsl/gsl_randist.h:
+
+/opt/local/include/boost/numeric/ublas/matrix_sparse.hpp:
+
+/opt/local/include/boost/numeric/ublas/vector_sparse.hpp:
+
+/opt/local/include/boost/numeric/ublas/storage_sparse.hpp:
+
+/opt/local/include/boost/serialization/collection_size_type.hpp:
+
+/opt/local/include/boost/serialization/strong_typedef.hpp:
+
+/opt/local/include/boost/operators.hpp:
+
+/opt/local/include/boost/serialization/level.hpp:
+
+/opt/local/include/boost/type_traits/is_fundamental.hpp:
+
+/opt/local/include/boost/type_traits/is_base_and_derived.hpp:
+
+/opt/local/include/boost/serialization/level_enum.hpp:
+
+/opt/local/include/boost/serialization/split_free.hpp:
+
+/opt/local/include/boost/serialization/serialization.hpp:
+
+/opt/local/include/boost/serialization/pfto.hpp:
+
+/opt/local/include/boost/serialization/access.hpp:
+
+/opt/local/include/boost/serialization/is_bitwise_serializable.hpp:
+
+/opt/local/include/boost/serialization/nvp.hpp:
+
+/opt/local/include/boost/serialization/tracking.hpp:
+
+/opt/local/include/boost/mpl/equal_to.hpp:
+
+/opt/local/include/boost/mpl/aux_/comparison_op.hpp:
+
+/opt/local/include/boost/mpl/aux_/numeric_op.hpp:
+
+/opt/local/include/boost/mpl/numeric_cast.hpp:
+
+/opt/local/include/boost/mpl/tag.hpp:
+
+/opt/local/include/boost/mpl/aux_/has_tag.hpp:
+
+/opt/local/include/boost/mpl/aux_/numeric_cast_utils.hpp:
+
+/opt/local/include/boost/mpl/aux_/config/forwarding.hpp:
+
+/opt/local/include/boost/mpl/aux_/msvc_eti_base.hpp:
+
+/opt/local/include/boost/mpl/aux_/is_msvc_eti_arg.hpp:
+
+/opt/local/include/boost/mpl/aux_/preprocessed/gcc/equal_to.hpp:
+
+/opt/local/include/boost/mpl/greater.hpp:
+
+/opt/local/include/boost/mpl/aux_/preprocessed/gcc/greater.hpp:
+
+/opt/local/include/boost/serialization/tracking_enum.hpp:
+
+/opt/local/include/boost/serialization/type_info_implementation.hpp:
+
+/opt/local/include/boost/serialization/traits.hpp:
+
+/opt/local/include/boost/serialization/split_member.hpp:
+
+/opt/local/include/boost/serialization/base_object.hpp:
+
+/opt/local/include/boost/type_traits/is_polymorphic.hpp:
+
+/opt/local/include/boost/serialization/force_include.hpp:
+
+/opt/local/include/boost/serialization/void_cast_fwd.hpp:
+
+/opt/local/include/boost/serialization/wrapper.hpp:
+
+/opt/local/include/boost/serialization/array.hpp:
+
+/opt/local/include/boost/array.hpp:
+
+/opt/local/include/boost/swap.hpp:
+
+/opt/local/include/boost/utility/swap.hpp:
+
+/opt/local/include/boost/functional/hash_fwd.hpp:
+
+/opt/local/include/boost/functional/hash/hash_fwd.hpp:
+
+/opt/local/include/boost/serialization/map.hpp:
+
+/opt/local/include/boost/serialization/utility.hpp:
+
+/opt/local/include/boost/serialization/collections_save_imp.hpp:
+
+/opt/local/include/boost/serialization/version.hpp:
+
+/opt/local/include/boost/mpl/less.hpp:
+
+/opt/local/include/boost/mpl/aux_/preprocessed/gcc/less.hpp:
+
+/opt/local/include/boost/mpl/comparison.hpp:
+
+/opt/local/include/boost/mpl/not_equal_to.hpp:
+
+/opt/local/include/boost/mpl/aux_/preprocessed/gcc/not_equal_to.hpp:
+
+/opt/local/include/boost/mpl/less_equal.hpp:
+
+/opt/local/include/boost/mpl/aux_/preprocessed/gcc/less_equal.hpp:
+
+/opt/local/include/boost/mpl/greater_equal.hpp:
+
+/opt/local/include/boost/mpl/aux_/preprocessed/gcc/greater_equal.hpp:
+
+/opt/local/include/boost/serialization/item_version_type.hpp:
+
+/opt/local/include/boost/serialization/collections_load_imp.hpp:
+
+/opt/local/include/boost/archive/detail/basic_iarchive.hpp:
+
+/opt/local/include/boost/noncopyable.hpp:
+
+/opt/local/include/boost/archive/basic_archive.hpp:
+
+/opt/local/include/boost/archive/detail/auto_link_archive.hpp:
+
+/opt/local/include/boost/archive/detail/decl.hpp:
+
+/opt/local/include/boost/config/auto_link.hpp:
+
+/opt/local/include/boost/archive/detail/abi_prefix.hpp:
+
+/opt/local/include/boost/config/abi_prefix.hpp:
+
+/opt/local/include/boost/archive/detail/abi_suffix.hpp:
+
+/opt/local/include/boost/config/abi_suffix.hpp:
+
+/opt/local/include/boost/serialization/detail/stack_constructor.hpp:
+
+/opt/local/include/boost/aligned_storage.hpp:
+
+/opt/local/include/boost/type_traits/type_with_alignment.hpp:
+
+/opt/local/include/boost/preprocessor/list/for_each_i.hpp:
+
+/opt/local/include/boost/preprocessor/tuple/to_list.hpp:
+
+/opt/local/include/boost/preprocessor/list/transform.hpp:
+
+/opt/local/include/boost/preprocessor/list/append.hpp:
+
+/opt/local/include/boost/numeric/ublas/storage.hpp:
+
+/opt/local/include/boost/numeric/ublas/exception.hpp:
+
+/opt/local/include/boost/numeric/ublas/detail/config.hpp:
+
+/opt/local/include/boost/numeric/ublas/fwd.hpp:
+
+/opt/local/include/boost/numeric/ublas/detail/definitions.hpp:
+
+/opt/local/include/boost/numeric/ublas/traits.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/complex:
+
+/opt/local/include/boost/config/no_tr1/cmath.hpp:
+
+/opt/local/include/boost/numeric/ublas/detail/iterator.hpp:
+
+/opt/local/include/boost/numeric/ublas/detail/returntype_deduction.hpp:
+
+/opt/local/include/boost/mpl/vector/vector20.hpp:
+
+/opt/local/include/boost/mpl/vector/vector10.hpp:
+
+/opt/local/include/boost/mpl/vector/vector0.hpp:
+
+/opt/local/include/boost/mpl/vector/aux_/at.hpp:
+
+/opt/local/include/boost/mpl/at_fwd.hpp:
+
+/opt/local/include/boost/mpl/vector/aux_/tag.hpp:
+
+/opt/local/include/boost/mpl/aux_/config/typeof.hpp:
+
+/opt/local/include/boost/mpl/long.hpp:
+
+/opt/local/include/boost/mpl/long_fwd.hpp:
+
+/opt/local/include/boost/mpl/vector/aux_/front.hpp:
+
+/opt/local/include/boost/mpl/front_fwd.hpp:
+
+/opt/local/include/boost/mpl/vector/aux_/push_front.hpp:
+
+/opt/local/include/boost/mpl/push_front_fwd.hpp:
+
+/opt/local/include/boost/mpl/vector/aux_/item.hpp:
+
+/opt/local/include/boost/mpl/vector/aux_/pop_front.hpp:
+
+/opt/local/include/boost/mpl/pop_front_fwd.hpp:
+
+/opt/local/include/boost/mpl/vector/aux_/push_back.hpp:
+
+/opt/local/include/boost/mpl/push_back_fwd.hpp:
+
+/opt/local/include/boost/mpl/vector/aux_/pop_back.hpp:
+
+/opt/local/include/boost/mpl/pop_back_fwd.hpp:
+
+/opt/local/include/boost/mpl/vector/aux_/back.hpp:
+
+/opt/local/include/boost/mpl/back_fwd.hpp:
+
+/opt/local/include/boost/mpl/vector/aux_/clear.hpp:
+
+/opt/local/include/boost/mpl/clear_fwd.hpp:
+
+/opt/local/include/boost/mpl/vector/aux_/vector0.hpp:
+
+/opt/local/include/boost/mpl/vector/aux_/iterator.hpp:
+
+/opt/local/include/boost/mpl/iterator_tags.hpp:
+
+/opt/local/include/boost/mpl/plus.hpp:
+
+/opt/local/include/boost/mpl/aux_/arithmetic_op.hpp:
+
+/opt/local/include/boost/mpl/aux_/largest_int.hpp:
+
+/opt/local/include/boost/mpl/aux_/preprocessed/gcc/plus.hpp:
+
+/opt/local/include/boost/mpl/minus.hpp:
+
+/opt/local/include/boost/mpl/aux_/preprocessed/gcc/minus.hpp:
+
+/opt/local/include/boost/mpl/advance_fwd.hpp:
+
+/opt/local/include/boost/mpl/distance_fwd.hpp:
+
+/opt/local/include/boost/mpl/prior.hpp:
+
+/opt/local/include/boost/mpl/vector/aux_/O1_size.hpp:
+
+/opt/local/include/boost/mpl/O1_size_fwd.hpp:
+
+/opt/local/include/boost/mpl/vector/aux_/size.hpp:
+
+/opt/local/include/boost/mpl/size_fwd.hpp:
+
+/opt/local/include/boost/mpl/vector/aux_/empty.hpp:
+
+/opt/local/include/boost/mpl/empty_fwd.hpp:
+
+/opt/local/include/boost/mpl/vector/aux_/begin_end.hpp:
+
+/opt/local/include/boost/mpl/begin_end_fwd.hpp:
+
+/opt/local/include/boost/mpl/vector/aux_/include_preprocessed.hpp:
+
+/opt/local/include/boost/mpl/vector/aux_/preprocessed/typeof_based/vector10.hpp:
+
+/opt/local/include/boost/mpl/vector/aux_/preprocessed/typeof_based/vector20.hpp:
+
+/opt/local/include/boost/mpl/at.hpp:
+
+/opt/local/include/boost/mpl/aux_/at_impl.hpp:
+
+/opt/local/include/boost/mpl/begin_end.hpp:
+
+/opt/local/include/boost/mpl/aux_/begin_end_impl.hpp:
+
+/opt/local/include/boost/mpl/sequence_tag_fwd.hpp:
+
+/opt/local/include/boost/mpl/aux_/has_begin.hpp:
+
+/opt/local/include/boost/mpl/aux_/traits_lambda_spec.hpp:
+
+/opt/local/include/boost/mpl/sequence_tag.hpp:
+
+/opt/local/include/boost/mpl/advance.hpp:
+
+/opt/local/include/boost/mpl/negate.hpp:
+
+/opt/local/include/boost/mpl/aux_/advance_forward.hpp:
+
+/opt/local/include/boost/mpl/aux_/preprocessed/gcc/advance_forward.hpp:
+
+/opt/local/include/boost/mpl/aux_/advance_backward.hpp:
+
+/opt/local/include/boost/mpl/aux_/preprocessed/gcc/advance_backward.hpp:
+
+/opt/local/include/boost/mpl/deref.hpp:
+
+/opt/local/include/boost/mpl/aux_/msvc_type.hpp:
+
+/opt/local/include/boost/type_traits.hpp:
+
+/opt/local/include/boost/type_traits/add_cv.hpp:
+
+/opt/local/include/boost/type_traits/add_lvalue_reference.hpp:
+
+/opt/local/include/boost/type_traits/aligned_storage.hpp:
+
+/opt/local/include/boost/type_traits/common_type.hpp:
+
+/opt/local/include/boost/typeof/typeof.hpp:
+
+/opt/local/include/boost/typeof/message.hpp:
+
+/opt/local/include/boost/typeof/native.hpp:
+
+/opt/local/include/boost/type_traits/conditional.hpp:
+
+/opt/local/include/boost/type_traits/decay.hpp:
+
+/opt/local/include/boost/type_traits/remove_bounds.hpp:
+
+/opt/local/include/boost/type_traits/extent.hpp:
+
+/opt/local/include/boost/type_traits/floating_point_promotion.hpp:
+
+/opt/local/include/boost/type_traits/has_new_operator.hpp:
+
+/opt/local/include/boost/type_traits/has_nothrow_assign.hpp:
+
+/opt/local/include/boost/type_traits/has_trivial_assign.hpp:
+
+/opt/local/include/boost/type_traits/has_nothrow_constructor.hpp:
+
+/opt/local/include/boost/type_traits/has_trivial_constructor.hpp:
+
+/opt/local/include/boost/type_traits/has_nothrow_copy.hpp:
+
+/opt/local/include/boost/type_traits/has_nothrow_destructor.hpp:
+
+/opt/local/include/boost/type_traits/has_operator.hpp:
+
+/opt/local/include/boost/type_traits/has_bit_and.hpp:
+
+/opt/local/include/boost/type_traits/detail/has_binary_operator.hpp:
+
+/opt/local/include/boost/type_traits/is_base_of.hpp:
+
+/opt/local/include/boost/type_traits/has_bit_and_assign.hpp:
+
+/opt/local/include/boost/type_traits/has_bit_or.hpp:
+
+/opt/local/include/boost/type_traits/has_bit_or_assign.hpp:
+
+/opt/local/include/boost/type_traits/has_bit_xor.hpp:
+
+/opt/local/include/boost/type_traits/has_bit_xor_assign.hpp:
+
+/opt/local/include/boost/type_traits/has_complement.hpp:
+
+/opt/local/include/boost/type_traits/detail/has_prefix_operator.hpp:
+
+/opt/local/include/boost/type_traits/has_dereference.hpp:
+
+/opt/local/include/boost/type_traits/has_divides.hpp:
+
+/opt/local/include/boost/type_traits/has_divides_assign.hpp:
+
+/opt/local/include/boost/type_traits/has_equal_to.hpp:
+
+/opt/local/include/boost/type_traits/has_greater.hpp:
+
+/opt/local/include/boost/type_traits/has_greater_equal.hpp:
+
+/opt/local/include/boost/type_traits/has_left_shift.hpp:
+
+/opt/local/include/boost/type_traits/has_left_shift_assign.hpp:
+
+/opt/local/include/boost/type_traits/has_less.hpp:
+
+/opt/local/include/boost/type_traits/has_less_equal.hpp:
+
+/opt/local/include/boost/type_traits/has_logical_and.hpp:
+
+/opt/local/include/boost/type_traits/has_logical_not.hpp:
+
+/opt/local/include/boost/type_traits/has_logical_or.hpp:
+
+/opt/local/include/boost/type_traits/has_minus.hpp:
+
+/opt/local/include/boost/type_traits/has_minus_assign.hpp:
+
+/opt/local/include/boost/type_traits/has_modulus.hpp:
+
+/opt/local/include/boost/type_traits/has_modulus_assign.hpp:
+
+/opt/local/include/boost/type_traits/has_multiplies.hpp:
+
+/opt/local/include/boost/type_traits/has_multiplies_assign.hpp:
+
+/opt/local/include/boost/type_traits/has_negate.hpp:
+
+/opt/local/include/boost/type_traits/has_not_equal_to.hpp:
+
+/opt/local/include/boost/type_traits/has_plus.hpp:
+
+/opt/local/include/boost/type_traits/has_plus_assign.hpp:
+
+/opt/local/include/boost/type_traits/has_post_decrement.hpp:
+
+/opt/local/include/boost/type_traits/detail/has_postfix_operator.hpp:
+
+/opt/local/include/boost/type_traits/has_post_increment.hpp:
+
+/opt/local/include/boost/type_traits/has_pre_decrement.hpp:
+
+/opt/local/include/boost/type_traits/has_pre_increment.hpp:
+
+/opt/local/include/boost/type_traits/has_right_shift.hpp:
+
+/opt/local/include/boost/type_traits/has_right_shift_assign.hpp:
+
+/opt/local/include/boost/type_traits/has_unary_minus.hpp:
+
+/opt/local/include/boost/type_traits/has_unary_plus.hpp:
+
+/opt/local/include/boost/type_traits/has_trivial_move_assign.hpp:
+
+/opt/local/include/boost/type_traits/has_trivial_move_constructor.hpp:
+
+/opt/local/include/boost/type_traits/has_virtual_destructor.hpp:
+
+/opt/local/include/boost/type_traits/is_complex.hpp:
+
+/opt/local/include/boost/type_traits/is_compound.hpp:
+
+/opt/local/include/boost/type_traits/is_copy_constructible.hpp:
+
+/opt/local/include/boost/type_traits/is_empty.hpp:
+
+/opt/local/include/boost/type_traits/is_floating_point.hpp:
+
+/opt/local/include/boost/type_traits/is_member_object_pointer.hpp:
+
+/opt/local/include/boost/type_traits/is_nothrow_move_assignable.hpp:
+
+/opt/local/include/boost/type_traits/is_nothrow_move_constructible.hpp:
+
+/opt/local/include/boost/type_traits/is_object.hpp:
+
+/opt/local/include/boost/type_traits/is_stateless.hpp:
+
+/opt/local/include/boost/type_traits/is_virtual_base_of.hpp:
+
+/opt/local/include/boost/type_traits/make_signed.hpp:
+
+/opt/local/include/boost/type_traits/rank.hpp:
+
+/opt/local/include/boost/type_traits/remove_extent.hpp:
+
+/opt/local/include/boost/type_traits/remove_all_extents.hpp:
+
+/opt/local/include/boost/type_traits/remove_volatile.hpp:
+
+/opt/local/include/boost/type_traits/integral_promotion.hpp:
+
+/opt/local/include/boost/type_traits/promote.hpp:
+
+/opt/local/include/boost/numeric/ublas/vector_expression.hpp:
+
+/opt/local/include/boost/numeric/ublas/expression_types.hpp:
+
+/opt/local/include/boost/numeric/ublas/functional.hpp:
+
+/opt/local/include/boost/numeric/ublas/detail/vector_assign.hpp:
+
+/opt/local/include/boost/numeric/ublas/vector.hpp:
+
+/opt/local/include/boost/numeric/ublas/matrix_expression.hpp:
+
+/opt/local/include/boost/numeric/ublas/detail/matrix_assign.hpp:
+
+/opt/local/include/boost/numeric/ublas/matrix.hpp:
+
+/opt/local/include/boost/numeric/ublas/io.hpp:

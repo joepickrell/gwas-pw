@@ -84,6 +84,7 @@ double SNP_PW::get_x(vector<double> lambda){
 	*/
 }
 
+/*
 double SNP_PW::get_x_cond(vector<double> lambda, double lambdac){
 	if (lambda.size() != nannot){
 		cerr << "ERROR: SNP "<< id << ". Lambda has "<< lambda.size()<< " entries. nannot is " << nannot << "\n";
@@ -97,8 +98,7 @@ double SNP_PW::get_x_cond(vector<double> lambda, double lambdac){
 	if (condannot) toreturn+= lambdac;
 	return toreturn;
 }
-
-
+*/
 double SNP_PW::calc_logBF1(double C){
 	double toreturn = 0;
 	double r = W/ (V1+W);

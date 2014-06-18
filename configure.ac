@@ -8,6 +8,6 @@ AC_CHECK_LIB([gslcblas],[cblas_dgemm],,AC_MSG_ERROR(could not find GSL BLAS))
 AC_CHECK_LIB([gsl],[gsl_blas_dgemm],,AC_MSG_ERROR(could not find GSL))
 m4_include([m4_ax_boost_base.m4.m4])
 AX_BOOST_BASE([1.42],, AC_MSG_ERROR(need boost >= 1.42))
-CPPFLAGS="$CPPFLAGS $BOOST_CPPFLAGS" 
+CPPFLAGS="$CPPFLAGS $BOOST_CPPFLAGS -Igtest-1.7.0/include/" 
 AC_CONFIG_FILES([Makefile src/Makefile])
 AC_OUTPUT

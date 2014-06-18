@@ -28,6 +28,8 @@
 #include <boost/algorithm/string.hpp>
 #include "CmdLine.h"
 #include <assert.h>
+#include <boost/numeric/ublas/matrix_sparse.hpp>
+#include <boost/numeric/ublas/io.hpp>
 using namespace std;
 
 class Fgwas_params{
@@ -61,6 +63,7 @@ public:
 	int seed;
 	double MCMC_gauss_SD;
 	double cor;
+	bool overlap;
 };
 
 

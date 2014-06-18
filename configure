@@ -4506,7 +4506,7 @@ $as_echo "#define HAVE_BOOST /**/" >>confdefs.h
 fi
 
 
-CPPFLAGS="$CPPFLAGS $BOOST_CPPFLAGS"
+CPPFLAGS="$CPPFLAGS $BOOST_CPPFLAGS -Igtest-1.7.0/include/"
 ac_config_files="$ac_config_files Makefile src/Makefile"
 
 cat >confcache <<\_ACEOF
