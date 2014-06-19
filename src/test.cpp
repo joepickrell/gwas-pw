@@ -28,6 +28,8 @@ int main(){
 		}
 	}
 	SNP_PW s;
+	vector<int> tmp;
+	LDmatrix("");
 	//vector<double> m;
 	//m.push_back(-2.0);
 	//m.push_back(-3.0);
