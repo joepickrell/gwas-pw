@@ -874,7 +874,11 @@ fgwas_params.o: fgwas_params.cpp fgwas_params.h \
   /opt/local/include/boost/numeric/ublas/matrix_expression.hpp \
   /opt/local/include/boost/numeric/ublas/detail/matrix_assign.hpp \
   /opt/local/include/boost/numeric/ublas/matrix.hpp \
-  /opt/local/include/boost/numeric/ublas/io.hpp
+  /opt/local/include/boost/numeric/ublas/io.hpp \
+  /opt/local/include/boost/tokenizer.hpp \
+  /opt/local/include/boost/token_iterator.hpp \
+  /opt/local/include/boost/iterator/detail/minimum_category.hpp \
+  /opt/local/include/boost/token_functions.hpp
 
 fgwas_params.h:
 
@@ -2647,3 +2651,11 @@ CmdLine.h:
 /opt/local/include/boost/numeric/ublas/matrix.hpp:
 
 /opt/local/include/boost/numeric/ublas/io.hpp:
+
+/opt/local/include/boost/tokenizer.hpp:
+
+/opt/local/include/boost/token_iterator.hpp:
+
+/opt/local/include/boost/iterator/detail/minimum_category.hpp:
+
+/opt/local/include/boost/token_functions.hpp:

@@ -30,6 +30,7 @@
 #include <assert.h>
 #include <boost/numeric/ublas/matrix_sparse.hpp>
 #include <boost/numeric/ublas/io.hpp>
+#include <boost/tokenizer.hpp>
 using namespace std;
 
 class Fgwas_params{

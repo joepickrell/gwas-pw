@@ -97,7 +97,7 @@ am_gwas_pw_OBJECTS = CmdLine.$(OBJEXT) gwas-pw.$(OBJEXT) \
 	fgwas_params.$(OBJEXT) LDmatrix.$(OBJEXT)
 gwas_pw_OBJECTS = $(am_gwas_pw_OBJECTS)
 gwas_pw_LDADD = $(LDADD)
-am_test_OBJECTS = test.$(OBJEXT) gzstream.$(OBJEXT) \
+am_test_OBJECTS = LDmatrix.$(OBJEXT) test.$(OBJEXT) gzstream.$(OBJEXT) \
 	fgwas_params.$(OBJEXT) SNP_PW.$(OBJEXT)
 test_OBJECTS = $(am_test_OBJECTS)
 test_LDADD = $(LDADD)
@@ -170,7 +170,7 @@ BOOST_LDFLAGS = -L/opt/local/lib
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
-CPPFLAGS = -I/opt/local/include -I/opt/local/include -Igtest-1.7.0/include/
+CPPFLAGS =  -I/opt/local/include -Igtest-1.7.0/include/
 CXX = g++
 CXXDEPMODE = depmode=gcc3
 CXXFLAGS = -g -O2
@@ -250,7 +250,7 @@ top_builddir = ..
 top_srcdir = ..
 DISTCHECK_CONFIGURE_FLAGS = LDFLAGS=-L/opt/local/lib CXXFLAGS=-I/opt/local/include
 gwas_pw_SOURCES = CmdLine.cpp gwas-pw.cpp gzstream.cpp SNP_PW.cpp SNPs_PW.cpp fgwas_params.cpp LDmatrix.cpp
-test_SOURCES = test.cpp gzstream.cpp fgwas_params.cpp SNP_PW.cpp
+test_SOURCES = LDmatrix.cpp test.cpp gzstream.cpp fgwas_params.cpp SNP_PW.cpp
 noinst_HEADERS = gzstream.h CmdLine.h fgwas_params.h SNP_PW.h SNPs_PW.h
 all: all-am
 

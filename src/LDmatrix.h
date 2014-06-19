@@ -15,15 +15,18 @@ using namespace std;
 class LDmatrix{
 public:
 	LDmatrix();
-	LDmatrix(string, vector<int>);
+	LDmatrix(string, string, vector<int>);
 	void print();
 	void process_infilelist(string);
+	void read_matrix();
+	string chrom;
+	int minpos, maxpos;
+	double get_ld(int, int);
 private:
-	boost::numeric::ublas::compressed_matrix<double> m;
+	boost::numeric::ublas::compressed_matrix<double>*m;
 	map<int, int> pos2index;
 	map<int, int> index2pos;
 	set<int> pos2keep;
-	int minpos, maxpos;
 	vector<string> infilelist;
 };
 

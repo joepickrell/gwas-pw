@@ -13,10 +13,9 @@
 #include "fgwas_params.h"
 #include "LDmatrix.h"
 using namespace std;
-using namespace boost::numeric::ublas;
 
 int main(){
-	compressed_matrix<double> m (3, 3, 3 * 3);
+	boost::numeric::ublas::compressed_matrix<double> m (3, 3, 3 * 3);
 	for (unsigned i = 0; i < m.size1 (); ++ i)
 		for (unsigned j = 0; j < m.size2 (); ++ j)
 			m (i, j) = 3 * i + j;
@@ -29,7 +28,9 @@ int main(){
 	}
 	SNP_PW s;
 	vector<int> tmp;
-	LDmatrix("");
+	tmp.push_back(106048793); tmp.push_back(106048960); tmp.push_back(106049818);
+	LDmatrix ldm("/Users/jkpickrell/projects/gwas-pw/covariance_matrix/all_ldfiles", "chr14", tmp);
+	cout << ldm.get_ld(106048793, 106048793) << "\n" << ldm.get_ld(106049818, 106048793) << "\n";
 	//vector<double> m;
 	//m.push_back(-2.0);
 	//m.push_back(-3.0);
