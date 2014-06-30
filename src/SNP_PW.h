@@ -37,6 +37,12 @@ public:
 	double BF1; // Bayes factor
 	double BF2; // second BF for pairwise
 	double BF3; // third BF for both
+
+	//corrected BFs including other SNP in LD
+	double BF1_C(double, double, double, double, double);
+	double BF2_C(double, double, double, double, double);
+	double BF3_C(double, double, double, double, double);
+
 	int chunknumber;
 	float dens;
 	vector<bool> annot;

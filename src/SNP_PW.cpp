@@ -111,7 +111,32 @@ double SNP_PW::calc_logBF1(double C){
 	return toreturn;
 }
 
+double SNP_PW::BF1_C(double beta1_1, double beta1_2, double D, double C, double tmpV){
+	// testing for an effect only on phenotype 1. Regress out effect beta1_1 from phenotype 1, beta1_2 from phenotype 2.
+	// Z_cor1 = (beta_1 - beta1_1*D/ tmpV)/SE
+	// Z_cor2 = (beta_2 - beta1_2*D/ tmpV)/SE
+	double toreturn = 0;
+	double r = W/ (V1+W);
 
+	//get betas
+	double tmpB1 = Z1*sqrt(V1);
+	double tmpB2 = Z2*sqrt(V2);
+
+	//correct betas
+	tmpB1 = tmpB1 - beta1_1*D/tmpV;
+	tmpB2 = tmpB2 - beta1_2*D/tmpV;
+
+	//new Z-scores
+	double tmpZ1 = tmpB1/ sqrt(V1);
+	double tmpZ2 = tmpB2/sqrt(V2);
+
+	//calc_BF
+	toreturn += log ( sqrt(1-r) );
+	double tmp = tmpZ1*tmpZ1*r- 2*C*tmpZ1*tmpZ2*(1-sqrt(1-r));
+	toreturn += tmp/ (2*(1-C*C)) ;
+	return toreturn;
+
+}
 double SNP_PW::calc_logBF2(double C){
 	double toreturn = 0;
 	double r = W/ (V2+W);
@@ -120,10 +145,33 @@ double SNP_PW::calc_logBF2(double C){
 	double tmp = Z2*Z2*r- 2*C*Z1*Z2*(1-sqrt(1-r));
 	toreturn += tmp/ (2*(1-C*C)) ;
 
-	//toreturn += - (Z*Z*r/2);
 	return toreturn;
 }
 
+double SNP_PW::BF2_C(double beta1_1, double beta1_2, double D, double C, double tmpV){
+	double toreturn = 0;
+
+	//get betas
+	double tmpB1 = Z1*sqrt(V1);
+	double tmpB2 = Z2*sqrt(V2);
+
+	//correct betas
+	tmpB1 = tmpB1 - beta1_1*D/tmpV;
+	tmpB2 = tmpB2-beta1_2*D/tmpV;
+
+	//new Z-scores
+	double tmpZ1 = tmpB1/ sqrt(V1);
+	double tmpZ2 = tmpB2/sqrt(V2);
+
+	//BF
+	double r = W/ (V2+W);
+	toreturn += log ( sqrt(1-r) );
+
+	double tmp = tmpZ2*tmpZ2*r- 2*C*tmpZ1*tmpZ2*(1-sqrt(1-r));
+	toreturn += tmp/ (2*(1-C*C)) ;
+
+	return toreturn;
+}
 
 double SNP_PW::calc_logBF3( double C){
 	double toreturn = 0;
@@ -135,6 +183,33 @@ double SNP_PW::calc_logBF3( double C){
 	toreturn += tmp/ (2*(1-C*C)) ;
 
 	return toreturn;
+}
+
+double SNP_PW::BF3_C(double beta1_1, double beta1_2, double D, double C, double tmpV){
+	double toreturn = 0;
+
+	//get betas
+	double tmpB1 = Z1*sqrt(V1);
+	double tmpB2 = Z2*sqrt(V2);
+
+	//correct betas
+	tmpB1 = tmpB1 - beta1_1*D/tmpV;
+	tmpB2 = tmpB2-beta1_2*D/tmpV;
+
+	//new Z-scores
+	double tmpZ1 = tmpB1/ sqrt(V1);
+	double tmpZ2 = tmpB2/sqrt(V2);
+
+	//BF
+	double r1 = W/ (V1+W);
+	double r2 = W/ (V2+W);
+	toreturn += log ( sqrt(1-r1) ) + log(sqrt(1-r2));
+
+	double tmp = tmpZ1*tmpZ1*r1+tmpZ2*tmpZ2*r2- 2*C*tmpZ1*tmpZ2*(1-sqrt(1-r1)*sqrt(1-r2));
+	toreturn += tmp/ (2*(1-C*C)) ;
+
+	return toreturn;
+
 }
 
 double SNP_PW::approx_v1(){
