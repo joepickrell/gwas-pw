@@ -16,6 +16,7 @@ void printopts(){
         cout << "-i [file name] input file w/ Z-scores\n";
         cout << "-phenos [string] [string] names of the phenotypes\n";
         cout << "-o [string] stem for names of output files\n";
+        cout << "-ld [string] input file with LD matrices\n";
         //cout << "-w [string] which annotation(s) to use. Separate multiple annotations with plus signs\n";
         //cout << "-dists [string:string] the name of the distance annotation(s) and the file(s) containing the distance model(s)\n";
         cout << "-k [integer] block size in number of SNPs (5000)\n";
@@ -44,6 +45,14 @@ int main(int argc, char *argv[]){
     }
     //get the output file
     if (cmdline.HasSwitch("-o")) p.outstem = cmdline.GetArgument("-o", 0);
+
+    //LD file
+    if (cmdline.HasSwitch("-ld")) p.ldfile = cmdline.GetArgument("-ld", 0);
+    else if (cmdline.HasSwitch("-c")){
+    	cerr << "ERROR: single cohort, need an LD file";
+    	printopts();
+    	exit(1);
+    }
 
     //set K
     if (cmdline.HasSwitch("-k")) p.K = atoi(cmdline.GetArgument("-k", 0).c_str());

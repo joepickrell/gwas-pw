@@ -34,14 +34,18 @@ public:
 
 	double f, N1, N2;
 	double V1, V2, W;
-	double BF1; // Bayes factor
-	double BF2; // second BF for pairwise
-	double BF3; // third BF for both
+	double BF1; // Bayes factor for configuration [1,0]
+	double BF2; // [0,1]
+	double BF3; // [1,1]
 
 	//corrected BFs including other SNP in LD
-	double BF1_C(double, double, double, double, double);
-	double BF2_C(double, double, double, double, double);
-	double BF3_C(double, double, double, double, double);
+	double BF1_C(SNP_PW*, double, double, double);
+	double BF2_C(SNP_PW*, double, double, double);
+	double BF3_C(SNP_PW*, double, double, double);
+
+	//return betas
+	double get_beta1();
+	double get_beta2();
 
 	int chunknumber;
 	float dens;

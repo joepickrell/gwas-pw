@@ -84,6 +84,13 @@ double SNP_PW::get_x(vector<double> lambda){
 	*/
 }
 
+double SNP_PW::get_beta1(){
+	return Z1*sqrt(V1);
+}
+
+double SNP_PW::get_beta2(){
+	return Z2* sqrt(V2);
+}
 /*
 double SNP_PW::get_x_cond(vector<double> lambda, double lambdac){
 	if (lambda.size() != nannot){
@@ -111,7 +118,7 @@ double SNP_PW::calc_logBF1(double C){
 	return toreturn;
 }
 
-double SNP_PW::BF1_C(double beta1_1, double beta1_2, double D, double C, double tmpV){
+double SNP_PW::BF1_C(SNP_PW* s1, double D, double C, double tmpV){
 	// testing for an effect only on phenotype 1. Regress out effect beta1_1 from phenotype 1, beta1_2 from phenotype 2.
 	// Z_cor1 = (beta_1 - beta1_1*D/ tmpV)/SE
 	// Z_cor2 = (beta_2 - beta1_2*D/ tmpV)/SE
@@ -121,6 +128,10 @@ double SNP_PW::BF1_C(double beta1_1, double beta1_2, double D, double C, double 
 	//get betas
 	double tmpB1 = Z1*sqrt(V1);
 	double tmpB2 = Z2*sqrt(V2);
+
+	//get other betas
+	double beta1_1 = s1->get_beta1();
+	double beta1_2 = s1->get_beta2();
 
 	//correct betas
 	tmpB1 = tmpB1 - beta1_1*D/tmpV;
@@ -148,21 +159,27 @@ double SNP_PW::calc_logBF2(double C){
 	return toreturn;
 }
 
-double SNP_PW::BF2_C(double beta1_1, double beta1_2, double D, double C, double tmpV){
+double SNP_PW::BF2_C(SNP_PW * s1,  double D, double C, double tmpV){
 	double toreturn = 0;
 
 	//get betas
 	double tmpB1 = Z1*sqrt(V1);
 	double tmpB2 = Z2*sqrt(V2);
-
+	cout << tmpB1 << " "<< tmpB2 << " I\n";
+	//get other betas
+	double beta1_1 = s1->get_beta1();
+	double beta1_2 = s1->get_beta2();
+	cout << beta1_1 << " "<< beta1_2 << " O\n";
 	//correct betas
 	tmpB1 = tmpB1 - beta1_1*D/tmpV;
-	tmpB2 = tmpB2-beta1_2*D/tmpV;
+	tmpB2 = tmpB2 - beta1_2*D/tmpV;
 
+	cout << tmpB1 << " "<< tmpB2 << " C\n";
 	//new Z-scores
 	double tmpZ1 = tmpB1/ sqrt(V1);
 	double tmpZ2 = tmpB2/sqrt(V2);
 
+	cout << tmpZ1 << " "<< tmpZ2 << " Z\n";
 	//BF
 	double r = W/ (V2+W);
 	toreturn += log ( sqrt(1-r) );
@@ -185,16 +202,20 @@ double SNP_PW::calc_logBF3( double C){
 	return toreturn;
 }
 
-double SNP_PW::BF3_C(double beta1_1, double beta1_2, double D, double C, double tmpV){
+double SNP_PW::BF3_C(SNP_PW* s1, double D, double C, double tmpV){
 	double toreturn = 0;
 
 	//get betas
 	double tmpB1 = Z1*sqrt(V1);
 	double tmpB2 = Z2*sqrt(V2);
 
+	//get other betas
+	double beta1_1 = s1->get_beta1();
+	double beta1_2 = s1->get_beta2();
+
 	//correct betas
 	tmpB1 = tmpB1 - beta1_1*D/tmpV;
-	tmpB2 = tmpB2-beta1_2*D/tmpV;
+	tmpB2 = tmpB2 - beta1_2*D/tmpV;
 
 	//new Z-scores
 	double tmpZ1 = tmpB1/ sqrt(V1);

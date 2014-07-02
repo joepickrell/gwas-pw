@@ -39,7 +39,7 @@ public:
 	int K; //block size
 	double V; //prior variance
 	bool print, zformat;
-	string infile, outstem;
+	string infile, outstem, ldfile;
 	bool cc;
 	//annotation lists
 	vector<string> wannot, dannot, distmodels, segannot;

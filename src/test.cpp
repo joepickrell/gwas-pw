@@ -26,11 +26,17 @@ int main(){
 			cout << m(i,j) << "\n";
 		}
 	}
-	SNP_PW s;
-	vector<int> tmp;
-	tmp.push_back(106048793); tmp.push_back(106048960); tmp.push_back(106049818);
-	LDmatrix ldm("/Users/jkpickrell/projects/gwas-pw/covariance_matrix/all_ldfiles", "chr14", tmp);
-	cout << ldm.get_ld(106048793, 106048793) << "\n" << ldm.get_ld(106049818, 106048793) << "\n";
+	vector<bool> an;
+	vector<int> dists;
+	vector<vector<pair<int, int> > > dmodels;
+	SNP_PW s1("rs1", "chr1" , 10000, 3, 10, 0.001, 0.002, an, dists, dmodels, 0.3, 0);
+	SNP_PW s2("rs2", "chr1" , 20000, 3, 8, 0.001, 0.0025, an, dists, dmodels, 0.3, 0);
+
+	cout << s1.BF2_C(&s2, 0.5, 0.3, 0.5) << "\n";
+	//vector<int> tmp;
+	//tmp.push_back(106048793); tmp.push_back(106048960); tmp.push_back(106049818);
+	//LDmatrix ldm("/Users/jkpickrell/projects/gwas-pw/covariance_matrix/all_ldfiles", "chr14", tmp);
+	//cout << ldm.get_ld(106048793, 106048793) << "\n" << ldm.get_ld(106049818, 106048793) << "\n";
 	//vector<double> m;
 	//m.push_back(-2.0);
 	//m.push_back(-3.0);

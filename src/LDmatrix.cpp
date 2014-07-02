@@ -35,7 +35,8 @@ LDmatrix::LDmatrix(string infiles, string chr, vector<int> pos){
 	}
 	chrom = chr;
 	minpos = index2pos[0];
-	maxpos = index2pos[pos[pos.size()-1] ];
+	maxpos = index2pos[pos.size()-1];
+	assert(minpos < maxpos);
 	int Nsnp = pos.size();
 	//cout << "here3\n"; cout.flush();
 	m = new boost::numeric::ublas::compressed_matrix<double>(Nsnp, Nsnp, Nsnp*800);
@@ -48,7 +49,6 @@ LDmatrix::LDmatrix(string infiles, string chr, vector<int> pos){
 
 void LDmatrix::process_infilelist(string list){
 	infilelist.clear();
-	cout << "here?\n"; cout.flush();
 	ifstream in(list.c_str());
 	vector<string> line;
 	struct stat stFileInfo;
@@ -97,7 +97,7 @@ void LDmatrix::read_matrix(){
         int endpos = atoi(fileinfo[2].c_str());
         // does the file match the chromosome [chr].[startpos].[endpos].gz
         if (tmpchr != chrom) continue;
-
+        cout << minpos << " "<< maxpos << "\n";cout.flush();
         if ( (startpos < minpos && endpos >= minpos) || (startpos >=minpos && startpos < maxpos)){
         	cout << "Reading LD from "<<*it << "\n";
             //cout << startpos << " "<< endpos << " here\n";

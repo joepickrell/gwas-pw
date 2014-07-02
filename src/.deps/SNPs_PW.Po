@@ -879,7 +879,7 @@ SNPs_PW.o: SNPs_PW.cpp SNPs_PW.h SNP_PW.h \
   /opt/local/include/boost/tokenizer.hpp \
   /opt/local/include/boost/token_iterator.hpp \
   /opt/local/include/boost/iterator/detail/minimum_category.hpp \
-  /opt/local/include/boost/token_functions.hpp
+  /opt/local/include/boost/token_functions.hpp LDMatrix.h
 
 SNPs_PW.h:
 
@@ -2664,3 +2664,5 @@ fgwas_params.h:
 /opt/local/include/boost/iterator/detail/minimum_category.hpp:
 
 /opt/local/include/boost/token_functions.hpp:
+
+LDMatrix.h:

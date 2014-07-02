@@ -77,7 +77,7 @@ void SNPs_PW::check_input(){
 		for (int i= st+1; i < sp; i++){
 			string testchr = d[i].chr;
 			int testpos = d[i].pos;
-			if (testchr == prevchr and prevpos > testpos){  //test that each segment is only a single chromosome, is ordered
+			if (testchr == prevchr and prevpos >= testpos){  //test that each segment is only a single chromosome, is ordered
 				cerr<< "ERROR: SNPs out of order\nChromosome "<<testchr << ". Position "<< prevpos << " seen before "<< testpos<< "\n";
 				exit(1);
 			}
@@ -896,7 +896,20 @@ double SNPs::llk_ridge(){
 */
 
 double SNPs_PW::llk(int which){
-
+	//
+	// M0: no SNPs affect any trait
+	// M1: 1 SNP affects trait 1
+	// M2: 1 SNP affects trait 2
+	// M3: 1 SNP affects both trait
+	// M4: 2 SNPs, 1 affects each trait
+	//
+	// logLK ~ log(P(M0)+ P(M1)*LK(M1)/LK(M0)  + P(M2)*LK(M2)/LK(M0) + P(M3)*LK(M3)/LK(M0)+ P(M4)*LK(M4)/LK(M0))
+	//
+	// LK(M1)/LK(M0) = sum(pi * BF1)
+	// ...
+	//
+	// only complication is when this is a single cohort, then need to compute M4 worrying about LD
+	//
 	double toreturn = 0;
 	if (precomputed){
 		double m1 = seg_toadd.at(which).at(0);
@@ -904,7 +917,7 @@ double SNPs_PW::llk(int which){
 		double m3 = seg_toadd.at(which).at(2);
 		double m4 = seg_toadd.at(which).at(3);
 		double m0 = log(pi[0]);
-		//cout << m1 << " "<< m2 << " "<< m3 << " "<< m4<< "\n";
+
 		m1 = m1+log(pi[1]);
 		m2 = m2+log(pi[2]);
 		m3 = m3+log(pi[3]);
@@ -915,7 +928,6 @@ double SNPs_PW::llk(int which){
 		return toreturn;
 	}
 	pair<int, int> seg = segments[which];
-
 	int st = seg.first;
 	int sp = seg.second;
 
@@ -925,37 +937,85 @@ double SNPs_PW::llk(int which){
 	double m3 = -1000;
 	double m4 = -1000;
 
+
 	//int counter = 0;
-	for (int i = st; i < sp ; i++){
+	// if these are non-overlapping cohorts
+	if (!params->overlap){
+		for (int i = st; i < sp ; i++){
 
-		//term 1: one associated SNP for pheno 1
-		double tmp2add1 = snppri.at(i).at(0)+ d[i].BF1;
-		//cout << tmp2add1 << " "<< m1 << " 1\n";
-		m1 = sumlog(m1, tmp2add1);
-		//cout << m1 << "\n";
+			//term 1: one associated SNP for pheno 1
+			double tmp2add1 = snppri.at(i).at(0)+ d[i].BF1;
+			m1 = sumlog(m1, tmp2add1);
 
-		//term 2: one associated SNP for pheno 2
-		double tmp2add2 = snppri.at(i).at(1)+ d[i].BF2;
-		m2 = sumlog(m2, tmp2add2);
 
-		//term 3: one associated SNP, both phenos
-		double tmp2add3 = snppri.at(i).at(2)+ d[i].BF3;
-		m3 = sumlog(m3, tmp2add3);
+			//term 2: one associated SNP for pheno 2
+			double tmp2add2 = snppri.at(i).at(1)+ d[i].BF2;
+			m2 = sumlog(m2, tmp2add2);
 
-		//term 4: two associated SNPs, both phenos
+			//term 3: one associated SNP, both phenos
+			double tmp2add3 = snppri.at(i).at(2)+ d[i].BF3;
+			m3 = sumlog(m3, tmp2add3);
 
-		double tmp2add4 = -10000;
-		for (int j = i+1; j < sp ; j++){
-			double tmp2_4 = snppri.at(i).at(0)+snppri.at(j).at(1)+d[i].BF1+d[j].BF2;
+			//term 4: two associated SNPs, both phenos
+			double tmp2add4 = -10000;
+			for (int j = i+1; j < sp ; j++){
+				double tmp2_4 = snppri.at(i).at(0)+snppri.at(j).at(1)+d[i].BF1+d[j].BF2;
 
-			double tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF1+d[i].BF2;
+				double tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF1+d[i].BF2;
 
-			tmp2add4 = sumlog(tmp2add4, tmp2_4);
+				tmp2add4 = sumlog(tmp2add4, tmp2_4);
 
-			tmp2add4 = sumlog(tmp2add4, tmp2_42);
+				tmp2add4 = sumlog(tmp2add4, tmp2_42);
 
+			}
+			m4 = sumlog(m4, tmp2add4);
 		}
-		m4 = sumlog(m4, tmp2add4);
+	}
+	else{
+		vector<int> poss;
+		for (int i = st; i < sp ; i++) {
+			//cout << d[i].pos << "\n";
+			poss.push_back(d[i].pos);
+		}
+		cout << "readld\n"; cout.flush();
+		LDmatrix ld(params->ldfile, d[st].chr, poss);
+		cout << "done\n"; cout.flush();
+		for (int i = st; i < sp ; i++){
+
+			//term 1: one associated SNP for pheno 1
+			double tmp2add1 = snppri.at(i).at(0)+ d[i].BF1;
+			m1 = sumlog(m1, tmp2add1);
+
+
+			//term 2: one associated SNP for pheno 2
+			double tmp2add2 = snppri.at(i).at(1)+ d[i].BF2;
+			m2 = sumlog(m2, tmp2add2);
+
+			//term 3: one associated SNP, both phenos
+			double tmp2add3 = snppri.at(i).at(2)+ d[i].BF3;
+			m3 = sumlog(m3, tmp2add3);
+
+			//term 4: two associated SNPs, both phenos
+			double tmp2add4 = -10000;
+			for (int j = i+1; j < sp ; j++){
+				double D = ld.get_ld(d[i].pos, d[j].pos);
+				double tmpVi = ld.get_ld(d[i].pos, d[i].pos);
+				double tmpVj = ld.get_ld(d[j].pos, d[j].pos);
+				double beta_i1 = d[i].get_beta1();
+				double beta_i2 = d[i].get_beta2();
+				double beta_j1 = d[j].get_beta1();
+				double beta_j2 = d[j].get_beta2();
+				cout << d[i].pos << " "<< d[j].pos << " "<< tmpVi << " "<< tmpVj << " "<< beta_i1<< " "<< beta_i2 << " "<< beta_j1 << " "<< beta_j2<< " "<< d[i].BF2_C(&d[j], D, params->cor, tmpVi) << " "<< d[j].BF2_C(&d[i], D, params->cor, tmpVj) << "\n"; cout.flush();
+				double tmp2_4 = snppri.at(i).at(0)+snppri.at(j).at(1)+d[i].BF1+d[j].BF2_C(&d[i], D, params->cor, tmpVj);
+				double tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF1+d[i].BF2_C(&d[j], D, params->cor, tmpVi);
+
+				tmp2add4 = sumlog(tmp2add4, tmp2_4);
+
+				tmp2add4 = sumlog(tmp2add4, tmp2_42);
+
+			}
+			m4 = sumlog(m4, tmp2add4);
+		}
 	}
 	vector<double> toadd;
 	toadd.push_back(m1);toadd.push_back(m2);toadd.push_back(m3);toadd.push_back(m4);
