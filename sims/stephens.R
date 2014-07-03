@@ -63,7 +63,7 @@ logBF.rankone.matrix = function(G,Y,sigmaa,pi0=0.5,m=0){
 		if(prior[i+1]>0){
 			BF = 0
 			for(ss in 1:length(sigmaa)){
-				BF = BF+exp(logBF.fromVsummaries(VYX,VYY,VXX,U,D,n,m,d,sigmaa[ss]))
+				BF = BF+exp(logBF.fromVSummaries(VYX,VYY,VXX,U,D,n,m,d,sigmaa[ss]))
 				#note we just don't bother computing for models with prior = 0
 			}
 			lbf[i+1,]=log(BF/length(sigmaa))
