@@ -29,8 +29,9 @@ int main(){
 	vector<bool> an;
 	vector<int> dists;
 	vector<vector<pair<int, int> > > dmodels;
-	SNP_PW s1("rs1", "chr1" , 10000, 3, 10, 0.001, 0.002, an, dists, dmodels, 0.3, 0);
-	SNP_PW s2("rs2", "chr1" , 20000, 3, 8, 0.001, 0.0025, an, dists, dmodels, 0.3, 0);
+	SNP_PW s1("rs1", "chr1" , 10000, 3, 10, 0.001, 0.002, an, dists, dmodels, 0.5, 0.5);
+	SNP_PW s2("rs2", "chr1" , 20000, 3, 8, 0.001, 0.0025, an, dists, dmodels, 0.5, 0.5);
+	cout << s1.BF1 << " "<< s1.BF2 << " "<< s1.BF3 << "\n";
 
 	cout << s1.BF2_C(&s2, 0.5, 0.3, 0.5) << "\n";
 	//vector<int> tmp;

@@ -977,9 +977,9 @@ double SNPs_PW::llk(int which){
 			//cout << d[i].pos << "\n";
 			poss.push_back(d[i].pos);
 		}
-		cout << "readld\n"; cout.flush();
+		//cout << "readld\n"; cout.flush();
 		LDmatrix ld(params->ldfile, d[st].chr, poss);
-		cout << "done\n"; cout.flush();
+		//cout << "done\n"; cout.flush();
 		for (int i = st; i < sp ; i++){
 
 			//term 1: one associated SNP for pheno 1
@@ -1005,7 +1005,7 @@ double SNPs_PW::llk(int which){
 				double beta_i2 = d[i].get_beta2();
 				double beta_j1 = d[j].get_beta1();
 				double beta_j2 = d[j].get_beta2();
-				cout << d[i].pos << " "<< d[j].pos << " "<< tmpVi << " "<< tmpVj << " "<< beta_i1<< " "<< beta_i2 << " "<< beta_j1 << " "<< beta_j2<< " "<< d[i].BF2_C(&d[j], D, params->cor, tmpVi) << " "<< d[j].BF2_C(&d[i], D, params->cor, tmpVj) << "\n"; cout.flush();
+				//cout << d[i].pos << " "<< d[j].pos << " "<< tmpVi << " "<< tmpVj << " "<< beta_i1<< " "<< beta_i2 << " "<< beta_j1 << " "<< beta_j2<< " "<< d[i].BF2_C(&d[j], D, params->cor, tmpVi) << " "<< d[j].BF2_C(&d[i], D, params->cor, tmpVj) << "\n"; cout.flush();
 				double tmp2_4 = snppri.at(i).at(0)+snppri.at(j).at(1)+d[i].BF1+d[j].BF2_C(&d[i], D, params->cor, tmpVj);
 				double tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF1+d[i].BF2_C(&d[j], D, params->cor, tmpVi);
 

@@ -97,7 +97,7 @@ void LDmatrix::read_matrix(){
         int endpos = atoi(fileinfo[2].c_str());
         // does the file match the chromosome [chr].[startpos].[endpos].gz
         if (tmpchr != chrom) continue;
-        cout << minpos << " "<< maxpos << "\n";cout.flush();
+       // cout << minpos << " "<< maxpos << "\n";cout.flush();
         if ( (startpos < minpos && endpos >= minpos) || (startpos >=minpos && startpos < maxpos)){
         	cout << "Reading LD from "<<*it << "\n";
             //cout << startpos << " "<< endpos << " here\n";
