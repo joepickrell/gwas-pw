@@ -142,6 +142,10 @@ double LDmatrix::get_ld(int p1, int p2){
    		//only storing one of (i, j) and (j, i), so need to check both
    		double t1 = (*m)(index1, index2);
    		double t2 = (*m)(index2, index1);
+   		if (index1 == index2 and t1 < 1e-8){
+   			cerr<< "ERROR: cannot find position "<< p1 << " in covariance matrix\n";
+   			exit(1);
+   		}
    		if (fabs(t1)>fabs(t2)) return t1;
    		else return t2;
 
