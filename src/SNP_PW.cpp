@@ -165,21 +165,21 @@ double SNP_PW::BF2_C(SNP_PW * s1,  double D, double C, double tmpV){
 	//get betas
 	double tmpB1 = Z1*sqrt(V1);
 	double tmpB2 = Z2*sqrt(V2);
-	cout << tmpB1 << " "<< tmpB2 << " I\n";
+	//cout << tmpB1 << " "<< tmpB2 << " I\n";
 	//get other betas
 	double beta1_1 = s1->get_beta1();
 	double beta1_2 = s1->get_beta2();
-	cout << beta1_1 << " "<< beta1_2 << " O\n";
+	//cout << beta1_1 << " "<< beta1_2 << " O\n";
 	//correct betas
 	tmpB1 = tmpB1 - beta1_1*D/tmpV;
 	tmpB2 = tmpB2 - beta1_2*D/tmpV;
 
-	cout << tmpB1 << " "<< tmpB2 << " C\n";
+	//cout << tmpB1 << " "<< tmpB2 << " C\n";
 	//new Z-scores
 	double tmpZ1 = tmpB1/ sqrt(V1);
 	double tmpZ2 = tmpB2/sqrt(V2);
 
-	cout << tmpZ1 << " "<< tmpZ2 << " Z\n";
+	//cout << tmpZ1 << " "<< tmpZ2 << " Z\n";
 	//BF
 	double r = W/ (V2+W);
 	toreturn += log ( sqrt(1-r) );
