@@ -923,12 +923,19 @@ double SNPs_PW::llk(int which){
 		double m2 = seg_toadd.at(which).at(1);
 		double m3 = seg_toadd.at(which).at(2);
 		double m4 = seg_toadd.at(which).at(3);
-		double m0 = log(pi[0]);
+
 
 		m1 = m1+log(pi[1]);
 		m2 = m2+log(pi[2]);
 		m3 = m3+log(pi[3]);
 		m4 = m4+log(pi[4]);
+
+		if (params->finemap){
+			double tmp = 1+ exp(m1-m3)+exp(m2-m3)+exp(m4-m3);
+			toreturn = m3+log(tmp);
+		}
+
+		double m0 = log(pi[0]);
 		double tmp = 1+exp(m0-m3)+ exp(m1-m3)+exp(m2-m3)+exp(m4-m3);
 		toreturn = m3+log(tmp);
 		//cout << m0 << " "<< m1 << " "<< m2 << " "<< m3 << " "<< m4 << " " << toreturn << "\n";
@@ -1028,16 +1035,20 @@ double SNPs_PW::llk(int which){
 	toadd.push_back(m1);toadd.push_back(m2);toadd.push_back(m3);toadd.push_back(m4);
 	seg_toadd.push_back(toadd);
 
-	double m0 = log(pi[0]);
+
 	//cout << m1 << " "<< m2 << " "<< m3 << " "<< m4<< "\n";
 	m1 = m1+log(pi[1]);
 	m2 = m2+log(pi[2]);
 	m3 = m3+log(pi[3]);
 	m4 = m4+log(pi[4]);
-	//double tmp = 1+exp( (m1-m0) ) +  exp( (m2-m0) )+exp( (m3-m0) )+exp( (m4-m0) );
-	//toreturn = m0 +log(tmp);
 
-	//testing
+	if (params->finemap){
+		double tmp = 1+ exp(m1-m3)+exp(m2-m3)+exp(m4-m3);
+		cout << alpha[4] << " "<< pi[4] << " "<< m1 << " "<< m2 << " "<< m3 << " "<< m4 << " " << toreturn << " "<< which << "\n";
+		toreturn = m3+log(tmp);
+		return toreturn;
+	}
+	double m0 = log(pi[0]);
 	double tmp = 1+exp(m0-m3)+ exp(m1-m3)+exp(m2-m3)+exp(m4-m3);
 	toreturn = m3+log(tmp);
 	cout << alpha[4] << " "<< pi[4] << " "<< m0 << " "<< m1 << " "<< m2 << " "<< m3 << " "<< m4 << " " << toreturn << " "<< which << "\n";
