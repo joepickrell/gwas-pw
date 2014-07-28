@@ -375,7 +375,9 @@ vector<pair< pair<int, int>, pair<double, double> > > SNPs_PW::get_cis(){
 	vector<pair<pair<int, int>, pair<double, double> > > toreturn;
 	vector<double> startalphas;
 	for (vector<double>::iterator it = alpha.begin(); it != alpha.end(); it++) startalphas.push_back(*it);
-	for (int i = 0; i < alpha.size(); i++){
+	int sti = 0;
+	if (params->finemap) sti = 1;
+	for (int i = sti; i < alpha.size(); i++){
 		toreturn.push_back(get_cis_alpha(i));
 		alpha[i] = startalphas[i];
 		set_priors();
@@ -779,13 +781,18 @@ void SNPs_PW::set_segpriors(){
 	assert (alpha.size()==5);
 	vector<double> segp;
 	double s = 0;
-	for (int i = 0; i < alpha.size(); i++) {
+	int sti = 0;
+	if (params->finemap) sti = 1;
+	//cout << sti << " sti\n"; cout.flush();
+	for (int i = sti; i < alpha.size(); i++) {
 		segp.push_back(exp(alpha[i]));
 		s+= exp(alpha[i]);
 	}
-	for (int i = 0; i < alpha.size(); i++) pi[i] = segp[i]/s;
+	for (int i = sti; i < alpha.size(); i++) pi[i] = segp[i-sti]/s;
 
-
+	//for (int i = 0; i < pi.size(); i++){
+	//		cout << pi[i] << " ok\n";
+	//}
 	// priors now constant across segments
 	/*
 	for (int i = 0; i < segments.size(); i++){
@@ -1217,12 +1224,12 @@ void SNPs::optimize_condlambda(){
 
 
 void SNPs_PW::GSL_optim(){
-	/*
+	//cout << "here2\n"; cout.flush();
 	if (params->finemap){
 		GSL_optim_fine();
 		return;
 	}
-	*/
+	//cout << "here3\n"; cout.flush();
 	int nparam = alpha.size()-1;
 	size_t iter = 0;
 	double size;
@@ -1276,6 +1283,73 @@ void SNPs_PW::GSL_optim(){
      //segpi = 1.0 /  (1.0 + exp (- gsl_vector_get(s->x, 0)));
      for (int i = 0; i <  nparam; i++) {
     	 alpha[i+1] = gsl_vector_get(s->x, i);
+    	 //cout << "finished alpha "<< i+1 << " "<< alpha[i+1] << "\n";
+     }
+
+
+     gsl_multimin_fminimizer_free (s);
+     gsl_vector_free (x);
+     gsl_vector_free(ss);
+}
+
+
+void SNPs_PW::GSL_optim_fine(){
+
+	int nparam = alpha.size()-2;
+	size_t iter = 0;
+	double size;
+    int status;
+    const gsl_multimin_fminimizer_type *T =
+    		gsl_multimin_fminimizer_nmsimplex2;
+    gsl_multimin_fminimizer *s;
+    gsl_vector *x;
+    gsl_vector *ss;
+    gsl_multimin_function lm;
+    lm.n = nparam;
+    lm.f = &GSL_llk_fine;
+    struct GSL_params p;
+    p.d = this;
+    lm.params = &p;
+    //
+    // initialize parameters
+    //
+
+    x = gsl_vector_alloc (nparam);
+    for (int i = 0; i < nparam; i++)   gsl_vector_set(x, i, alpha[i+2]);
+
+    // set initial step sizes to 1
+    ss = gsl_vector_alloc(nparam);
+    gsl_vector_set_all(ss, 1.0);
+    s = gsl_multimin_fminimizer_alloc (T, nparam);
+   // cout << "here3\n"; cout.flush();
+    gsl_multimin_fminimizer_set (s, &lm, x, ss);
+
+    do
+     {
+             iter++;
+             status = gsl_multimin_fminimizer_iterate (s);
+
+             if (status){
+                     printf ("error: %s\n", gsl_strerror (status));
+                     break;
+             }
+             size = gsl_multimin_fminimizer_size(s);
+             status = gsl_multimin_test_size (size, 0.001);
+             //cout << iter << " "<< iter %10 << "\n";
+             if (iter % 20 < 1 || iter < 20){
+            	 cout <<"iteration: "<< iter << " "<< alpha[0]<< " "<< alpha[1]<< " "<< alpha[2]<< " "<< alpha[3]<< " "<< alpha[4];
+            	 cout << " "<< s->fval << " "<< size <<  "\n";
+             }
+
+     }
+     while (status == GSL_CONTINUE && iter <5000);
+     if (iter > 4999) {
+             cerr << "WARNING: failed to converge\n";
+             //exit(1);
+     }
+     //segpi = 1.0 /  (1.0 + exp (- gsl_vector_get(s->x, 0)));
+     for (int i = 0; i <  nparam; i++) {
+    	 alpha[i+2] = gsl_vector_get(s->x, i);
     	 //cout << "finished alpha "<< i+1 << " "<< alpha[i+1] << "\n";
      }
 
@@ -1814,6 +1888,18 @@ double GSL_llk(const gsl_vector *x, void *params ){
 
 	for (int i = 0; i < na; i++){
 		((struct GSL_params *) params)->d->alpha[i+1] = gsl_vector_get(x, i);
+	}
+
+	((struct GSL_params *) params)->d->set_priors();
+	return -((struct GSL_params *) params)->d->llk();
+}
+
+double GSL_llk_fine(const gsl_vector *x, void *params ){
+	//first set times
+	int na = ((struct GSL_params *) params)->d->alpha.size()-2;
+
+	for (int i = 0; i < na; i++){
+		((struct GSL_params *) params)->d->alpha[i+2] = gsl_vector_get(x, i);
 	}
 
 	((struct GSL_params *) params)->d->set_priors();

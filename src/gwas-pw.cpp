@@ -102,13 +102,14 @@ int main(int argc, char *argv[]){
     	p.chrtodrop = s;
     }
 
-    if (cmdline.HasSwitch("-fine")) p.finemap = true;
+
     if (cmdline.HasSwitch("-dens")) {
     	p.segannot.push_back(cmdline.GetArgument("-dens", 0));
     	p.loquant = atof(cmdline.GetArgument("-dens", 1).c_str());
     	p.hiquant = atof(cmdline.GetArgument("-dens", 2).c_str());
     }
     */
+    if (cmdline.HasSwitch("-fine")) p.finemap = true;
     if (cmdline.HasSwitch("-seed")){
     	p.seed = atoi(cmdline.GetArgument("-seed", 0).c_str());
     }
@@ -158,10 +159,13 @@ int main(int argc, char *argv[]){
     vector<pair<pair<int, int>, pair<double, double> > > cis = s.get_cis();
 	string outML = p.outstem+".MLE";
 	ofstream outr(outML.c_str());
-	for (int i = 0; i < 5; i++){
-		outr << "pi_"<< i <<" "<< cis.at(i).second.first << " "<< ml[i]<< " "<< cis.at(i).second.second << "\n";
+	int sti = 0;
+	if (p.finemap) sti = 1;
+	for (int i = sti; i < 5; i++){
+		outr << "pi_"<< i <<" "<< cis.at(i-sti).second.first << " "<< ml[i]<< " "<< cis.at(i-sti).second.second << "\n";
 	}
 	outr.close();
+	if (p.finemap) return 0;
     s.MCMC(r);
 	return 0;
 }
