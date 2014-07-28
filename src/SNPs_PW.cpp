@@ -984,9 +984,9 @@ double SNPs_PW::llk(int which){
 			//cout << d[i].pos << "\n";
 			poss.push_back(d[i].pos);
 		}
-		//cout << "readld\n"; cout.flush();
+		cout << "readld\n"; cout.flush();
 		LDmatrix ld(params->ldfile, d[st].chr, poss);
-		//cout << "done\n"; cout.flush();
+		cout << "done\n"; cout.flush();
 		for (int i = st; i < sp ; i++){
 
 			//term 1: one associated SNP for pheno 1

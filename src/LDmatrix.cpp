@@ -72,65 +72,76 @@ void LDmatrix::process_infilelist(string list){
 }
 
 void LDmatrix::read_matrix(){
+	int n_nonzero = 0;
 	for (vector<string>::iterator it = infilelist.begin(); it != infilelist.end(); it++){
 		//cout << *it << "\n";
-        typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
-        boost::char_separator<char> sep("/");
-        tokenizer tokens(*it, sep);
-        vector<string> splitfile;
-        for (tokenizer::iterator tok_iter = tokens.begin();  tok_iter != tokens.end(); ++tok_iter){
-        	string tmp = *tok_iter;
-        	splitfile.push_back(tmp);
-        }
-       // for (vector<string>::iterator it2 = splitfile.begin(); it2 != splitfile.end(); it2++) cout << *it2 << " ";
-       // cout <<  "\n";
-        string filename = splitfile.at(splitfile.size()-1);
-        boost::char_separator<char> sep2(".");
-        tokenizer tokens2(filename, sep2);
-        vector<string> fileinfo;
-        for (tokenizer::iterator tok_iter = tokens2.begin();  tok_iter != tokens2.end(); ++tok_iter){
-        	string tmp = *tok_iter;
-        	fileinfo.push_back(tmp);
-        }
-        string tmpchr = fileinfo[0];
-        int startpos = atoi(fileinfo[1].c_str());
-        int endpos = atoi(fileinfo[2].c_str());
-        // does the file match the chromosome [chr].[startpos].[endpos].gz
-        if (tmpchr != chrom) continue;
-       // cout << minpos << " "<< maxpos << "\n";cout.flush();
-        if ( (startpos < minpos && endpos >= minpos) || (startpos >=minpos && startpos < maxpos)){
-        	cout << "Reading LD from "<<*it << "\n";
-            //cout << startpos << " "<< endpos << " here\n";
-        	igzstream in(it->c_str());
-        	vector<string> line;
-        	struct stat stFileInfo;
-        	int intStat;
-        	string st, buf;
-
-        	intStat = stat(it->c_str(), &stFileInfo);
-        	if (intStat !=0){
-        		std::cerr<< "ERROR: cannot open file " << *it << "\n";
-        		exit(1);
+        	typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
+        	boost::char_separator<char> sep("/");
+        	tokenizer tokens(*it, sep);
+        	vector<string> splitfile;
+        	for (tokenizer::iterator tok_iter = tokens.begin();  tok_iter != tokens.end(); ++tok_iter){
+        		string tmp = *tok_iter;
+        		splitfile.push_back(tmp);
         	}
-            while(getline(in, st)){
-            	buf.clear();
-            	stringstream ss(st);
-            	line.clear();
-            	while (ss>> buf){
-            		line.push_back(buf);
-            	}
-            	int pos1 = atoi(line[2].c_str());
-            	int pos2 = atoi(line[3].c_str());
-            	double D = atof(line[7].c_str());
-            	if (pos2index.find(pos1) != pos2index.end() && pos2index.find(pos2) != pos2index.end()){
-                	int index1 = pos2index[pos1];
-                	int index2 = pos2index[pos2];
-                	(*m)(index1, index2) = D;
-            	}
+       	// for (vector<string>::iterator it2 = splitfile.begin(); it2 != splitfile.end(); it2++) cout << *it2 << " ";
+       	// cout <<  "\n";
+       		 string filename = splitfile.at(splitfile.size()-1);
+        	boost::char_separator<char> sep2(".");
+        	tokenizer tokens2(filename, sep2);
+        	vector<string> fileinfo;
+        	for (tokenizer::iterator tok_iter = tokens2.begin();  tok_iter != tokens2.end(); ++tok_iter){
+        		string tmp = *tok_iter;
+        		fileinfo.push_back(tmp);
+       	 	}
+		if (fileinfo.size() < 3){
+			cerr << "ERROR: file name of "<<*it<<" don't have [chr].[st].[sp].gz\n";
+			exit(1);
+		}
+        	string tmpchr = fileinfo.at(0);
+        	int startpos = atoi(fileinfo.at(1).c_str());
+        	int endpos = atoi(fileinfo.at(2).c_str());
+        	// does the file match the chromosome [chr].[startpos].[endpos].gz
+        	if (tmpchr != chrom) continue;
+       		// cout << minpos << " "<< maxpos << "\n";cout.flush();
+        	if ( (startpos < minpos && endpos >= minpos) || (startpos >=minpos && startpos < maxpos)){
+        		cout << "Reading LD from "<<*it << "\n";
+        	    //cout << startpos << " "<< endpos << " here\n";
+        		igzstream in(it->c_str());
+        		vector<string> line;
+        		struct stat stFileInfo;
+        		int intStat;
+        		string st, buf;
 
+        		intStat = stat(it->c_str(), &stFileInfo);
+        		if (intStat !=0){
+        			std::cerr<< "ERROR: cannot open file " << *it << "\n";
+        			exit(1);
+        		}
+        	    while(getline(in, st)){
+        	    	buf.clear();
+            		stringstream ss(st);
+            		line.clear();
+            		while (ss>> buf){
+            			line.push_back(buf);
+            		}
+            		int pos1 = atoi(line.at(2).c_str());
+            		int pos2 = atoi(line.at(3).c_str());
+            		double D = atof(line.at(7).c_str());
+            		if (pos2index.find(pos1) != pos2index.end() && pos2index.find(pos2) != pos2index.end()){
+                		//cout << pos1 << " "<< pos2 << " "<< D << " "; cout.flush();
+				int index1 = pos2index[pos1];
+                		int index2 = pos2index[pos2];
+                		(*m)(index1, index2) = D;
+				//cout << "added "<< n_nonzero <<"\n"; cout.flush();
+				n_nonzero++;
+            		}
+
+            	}
+	    	cout << "donereading\n"; cout.flush();
             }
-        }
+	
 	}
+	cout << "done1\n";cout.flush();
 }
 
 double LDmatrix::get_ld(int p1, int p2){
