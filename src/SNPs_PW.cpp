@@ -933,6 +933,7 @@ double SNPs_PW::llk(int which){
 		if (params->finemap){
 			double tmp = 1+ exp(m1-m3)+exp(m2-m3)+exp(m4-m3);
 			toreturn = m3+log(tmp);
+			return toreturn;
 		}
 
 		double m0 = log(pi[0]);
@@ -1064,12 +1065,20 @@ void SNPs_PW::MCMC(gsl_rng *r){
 	llk();
 	string outMCMC = params->outstem+".MCMC";
 	ofstream outr(outMCMC.c_str());
-	outr << "i pi_0 pi_1 pi_2 pi_3 pi_4 lk\n";
+	outr << "i ";
+	if (!params->finemap) outr << "pi_0 ";
+	outr << "pi_1 pi_2 pi_3 pi_4 lk\n";
 	for (int i = 0; i < params->burnin; i++) {
 		MCMC_update(r);
 		if (i % params->sampfreq ==0) {
-			cout << i << " "<< pi[0]<< " "<< pi[1]<< " "<<pi[2] << " "<< pi[3] << " "<< pi[4]<< " "<< data_llk << "\n";
-			outr << "#"<< i << " "<< pi[0]<< " "<< pi[1]<< " "<<pi[2] << " "<< pi[3] << " "<< pi[4]<< " "<< data_llk << "\n";
+			cout << i << " ";
+			outr << "#" << i << " ";
+			if (!params->finemap){
+				cout << pi[0] << " ";
+				outr << pi[0] << " ";
+			}
+			cout <<  pi[1]<< " "<<pi[2] << " "<< pi[3] << " "<< pi[4]<< " "<< data_llk << "\n";
+			outr <<  pi[1]<< " "<<pi[2] << " "<< pi[3] << " "<< pi[4]<< " "<< data_llk << "\n";
 		}
 	}
 	int nsamp = 0;
@@ -1078,9 +1087,16 @@ void SNPs_PW::MCMC(gsl_rng *r){
 		naccept+= MCMC_update(r);
 		nsamp++;
 		if (i % params->sampfreq ==0) {
-			cout << i << " "<< pi[0]<< " "<< pi[1]<< " "<<pi[2] << " "<< pi[3] << " "<< pi[4]<< " "<< data_llk << "\n";
-			outr << i << " "<< pi[0]<< " "<< pi[1]<< " "<<pi[2] << " "<< pi[3] << " "<< pi[4]<< " "<< data_llk << "\n";
+			cout << i << " ";
+			outr << i << " ";
+			if (!params->finemap){
+				cout << pi[0] << " ";
+				outr << pi[0] << " ";
+			}
+			cout <<  pi[1]<< " "<<pi[2] << " "<< pi[3] << " "<< pi[4]<< " "<< data_llk << "\n";
+			outr <<  pi[1]<< " "<<pi[2] << " "<< pi[3] << " "<< pi[4]<< " "<< data_llk << "\n";
 		}
+
 	}
 	outr << "#" << (double) naccept / (double) nsamp << " :acceptance probability\n";
 }
