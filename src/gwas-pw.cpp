@@ -25,6 +25,8 @@ void printopts(){
         cout << "-jumpsd [float] SD of normally distributed MCMC jumps (0.44)\n";
         cout << "-prior [float] [float] [float] [float] [float] logistic normal prior on fractions (0,0,0,0,0)\n";
         cout << "-cor [float] correlation btw measurements of quantitative traits for studies of a single cohort [defaults to separate cohorts]\n";
+        cout << "-fine do fine-mapping\n";
+        cout << "-mcmc do MCMC\n";
         cout << "\n";
 }
 
@@ -110,6 +112,7 @@ int main(int argc, char *argv[]){
     }
     */
     if (cmdline.HasSwitch("-fine")) p.finemap = true;
+    if (cmdline.HasSwitch("-mcmc")) p.MCMC = true;
     if (cmdline.HasSwitch("-seed")){
     	p.seed = atoi(cmdline.GetArgument("-seed", 0).c_str());
     }
