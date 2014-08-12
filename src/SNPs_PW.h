@@ -50,7 +50,7 @@ public:
 	vector<pair<int, int> > read_dmodel(string);
 
 	//pre-computing likelihoods
-	vector<vector<double> > seg_toadd; //contains the relative likelihoods for all 5 models
+	vector<vector<double> > seg_toadd; //contains the relative likelihoods for all 4 models
 	bool precomputed;
 
 	//MCMC
@@ -113,6 +113,7 @@ public:
 	int golden_section_l0(double, double, double, double);
 
 	void check_input();
+	vector<double> get_segbfs(int);
 };
 
 

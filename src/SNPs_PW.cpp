@@ -571,12 +571,12 @@ void SNPs_PW::print(){
 	}
 }
 
-/*
-void SNPs::print(string outfile, string outfile2){
+
+void SNPs_PW::print(string outfile, string outfile2){
 	ogzstream out(outfile.c_str());
 	ogzstream out2(outfile2.c_str());
-	out << "id chr pos logBF Z V pi pseudologPO pseudoPPA PPA chunk";
-	out2 << "chunk chr st sp max_abs_Z logBF pi logPO PPA";
+	out << "id chr pos logBF_1 logBF_2 logBF_3 Z_1 V_1 Z_2 V_2 pi_1 pi_2 pi_3 PPA_1 PPA_2 PPA_3 chunk";
+	out2 << "chunk chr st sp max_abs_Z_"<< params->pheno1<<" max_abs_Z_"<<params->pheno2<<" logBF_1 logBF_2 logBF_3 logBF_4 pi_1 pi_2 pi_3 pi_4 PPA_1 PPA_2 PPA_3 PPA_4";
 	for (vector<string>::iterator it = annotnames.begin(); it != annotnames.end(); it++) out << " "<< *it;
 	out << "\n";
 	for (vector<string>::iterator it = segannotnames.begin(); it != segannotnames.end(); it++) out2 << " "<< *it;
@@ -586,47 +586,51 @@ void SNPs::print(string outfile, string outfile2){
 		int stindex = it->first;
 		int spindex = it->second;
 		out2 << segnum << " "<< d[stindex].chr << " "<< d[stindex].pos << " "<< d[spindex].pos << " ";
-		double segp = segpriors[segnum];
-		double seglpio = log(segp)- log(1-segp);
-		double seglPO;
-		double segbf = 0;
-		double segPPA;
-		double sum = 0;
-		double maxZ = 0;
-		for (int i = stindex; i < spindex; i++){
-			double pi = exp(snppri[i]);
-			double bf = exp(d[i].BF);
-			double Z = fabs(d[i].Z);
-			if (Z> maxZ) maxZ = Z;
-			segbf+= pi*bf;
-		}
-		seglPO = log(segbf)+ seglpio;
-		segPPA = exp(seglPO)/ (1+ exp(seglPO));
-		//if fine mapping, all priors are 1
+		vector<double> segbfs = get_segbfs(segnum);
 		if (params->finemap){
-			segp = 1;
-			segPPA = 1;
+			double tmp = segbfs[0];
+			for (int i = 0; i < 4; i++) segbfs[i] = segbfs[i] - tmp;
 		}
-		out2 << maxZ<< " "<< log(segbf) << " " << segp << " "<< seglPO << " "<< segPPA;
+		double maxZ1 = 0;
+		double maxZ2 = 0;
+		for (int i = stindex; i < spindex; i++){
+			double Z1 = fabs(d[i].Z1);
+			double Z2 = fabs(d[i].Z2);
+			if (Z1> maxZ1) maxZ1 = Z1;
+			if (Z2> maxZ2) maxZ2 = Z2;
+		}
+		vector<double> lpostodds;
+		vector<double> lpriorodds;
+		for (int i = 0; i < 4; i++) lpriorodds.push_back(log(pi[i+1]/pi[0]));
+		if (params->finemap){
+			for (int i = 0; i < 4; i++) lpriorodds[i] = log(pi[i+1]/pi[1]);
+		}
+		for (int i = 0; i < 4; i++) lpostodds.push_back(segbfs[i]+lpriorodds[i]);
+		vector<double> segPPA;
+		for (int i = 0; i < 4; i++){
+			double num = exp(lpostodds[i]);
+			double denom = 1;
+			for (int i = 0; i <4 ; i++) denom+= exp(lpostodds[i]);
+			if (params->finemap){
+				denom = 1;
+				for (int i = 1; i < 4; i++) denom += exp(lpostodds[i]);
+			}
+			segPPA.push_back(num/denom);
+		}
+
+		out2 << maxZ1<< " "<< maxZ2<< " "<< segbfs[0] <<" "<< segbfs[1]<< " "<< segbfs[2]<< " "<< segbfs[3] << " " << pi[1]<< " "<< pi[2]<< " "<< pi[3]<< " "<< pi[4] << " "<< segPPA[0]<< " "<< segPPA[1]<< " "<< segPPA[2]<< " "<< segPPA[3];
 		for (int i = 0; i < nsegannot; i++) out2 << " "<< segannot[segnum][i];
 		out2 << "\n";
 		for (int i =stindex ; i < spindex; i++){
-			//double pi = snppri[i]*segpi;
-			double pi = exp(snppri[i])*segp;
-			double num = exp(snppri[i])*exp(d[i].BF);
-			double lpio = log(pi) - log(1-pi);
-			double cPPA = num/segbf;
-			double lPO = d[i].BF + lpio;
-			double tPPA = cPPA*segPPA;
-			double PPA = exp(lPO)/  ( 1+ exp(lPO));
-			out << d[i].id << " "<< d[i].chr << " "<< d[i].pos << " "<< d[i].BF <<  " "<< d[i].Z <<  " " << d[i].V << " "<< snppri[i] << " "<< lPO  << " "<< PPA << " " << tPPA << " "<< segnum;
+
+			out << d[i].id << " "<< d[i].chr << " "<< d[i].pos << " "<< d[i].BF1 << " "<< d[i].BF2 << " " << d[i].BF3<< " "<< d[i].Z1 <<  " " << d[i].V1 << " "<< d[i].Z2 <<  " " << d[i].V2<< " "<< snppri[i][0]<< " "<< snppri[i][1]<< " "<< snppri[i][2] << " "<< segnum;
 			for (int j = 0; j < annotnames.size(); j++) out << " "<< d[i].annot[j];
 			out << "\n";
 		}
 		segnum++;
 	}
 }
-*/
+
 
 /*
 double SNPs::cross10(bool penalize){
@@ -1059,6 +1063,13 @@ double SNPs_PW::llk(int which){
 double SNPs_PW::sumlog(double logx, double logy){
         if (logx > logy) return logx + log(1 + exp(logy-logx));
         else return logy + log(1 + exp(logx-logy));
+}
+
+vector<double> SNPs_PW::get_segbfs(int i){
+	vector<double> toreturn;
+	if (!precomputed) llk();
+	for (vector<double>::iterator it = seg_toadd[i].begin(); it != seg_toadd[i].end(); it++) toreturn.push_back(*it);
+	return toreturn;
 }
 
 void SNPs_PW::MCMC(gsl_rng *r){

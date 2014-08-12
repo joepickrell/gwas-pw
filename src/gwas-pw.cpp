@@ -165,7 +165,7 @@ int main(int argc, char *argv[]){
 		outr << "pi_"<< i <<" "<< cis.at(i-sti).second.first << " "<< ml[i]<< " "<< cis.at(i-sti).second.second << "\n";
 	}
 	outr.close();
-	if (p.finemap) return 0;
+	//if (p.finemap) return 0;
     s.MCMC(r);
 	return 0;
 }
