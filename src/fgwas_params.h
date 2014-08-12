@@ -65,6 +65,7 @@ public:
 	double MCMC_gauss_SD;
 	double cor;
 	bool overlap;
+	bool MCMC;
 };
 
 

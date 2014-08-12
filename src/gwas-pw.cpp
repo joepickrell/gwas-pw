@@ -167,7 +167,7 @@ int main(int argc, char *argv[]){
 	outr.close();
 	if (p.print) s.print(p.outstem+".bfs.gz", p.outstem+".segbfs.gz");
 	//if (p.finemap) return 0;
-    //s.MCMC(r);
+    if (p.MCMC) s.MCMC(r);
 	return 0;
 }
 

@@ -1074,6 +1074,11 @@ vector<double> SNPs_PW::get_segbfs(int i){
 
 void SNPs_PW::MCMC(gsl_rng *r){
 	llk();
+	double spi1 = 0;
+	double spi2 = 0;
+	double spi3 = 0;
+	double spi4 = 0;
+	int ns = 0;
 	string outMCMC = params->outstem+".MCMC";
 	ofstream outr(outMCMC.c_str());
 	outr << "i ";
@@ -1106,10 +1111,19 @@ void SNPs_PW::MCMC(gsl_rng *r){
 			}
 			cout <<  pi[1]<< " "<<pi[2] << " "<< pi[3] << " "<< pi[4]<< " "<< data_llk << "\n";
 			outr <<  pi[1]<< " "<<pi[2] << " "<< pi[3] << " "<< pi[4]<< " "<< data_llk << "\n";
+			spi1 += pi[1];
+			spi2 += pi[2];
+			spi3 += pi[3];
+			spi4 += pi[4];
+			ns++;
 		}
 
 	}
-	outr << "#" << (double) naccept / (double) nsamp << " :acceptance probability\n";
+	outr << "# " << (double) naccept / (double) nsamp << " :acceptance probability\n";
+	outr << "# " << spi1/ (double) ns << " : mean pi_1\n";
+	outr << "# " << spi2/ (double) ns << " : mean pi_2\n";
+	outr << "# " << spi3/ (double) ns << " : mean pi_3\n";
+	outr << "# " << spi4/ (double) ns << " : mean pi_4\n";
 }
 
 int SNPs_PW::MCMC_update(gsl_rng *r){
