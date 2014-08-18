@@ -56,4 +56,4 @@ plot(toplot[,6], toplot[,9], xlab = "ln(BF) [model 3]", ylab = "log10(Stephens B
 abline(0, 1, col = "grey")
 
 dev.off()
-
+write.table(toplot, file = "m1_c-4.toplot", quote = F, row.names = F, col.names = F)
