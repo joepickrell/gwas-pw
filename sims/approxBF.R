@@ -11,7 +11,17 @@ approxBF = function(g, p){
 	abf1 = ABF1(Z1, Z2, V1, V2, 0.5, cc)
 	abf2 = ABF2(Z1, Z2, V1, V2, 0.5, cc)
 	abf3 = ABF3(Z1, Z2, V1, V2, 0.5, cc)
-	return(c(abf1, abf2, abf3))	
+	WABF1 = WABF(Z1, V1, 0.5)
+	WABF2 = WABF(Z2, V2, 0.5)
+	return(c(abf1, abf2, abf3, Z1, Z2, V1, V2, WABF1, WABF2))	
+}
+
+WABF = function(Z, V, W){
+        r = W/(V+W)
+        toreturn = log(sqrt(1-r))
+        tmp = Z*Z*r
+        toreturn = toreturn + tmp/ 2
+        return(toreturn)
 }
 
 ABF1 = function(Z1, Z2, V1, V2, W, C){

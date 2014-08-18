@@ -50,6 +50,9 @@ logBF.rankone.matrix = function(G,Y,sigmaa,pi0=0.5,m=0){
 	VYX = (1/n)*crossprod(Y,G) # this is (1/n) t(Y) %*% G, a d by p matrix
 	VYY = (1/n)*crossprod(Y) # (1/n) t(Y) %*% Y, a d by d matrix
 	VXX = (1/n)*colSums(G*G) # a p vector of (1/n) ||g|| values
+	print(VYX)
+	print(VYY)
+	print(VXX)
 	prior = rep(0,3^d)
 	gamma=matrix(0,nrow=3^d,ncol=d)
 	lbf = matrix(0,nrow=3^d, ncol=p)
