@@ -398,8 +398,8 @@ pair< pair<int, int>, pair<double, double> > SNPs_PW::get_cis_alpha(int which){
 	double test = alpha[which];
 	//cout <<  startlk << " "<< thold << " "<< test<< "\n";
 	//for (int i = 0; i < 5; i++) cout << alpha[i] <<  " "<< pi[i] << " "<<  i << "\n";
-	//if (test > max) max = test+20.0;
-	//if (test < min) min = test-20.0;
+	if (test > max) max = test+20.0;
+	if (test < min) min = test-20.0;
 	//if (max < 0) max = 20.0;
 	//if (min > 0) min = -20.0;
 
