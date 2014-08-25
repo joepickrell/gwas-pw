@@ -608,14 +608,14 @@ void SNPs_PW::print(string outfile, string outfile2){
 		for (int i = 0; i < 4; i++) lpostodds.push_back(segbfs[i]+lpriorodds[i]);
 		vector<double> segPPA;
 		for (int i = 0; i < 4; i++){
-			double num = exp(lpostodds[i]);
-			double denom = 1;
-			for (int i = 0; i <4 ; i++) denom+= exp(lpostodds[i]);
+			double num = lpostodds[i];
+			double denom = 0;
+			for (int i = 0; i <4 ; i++) denom = sumlog(denom,  lpostodds[i]);
 			if (params->finemap){
-				denom = 1;
-				for (int i = 1; i < 4; i++) denom += exp(lpostodds[i]);
+				denom = 0;
+				for (int i = 1; i < 4; i++) denom = sumlog(denom, lpostodds[i]);
 			}
-			segPPA.push_back(num/denom);
+			segPPA.push_back(exp(num - denom));
 		}
 
 		out2 << maxZ1<< " "<< maxZ2<< " "<< segbfs[0] <<" "<< segbfs[1]<< " "<< segbfs[2]<< " "<< segbfs[3] << " " << pi[1]<< " "<< pi[2]<< " "<< pi[3]<< " "<< pi[4] << " "<< segPPA[0]<< " "<< segPPA[1]<< " "<< segPPA[2]<< " "<< segPPA[3];
@@ -1329,7 +1329,7 @@ void SNPs_PW::GSL_optim(){
      }
      while (status == GSL_CONTINUE && iter <5000);
      if (iter > 4999) {
-             cerr << "WARNING: failed to converge\n";
+             cerr << "WARNING: failed to converge. Maybe try -mcmc to check parameter estimates.\n";
              //exit(1);
      }
      //segpi = 1.0 /  (1.0 + exp (- gsl_vector_get(s->x, 0)));
@@ -1396,7 +1396,7 @@ void SNPs_PW::GSL_optim_fine(){
      }
      while (status == GSL_CONTINUE && iter <5000);
      if (iter > 4999) {
-             cerr << "WARNING: failed to converge\n";
+             cerr << "WARNING: failed to converge. Maybe try -mcmc to check parameter estimates.\n";
              //exit(1);
      }
      //segpi = 1.0 /  (1.0 + exp (- gsl_vector_get(s->x, 0)));
