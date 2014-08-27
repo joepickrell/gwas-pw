@@ -585,7 +585,7 @@ void SNPs_PW::print(string outfile, string outfile2){
 	for (vector<pair<int, int> >::iterator it = segments.begin(); it != segments.end(); it++){
 		int stindex = it->first;
 		int spindex = it->second;
-		out2 << segnum << " "<< d[stindex].chr << " "<< d[stindex].pos << " "<< d[spindex].pos << " ";
+		out2 << segnum << " "<< d[stindex].chr << " "<< d[stindex].pos << " "<< d[spindex-1].pos << " ";
 		vector<double> segbfs = get_segbfs(segnum);
 		if (params->finemap){
 			double tmp = segbfs[0];
