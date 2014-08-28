@@ -9,12 +9,24 @@
 #include <boost/numeric/ublas/io.hpp>
 
 
-#include "SNP_PW.h"
+#include "SNPs_PW.h"
 #include "fgwas_params.h"
 #include "LDmatrix.h"
 using namespace std;
 
 int main(){
+
+	Fgwas_params p;
+	p.infile = "/Users/jkpickrell/projects/gwas-pw/t.gz";
+	p.pairwise = true;
+	p.pheno1 = "1";
+	p.pheno2 = "2";
+	p.finemap = true;
+	SNPs_PW s(&p);
+	cout << s.d[0].BF1+s.d[1].BF2_C(&s.d[0], 0.0235308159933, 0, 0.0745772458041) << "\n";
+	cout <<s.d[0].BF1+s.d[1].BF2 << "\n";
+	//cout << s.d[1].BF2 << " BF2 "<< s.d[1].BF2_C(&s.d[0], 0.009, 0, 0.081)  <<" BF2_C\n";
+	/*
 	boost::numeric::ublas::compressed_matrix<double> m (3, 3, 3 * 3);
 	for (unsigned i = 0; i < m.size1 (); ++ i)
 		for (unsigned j = 0; j < m.size2 (); ++ j)
@@ -26,6 +38,7 @@ int main(){
 			cout << m(i,j) << "\n";
 		}
 	}
+
 	vector<bool> an;
 	vector<int> dists;
 	vector<vector<pair<int, int> > > dmodels;
@@ -34,6 +47,7 @@ int main(){
 	cout << s1.BF1 << " "<< s1.BF2 << " "<< s1.BF3 << "\n";
 
 	cout << s1.BF2_C(&s2, 0.5, 0.3, 0.5) << "\n";
+	*/
 	//vector<int> tmp;
 	//tmp.push_back(106048793); tmp.push_back(106048960); tmp.push_back(106049818);
 	//LDmatrix ldm("/Users/jkpickrell/projects/gwas-pw/covariance_matrix/all_ldfiles", "chr14", tmp);

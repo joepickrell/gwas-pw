@@ -124,7 +124,7 @@ double SNP_PW::BF1_C(SNP_PW* s1, double D, double C, double tmpV){
 	// Z_cor2 = (beta_2 - beta1_2*D/ tmpV)/SE
 	double toreturn = 0;
 	double r = W/ (V1+W);
-
+	double K = D/tmpV;
 	//get betas
 	double tmpB1 = Z1*sqrt(V1);
 	double tmpB2 = Z2*sqrt(V2);
@@ -134,12 +134,17 @@ double SNP_PW::BF1_C(SNP_PW* s1, double D, double C, double tmpV){
 	double beta1_2 = s1->get_beta2();
 
 	//correct betas
-	tmpB1 = tmpB1 - beta1_1*D/tmpV;
-	tmpB2 = tmpB2 - beta1_2*D/tmpV;
+
+
+	tmpB1 = tmpB1 - beta1_1*K;
+	tmpB2 = tmpB2 - beta1_2*K;
 
 	//new Z-scores
-	double tmpZ1 = tmpB1/ sqrt(V1);
-	double tmpZ2 = tmpB2/sqrt(V2);
+	double newV1 = V1+ K*K * s1->V1;
+	double newV2 = V2+ K*K * s1->V2;
+
+	double tmpZ1 = tmpB1/ sqrt(newV1);
+	double tmpZ2 = tmpB2/sqrt(newV2);
 
 	//calc_BF
 	toreturn += log ( sqrt(1-r) );
@@ -162,6 +167,7 @@ double SNP_PW::calc_logBF2(double C){
 double SNP_PW::BF2_C(SNP_PW * s1,  double D, double C, double tmpV){
 	double toreturn = 0;
 
+	double K = D/tmpV;
 	//get betas
 	double tmpB1 = Z1*sqrt(V1);
 	double tmpB2 = Z2*sqrt(V2);
@@ -171,13 +177,18 @@ double SNP_PW::BF2_C(SNP_PW * s1,  double D, double C, double tmpV){
 	double beta1_2 = s1->get_beta2();
 	//cout << beta1_1 << " "<< beta1_2 << " O\n";
 	//correct betas
-	tmpB1 = tmpB1 - beta1_1*D/tmpV;
-	tmpB2 = tmpB2 - beta1_2*D/tmpV;
+
+	tmpB1 = tmpB1 - beta1_1*K;
+	tmpB2 = tmpB2 - beta1_2*K;
 
 	//cout << tmpB1 << " "<< tmpB2 << " C\n";
 	//new Z-scores
-	double tmpZ1 = tmpB1/ sqrt(V1);
-	double tmpZ2 = tmpB2/sqrt(V2);
+	//cout << K << " K\n";
+	double newV1 = V1+ K*K * s1->V1;
+	double newV2 = V2+ K*K * s1->V2;
+
+	double tmpZ1 = tmpB1/ sqrt(newV1);
+	double tmpZ2 = tmpB2/sqrt(newV2);
 
 	//cout << tmpZ1 << " "<< tmpZ2 << " Z\n";
 	//BF
@@ -204,7 +215,7 @@ double SNP_PW::calc_logBF3( double C){
 
 double SNP_PW::BF3_C(SNP_PW* s1, double D, double C, double tmpV){
 	double toreturn = 0;
-
+	double K = D/tmpV;
 	//get betas
 	double tmpB1 = Z1*sqrt(V1);
 	double tmpB2 = Z2*sqrt(V2);
@@ -214,12 +225,16 @@ double SNP_PW::BF3_C(SNP_PW* s1, double D, double C, double tmpV){
 	double beta1_2 = s1->get_beta2();
 
 	//correct betas
-	tmpB1 = tmpB1 - beta1_1*D/tmpV;
-	tmpB2 = tmpB2 - beta1_2*D/tmpV;
+
+	tmpB1 = tmpB1 - beta1_1*K;
+	tmpB2 = tmpB2 - beta1_2*K;
 
 	//new Z-scores
-	double tmpZ1 = tmpB1/ sqrt(V1);
-	double tmpZ2 = tmpB2/sqrt(V2);
+	double newV1 = V1+ K*K * s1->V1;
+	double newV2 = V2+ K*K * s1->V2;
+
+	double tmpZ1 = tmpB1/ sqrt(newV1);
+	double tmpZ2 = tmpB2/sqrt(newV2);
 
 	//BF
 	double r1 = W/ (V1+W);
