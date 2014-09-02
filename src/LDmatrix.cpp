@@ -12,7 +12,7 @@ LDmatrix::LDmatrix(){
 }
 
 
-LDmatrix::LDmatrix(string infiles, string chr, vector<int> pos){
+LDmatrix::LDmatrix(string infiles, string chr, vector<int> pos, int N){
 
 	// give it the positions to calculate LD for
 	// also list of input files in a single file
@@ -21,6 +21,7 @@ LDmatrix::LDmatrix(string infiles, string chr, vector<int> pos){
 	pos2keep.clear();
 	pos2index.clear();
 	index2pos.clear();
+	Nhap = N;
 	//m.clear();
 	//cout << "here2\n"; cout.flush();
 	int index = 0;

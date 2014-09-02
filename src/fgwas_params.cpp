@@ -39,6 +39,7 @@ Fgwas_params::Fgwas_params(){
 		alpha_prior.push_back(0);
 	}
 	cor = 0;
+	Nhap = 0;
 }
 
 void Fgwas_params::print_stdout(){

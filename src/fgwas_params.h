@@ -66,6 +66,7 @@ public:
 	double cor;
 	bool overlap;
 	bool MCMC;
+	int Nhap;
 };
 
 

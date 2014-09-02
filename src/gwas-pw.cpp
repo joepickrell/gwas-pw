@@ -26,6 +26,7 @@ void printopts(){
         cout << "-jumpsd [float] SD of normally distributed MCMC jumps (0.44)\n";
         cout << "-prior [float] [float] [float] [float] [float] logistic normal prior on fractions (0,0,0,0,0)\n";
         cout << "-cor [float] correlation btw measurements of quantitative traits for studies of a single cohort [defaults to separate cohorts]\n";
+        cout << "-nhap [int] number of haplotypes used in the estimatation of the covariance matrix\n";
         cout << "-fine do fine-mapping\n";
         cout << "-mcmc do MCMC\n";
         cout << "\n";
@@ -50,8 +51,16 @@ int main(int argc, char *argv[]){
     if (cmdline.HasSwitch("-o")) p.outstem = cmdline.GetArgument("-o", 0);
 
     //LD file
-    if (cmdline.HasSwitch("-ld")) p.ldfile = cmdline.GetArgument("-ld", 0);
-    else if (cmdline.HasSwitch("-c")){
+    if (cmdline.HasSwitch("-ld")) {
+    	p.ldfile = cmdline.GetArgument("-ld", 0);
+    	if (cmdline.HasSwitch("-hnap")) p.Nhap = atoi(cmdline.GetArgument("-nhap", 0).c_str());
+    	else{
+    		cerr << "ERROR: inputing LD matrix, -nhap flag\n";
+    	   	printopts();
+    	   	exit(1);
+    	}
+    }
+    else if (cmdline.HasSwitch("-cor")){
     	cerr << "ERROR: single cohort, need an LD file";
     	printopts();
     	exit(1);

@@ -997,7 +997,7 @@ double SNPs_PW::llk(int which){
 			poss.push_back(d[i].pos);
 		}
 		cout << "readld\n"; cout.flush();
-		LDmatrix ld(params->ldfile, d[st].chr, poss);
+		LDmatrix ld(params->ldfile, d[st].chr, poss, params->Nhap);
 		cout << "done\n"; cout.flush();
 		for (int i = st; i < sp ; i++){
 
