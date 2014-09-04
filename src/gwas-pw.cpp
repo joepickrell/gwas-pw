@@ -53,7 +53,7 @@ int main(int argc, char *argv[]){
     //LD file
     if (cmdline.HasSwitch("-ld")) {
     	p.ldfile = cmdline.GetArgument("-ld", 0);
-    	if (cmdline.HasSwitch("-hnap")) p.Nhap = atoi(cmdline.GetArgument("-nhap", 0).c_str());
+    	if (cmdline.HasSwitch("-nhap")) p.Nhap = atoi(cmdline.GetArgument("-nhap", 0).c_str());
     	else{
     		cerr << "ERROR: inputing LD matrix, -nhap flag\n";
     	   	printopts();
