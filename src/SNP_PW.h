@@ -39,9 +39,9 @@ public:
 	double BF3; // [1,1]
 
 	//corrected BFs including other SNP in LD
-	double BF1_C(SNP_PW*, double, double, double);
-	double BF2_C(SNP_PW*, double, double, double);
-	double BF3_C(SNP_PW*, double, double, double);
+	double BF1_C(SNP_PW*, double, pair<double, double>);
+	double BF2_C(SNP_PW*, double, pair<double, double>);
+	double BF3_C(SNP_PW*, double, pair<double, double>);
 
 	//return betas
 	double get_beta1();

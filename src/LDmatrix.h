@@ -22,12 +22,17 @@ public:
 	string chrom;
 	int minpos, maxpos, Nhap;
 	double get_ld(int, int);
+	pair<double, double> get_R(int, int);
+	vector<double> get_hapfreqs(double, double, double);
+	vector<vector<double> > get_cov(vector<double>);
+	vector<double> get_delta(vector<double>);
 private:
 	boost::numeric::ublas::compressed_matrix<double>*m;
 	map<int, int> pos2index;
 	map<int, int> index2pos;
 	set<int> pos2keep;
 	vector<string> infilelist;
+
 };
 
 

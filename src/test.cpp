@@ -19,12 +19,17 @@ int main(){
 	Fgwas_params p;
 	p.infile = "/Users/jkpickrell/projects/gwas-pw/t.gz";
 	p.pairwise = true;
-	p.pheno1 = "1";
-	p.pheno2 = "2";
-	p.finemap = true;
+	p.pheno1 = "HDL";
+	p.pheno2 = "LDL";
+	//p.finemap = true;
+	p.cor = 0;
+	p.overlap = true;
+	p.ldfile = "/Users/jkpickrell/projects/gwas-pw/covariance_matrix/all_ldfiles";
+	p.K = 2;
 	SNPs_PW s(&p);
-	cout << s.d[0].BF1+s.d[1].BF2_C(&s.d[0], 0.0235308159933, 0, 0.0745772458041) << "\n";
-	cout <<s.d[0].BF1+s.d[1].BF2 << "\n";
+	s.llk();
+	//cout << s.d[0].BF1+s.d[1].BF2_C(&s.d[0], 0.0235308159933, 0, 0.0745772458041) << "\n";
+	//cout <<s.d[0].BF1+s.d[1].BF2 << "\n";
 	//cout << s.d[1].BF2 << " BF2 "<< s.d[1].BF2_C(&s.d[0], 0.009, 0, 0.081)  <<" BF2_C\n";
 	/*
 	boost::numeric::ublas::compressed_matrix<double> m (3, 3, 3 * 3);
@@ -49,8 +54,10 @@ int main(){
 	cout << s1.BF2_C(&s2, 0.5, 0.3, 0.5) << "\n";
 	*/
 	//vector<int> tmp;
-	//tmp.push_back(106048793); tmp.push_back(106048960); tmp.push_back(106049818);
-	//LDmatrix ldm("/Users/jkpickrell/projects/gwas-pw/covariance_matrix/all_ldfiles", "chr14", tmp);
+	//tmp.push_back(4123849); tmp.push_back(4131181);
+	//LDmatrix ldm("/Users/jkpickrell/projects/gwas-pw/covariance_matrix/all_ldfiles", "chr1", tmp, 100);
+	//pair<double, double> test = ldm.get_R(4123849, 4131181);
+	//cout << test.first << " "<< test.second << "\n";
 	//cout << ldm.get_ld(106048793, 106048793) << "\n" << ldm.get_ld(106049818, 106048793) << "\n";
 	//vector<double> m;
 	//m.push_back(-2.0);

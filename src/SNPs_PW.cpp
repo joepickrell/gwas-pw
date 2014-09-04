@@ -996,9 +996,9 @@ double SNPs_PW::llk(int which){
 			//cout << d[i].pos << "\n";
 			poss.push_back(d[i].pos);
 		}
-		cout << "readld\n"; cout.flush();
+		//cout << "readld\n"; cout.flush();
 		LDmatrix ld(params->ldfile, d[st].chr, poss, params->Nhap);
-		cout << "done\n"; cout.flush();
+		//cout << "done\n"; cout.flush();
 		for (int i = st; i < sp ; i++){
 
 			//term 1: one associated SNP for pheno 1
@@ -1017,22 +1017,24 @@ double SNPs_PW::llk(int which){
 			//term 4: two associated SNPs, both phenos
 			double tmp2add4 = -10000;
 			for (int j = i+1; j < sp ; j++){
-				double D = ld.get_ld(d[i].pos, d[j].pos);
-				double tmpVi = ld.get_ld(d[i].pos, d[i].pos);
-				double tmpVj = ld.get_ld(d[j].pos, d[j].pos);
+				//double D = ld.get_ld(d[i].pos, d[j].pos);
+				//double tmpVi = ld.get_ld(d[i].pos, d[i].pos);
+				//double tmpVj = ld.get_ld(d[j].pos, d[j].pos);
 				//double beta_i1 = d[i].get_beta1();
 				//double beta_i2 = d[i].get_beta2();
 				//double beta_j1 = d[j].get_beta1();
 				//double beta_j2 = d[j].get_beta2();
-				//cout << d[i].pos << " "<< d[j].pos << " "<< tmpVi << " "<< tmpVj << " "<< beta_i1<< " "<< beta_i2 << " "<< beta_j1 << " "<< beta_j2<< " "<< d[i].BF2_C(&d[j], D, params->cor, tmpVi) << " "<< d[j].BF2_C(&d[i], D, params->cor, tmpVj) << "\n"; cout.flush();
-				double tmp2_4 = snppri.at(i).at(0)+snppri.at(j).at(1)+d[i].BF1+d[j].BF2_C(&d[i], D, params->cor, tmpVj);
-				double tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF1+d[i].BF2_C(&d[j], D, params->cor, tmpVi);
+				pair<double, double> Ri = ld.get_R(d[i].pos, d[j].pos); //this is D/Var( V_i )
+				pair<double, double> Rj = ld.get_R(d[j].pos, d[i].pos); //this is D/Var( V_j );
 
-				if (d[i].BF1+d[j].BF2_C(&d[i], D, params->cor, tmpVj)  > d[i].BF1+d[j].BF2+3){
+				double tmp2_4 = snppri.at(i).at(0)+snppri.at(j).at(1)+d[i].BF1+d[j].BF2_C(&d[i], params->cor, Rj);
+				double tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF1+d[i].BF2_C(&d[j],params->cor, Ri);
 
-					cout << d[i].id << " "<< d[j].id << " "<< tmp2_4 << " "<< d[i].BF1+d[j].BF2_C(&d[i], D, params->cor, tmpVj) << " "<< tmp2_42 <<  " "<< d[j].BF1+d[i].BF2_C(&d[j], D, params->cor, tmpVi) << "\n";
+				//if (d[i].BF1+d[j].BF2_C(&d[i], D, params->cor, tmpVj)  > d[i].BF1+d[j].BF2+3){
 
-				}
+				//	cout << d[i].id << " "<< d[j].id << " "<< tmp2_4 << " "<< d[i].BF1+d[j].BF2_C(&d[i], D, params->cor, tmpVj) << " "<< tmp2_42 <<  " "<< d[j].BF1+d[i].BF2_C(&d[j], D, params->cor, tmpVi) << "\n";
+
+				//}
 				tmp2add4 = sumlog(tmp2add4, tmp2_4);
 
 				tmp2add4 = sumlog(tmp2add4, tmp2_42);

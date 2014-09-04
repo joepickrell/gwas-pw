@@ -105,7 +105,7 @@ void LDmatrix::read_matrix(){
         	if (tmpchr != chrom) continue;
        		// cout << minpos << " "<< maxpos << "\n";cout.flush();
         	if ( (startpos < minpos && endpos >= minpos) || (startpos >=minpos && startpos < maxpos)){
-        		cout << "Reading LD from "<<*it << "\n";
+        		cout << "Reading LD from "<<*it << "..."; cout.flush();
         	    //cout << startpos << " "<< endpos << " here\n";
         		igzstream in(it->c_str());
         		vector<string> line;
@@ -138,13 +138,111 @@ void LDmatrix::read_matrix(){
             		}
 
             	}
-	    	cout << "donereading\n"; cout.flush();
+	    	cout << "done\n"; cout.flush();
             }
 	
 	}
-	cout << "done1\n";cout.flush();
 }
 
+pair<double, double> LDmatrix::get_R(int p1, int p2){
+	// return R = D/V1
+	// and the approximate variance in R.
+	// var(R) = \delta \sigma \delta^T, see multivariate delta method in Agresti (2002)
+
+	double D = get_ld(p1, p2);
+	double V1 = get_ld(p1, p1);
+	double V2 = get_ld(p2, p2);
+	double R = D/V1;
+	vector<double> hapfreqs = get_hapfreqs(V1, V2, D);
+	vector<vector<double> > C = get_cov(hapfreqs);
+	vector<double> delta = get_delta(hapfreqs);
+
+	vector<double> dC;
+	for (int i = 0; i < 3; i++){
+		double tmp =0;
+		for (int j = 0; j < 3; j++){
+			tmp+= delta[j]*C[i][j];
+		}
+		dC.push_back(tmp);
+	}
+	double VR = dC[0]*delta[0] + dC[1]*delta[1]+dC[2]*delta[2];
+	return(make_pair(R, VR));
+}
+
+vector<double> LDmatrix::get_delta(vector<double> fs){
+	vector<double> toreturn;
+	double p = fs[0]+fs[1];
+	double q = 1-p;
+	double t1 = (fs[1]*q*q - fs[2]*p*p)/ (p*p*q*q);
+	double t2 = (-fs[2]*p*p - fs[0]*q*q) / (p*p*q*q);
+	double t3 = 1/(p-1);
+	toreturn.push_back(t1);toreturn.push_back(t2);toreturn.push_back(t3);
+	//cout << t1 << " "<< t2 << " "<< t3 << "\n";
+	return toreturn;
+}
+vector<vector<double> > LDmatrix::get_cov(vector<double> fs){
+	vector<vector<double> > toreturn;
+	for (int i = 0; i < 3; i++){
+		vector<double> tmp;
+		for (int i =0 ; i < 3; i++) tmp.push_back(0.0);
+		toreturn.push_back(tmp);
+	}
+	for (int i = 0; i < 3; i++){
+		for (int j = i; j< 3; j++){
+			if (i == j) toreturn[i][j] = fs[i] *(1-fs[i])/(double)Nhap;
+			else{
+				toreturn[i][j] = -1* fs[i]*fs[j] / (double)Nhap;
+				toreturn[j][i] = -1* fs[i]*fs[j] / (double)Nhap;
+			}
+		}
+	}
+	//for (int i = 0; i < 3; i++){
+	//	for (int j = 0; j < 3; j++){
+	//		cout << toreturn[i][j] << " ";
+	//	}
+	//	cout << "\n";
+	//}
+	return(toreturn);
+}
+
+
+vector<double> LDmatrix::get_hapfreqs(double V1, double V2, double D){
+	double tmpp1_1 = (1.0 + sqrt(1-4.0*V1))/2.0;
+	double tmpp1_2 = (1.0 - sqrt(1-4.0*V1))/2.0;
+
+	double tmpp2_1 = (1.0 + sqrt(1-4.0*V2))/2.0;
+	double tmpp2_2 = (1.0 - sqrt(1-4.0*V2))/2.0;
+
+	double f11, f10, f01, p1, p2;
+	double tmpf11_1 = D+ tmpp1_1* tmpp2_1;
+	double tmpf11_2 = D+ tmpp1_2* tmpp2_1;
+	if (tmpf11_1 < tmpp1_1 and tmpf11_1 < tmpp2_1){
+		f11 = tmpf11_1;
+		p1 = tmpp1_1;
+		p2 = tmpp2_1;
+		f10 = p1- f11;
+		f01 = p2 - f11;
+	}
+	else if(tmpf11_2 < tmpp1_2 and tmpf11_2 < tmpp2_1){
+		f11 = tmpf11_2;
+		p1 = tmpp1_2;
+		p2 = tmpp2_1;
+		f10 = p1 -f11;
+		f01 = p2 - f11;
+	}
+
+	else{
+		cerr << "ERROR: trouble getting haplotype frequencies from V1: "<<V1 <<" V2: "<< V2 << "D: "<< D<< "\n";
+		exit(1);
+	}
+	vector<double> toreturn;
+	//cout << p1 << " "<< p2 << "\n";
+	toreturn.push_back(f11); toreturn.push_back(f10); toreturn.push_back(f01); toreturn.push_back(1-f11-f01-f10);
+	//for (vector<double>::iterator it = toreturn.begin(); it != toreturn.end(); it++) cout << *it << " ";
+	//cout << "\n";
+	return(toreturn);
+
+}
 double LDmatrix::get_ld(int p1, int p2){
 	assert(pos2index.find(p1) != pos2index.end());
 	assert(pos2index.find(p2) != pos2index.end());

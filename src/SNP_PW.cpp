@@ -118,13 +118,12 @@ double SNP_PW::calc_logBF1(double C){
 	return toreturn;
 }
 
-double SNP_PW::BF1_C(SNP_PW* s1, double D, double C, double tmpV){
+double SNP_PW::BF1_C(SNP_PW* s1, double C, pair<double, double> R){
 	// testing for an effect only on phenotype 1. Regress out effect beta1_1 from phenotype 1, beta1_2 from phenotype 2.
 	// Z_cor1 = (beta_1 - beta1_1*D/ tmpV)/SE
 	// Z_cor2 = (beta_2 - beta1_2*D/ tmpV)/SE
 	double toreturn = 0;
 
-	double K = D/tmpV;
 	//get betas
 	double tmpB1 = Z1*sqrt(V1);
 	double tmpB2 = Z2*sqrt(V2);
@@ -136,12 +135,12 @@ double SNP_PW::BF1_C(SNP_PW* s1, double D, double C, double tmpV){
 	//correct betas
 
 
-	tmpB1 = tmpB1 - beta1_1*K;
-	tmpB2 = tmpB2 - beta1_2*K;
+	tmpB1 = tmpB1 - beta1_1*R.first;
+	tmpB2 = tmpB2 - beta1_2*R.first;
 
 	//new Z-scores
-	double newV1 = V1+ K*K * s1->V1;
-	double newV2 = V2+ K*K * s1->V2;
+	double newV1 = V1+ s1->V1*( 2*R.second - R.first *R.first);
+	double newV2 = V2+ s1->V2*( 2*R.second - R.first *R.first);
 
 	double tmpZ1 = tmpB1/ sqrt(newV1);
 	double tmpZ2 = tmpB2/sqrt(newV2);
@@ -165,33 +164,30 @@ double SNP_PW::calc_logBF2(double C){
 	return toreturn;
 }
 
-double SNP_PW::BF2_C(SNP_PW * s1,  double D, double C, double tmpV){
+double SNP_PW::BF2_C(SNP_PW * s1,  double C, pair<double, double> R){
 	double toreturn = 0;
 
-	double K = D/tmpV;
 	//get betas
 	double tmpB1 = Z1*sqrt(V1);
 	double tmpB2 = Z2*sqrt(V2);
-	//cout << tmpB1 << " "<< tmpB2 << " I\n";
+
 	//get other betas
 	double beta1_1 = s1->get_beta1();
 	double beta1_2 = s1->get_beta2();
-	//cout << beta1_1 << " "<< beta1_2 << " O\n";
+
 	//correct betas
 
-	tmpB1 = tmpB1 - beta1_1*K;
-	tmpB2 = tmpB2 - beta1_2*K;
-
-	//cout << tmpB1 << " "<< tmpB2 << " C\n";
+	//cout<< tmpB1 << " "<< beta1_1 << " ";
+	tmpB1 = tmpB1 - beta1_1*R.first;
+	tmpB2 = tmpB2 - beta1_2*R.first;
+	//cout << id << " "<< tmpB1 << " "<< tmpB2 << " "<< R.first << " ?\n";
 	//new Z-scores
-	//cout << K << " K\n";
-	double newV1 = V1+ K*K * s1->V1;
-	double newV2 = V2+ K*K * s1->V2;
+	double newV1 = V1+ s1->V1*( 2*R.second - R.first *R.first);
+	double newV2 = V2+ s1->V2*( 2*R.second - R.first *R.first);
 
 	double tmpZ1 = tmpB1/ sqrt(newV1);
 	double tmpZ2 = tmpB2/sqrt(newV2);
 
-	//cout << tmpZ1 << " "<< tmpZ2 << " Z\n";
 	//BF
 	double r = W/ (newV2+W);
 	toreturn += log ( sqrt(1-r) );
@@ -214,9 +210,9 @@ double SNP_PW::calc_logBF3( double C){
 	return toreturn;
 }
 
-double SNP_PW::BF3_C(SNP_PW* s1, double D, double C, double tmpV){
+double SNP_PW::BF3_C(SNP_PW* s1, double C, pair<double, double> R){
 	double toreturn = 0;
-	double K = D/tmpV;
+
 	//get betas
 	double tmpB1 = Z1*sqrt(V1);
 	double tmpB2 = Z2*sqrt(V2);
@@ -227,12 +223,14 @@ double SNP_PW::BF3_C(SNP_PW* s1, double D, double C, double tmpV){
 
 	//correct betas
 
-	tmpB1 = tmpB1 - beta1_1*K;
-	tmpB2 = tmpB2 - beta1_2*K;
+
+	tmpB1 = tmpB1 - beta1_1*R.first;
+	tmpB2 = tmpB2 - beta1_2*R.first;
+
 
 	//new Z-scores
-	double newV1 = V1+ K*K * s1->V1;
-	double newV2 = V2+ K*K * s1->V2;
+	double newV1 = V1+ s1->V1*( 2*R.second - R.first *R.first);
+	double newV2 = V2+ s1->V2*( 2*R.second - R.first *R.first);
 
 	double tmpZ1 = tmpB1/ sqrt(newV1);
 	double tmpZ2 = tmpB2/sqrt(newV2);
