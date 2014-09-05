@@ -1018,19 +1018,25 @@ double SNPs_PW::llk(int which){
 			double tmp2add4 = -10000;
 			for (int j = i+1; j < sp ; j++){
 				//double D = ld.get_ld(d[i].pos, d[j].pos);
-				//double tmpVi = ld.get_ld(d[i].pos, d[i].pos);
-				//double tmpVj = ld.get_ld(d[j].pos, d[j].pos);
-				//double beta_i1 = d[i].get_beta1();
-				//double beta_i2 = d[i].get_beta2();
-				//double beta_j1 = d[j].get_beta1();
-				//double beta_j2 = d[j].get_beta2();
+				double tmpVi = ld.get_ld(d[i].pos, d[i].pos);
+				double tmpVj = ld.get_ld(d[j].pos, d[j].pos);
+
+				double  VarR_i = tmpVi/tmpVj; //this is pi (1-pi) / (pj(1-pj))
+				double VarR_j = tmpVj/tmpVi; //this is pj (1-pj)/ (pi (1-pi))
+
+				//cout << d[i].id << " "<< d[j].id << " "<< VarR_i << " "<< VarR_j << "\n";
+
 				pair<double, double> Ri = ld.get_R(d[i].pos, d[j].pos); //this is D/Var( V_i )
 				pair<double, double> Rj = ld.get_R(d[j].pos, d[i].pos); //this is D/Var( V_j );
 
-				double tmp2_4 = snppri.at(i).at(0)+snppri.at(j).at(1)+d[i].BF1+d[j].BF2_C(&d[i], params->cor, Rj);
-				double tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF1+d[i].BF2_C(&d[j],params->cor, Ri);
-				//cout << Rj.first << " " << Rj.second << " " << params->cor << " "<< d[j].BF2_C(&d[i], params->cor, Rj) << "\n";
-				//cout << Ri.first << " "<< Ri.second << " " << params->cor << " "<< d[i].BF2_C(&d[j], params->cor, Ri) << "\n";
+				//SNP i affects pheno 1, BF at SNP j for pheno 2 conditional on SNPi
+				double tmp2_4 = snppri.at(i).at(0)+snppri.at(j).at(1)+d[i].BF1+d[j].BF2_C(&d[i], params->cor, Rj, VarR_j);
+
+				//SNP j affects pheno 1, BF at SNP i for pheno 2 conditional on SNPj
+				double tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF1+d[i].BF2_C(&d[j],params->cor, Ri, VarR_i);
+				//cout << d[i].id << " "<< d[j].id << " "<< tmp2_4 << " "<< tmp2_42 << "\n";
+				//cout << Rj.first << " " << Rj.second << " " << params->cor << " "<< d[j].BF2_C(&d[i], params->cor, Rj, VarR_j) << "\n";
+				//cout << Ri.first << " "<< Ri.second << " " << params->cor << " "<< d[i].BF2_C(&d[j], params->cor, Ri, VarR_i) << "\n";
 				//if (d[i].BF1+d[j].BF2_C(&d[i], D, params->cor, tmpVj)  > d[i].BF1+d[j].BF2+3){
 
 				//	cout << d[i].id << " "<< d[j].id << " "<< tmp2_4 << " "<< d[i].BF1+d[j].BF2_C(&d[i], D, params->cor, tmpVj) << " "<< tmp2_42 <<  " "<< d[j].BF1+d[i].BF2_C(&d[j], D, params->cor, tmpVi) << "\n";

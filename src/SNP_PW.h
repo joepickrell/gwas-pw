@@ -40,7 +40,7 @@ public:
 
 	//corrected BFs including other SNP in LD
 	double BF1_C(SNP_PW*, double, pair<double, double>);
-	double BF2_C(SNP_PW*, double, pair<double, double>);
+	double BF2_C(SNP_PW*, double, pair<double, double>, double);
 	double BF3_C(SNP_PW*, double, pair<double, double>);
 
 	//return betas

@@ -164,7 +164,7 @@ double SNP_PW::calc_logBF2(double C){
 	return toreturn;
 }
 
-double SNP_PW::BF2_C(SNP_PW * s1,  double C, pair<double, double> R){
+double SNP_PW::BF2_C(SNP_PW * s1,  double C, pair<double, double> R, double VarR){
 	double toreturn = 0;
 
 	//get betas
@@ -180,14 +180,26 @@ double SNP_PW::BF2_C(SNP_PW * s1,  double C, pair<double, double> R){
 	//cout<< tmpB1 << " "<< beta1_1 << " ";
 	tmpB1 = tmpB1 - beta1_1*R.first;
 	tmpB2 = tmpB2 - beta1_2*R.first;
-	//cout << id << " "<< tmpB1 << " "<< tmpB2 << " "<< R.first << " ?\n";
-	//new Z-scores
-	double newV1 = V1+ s1->V1*( 2*R.second - R.first *R.first);
-	double newV2 = V2+ s1->V2*( 2*R.second - R.first *R.first);
 
+	//correct variances
+	double ratio1 = s1->V1/V1; // ~ N1 p1 ( 1-p1)/  N2 p2 (1-p2)
+	ratio1 = ratio1/VarR; //VarR = p1(1-p1)/ p2(1-p2), so ~ N1/N2
+	if (ratio1 < 1) ratio1 = 1;
+
+	double ratio2 = s1->V2/V2;
+	ratio2 = ratio2/VarR;
+	if (ratio2 < 1) ratio2 = 1;
+
+	//cout << id << " "<< ratio1 << " " <<V1 << " "<< s1->V1 << " "<< ratio2 << " "<< VarR<<" ratios\n";
+
+	double newV1 = ratio1*V1+ s1->V1*( 2*R.second - (1/ratio1)* R.first *R.first);
+	double newV2 = ratio2*V2+ s1->V2*( 2*R.second - (1/ratio2)* R.first *R.first);
+
+	//new Z-scores
+	//cout << id << " "<<V1<< " " <<  s1->V1 << " "<< newV1 << " "<< newV2 << " "<< R.first << " "<< R.second << "\n";
 	double tmpZ1 = tmpB1/ sqrt(newV1);
 	double tmpZ2 = tmpB2/sqrt(newV2);
-
+	//cout << id << " "<< tmpZ1 << " "<< tmpZ2
 	//BF
 	double r = W/ (newV2+W);
 	toreturn += log ( sqrt(1-r) );

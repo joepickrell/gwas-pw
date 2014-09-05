@@ -221,14 +221,16 @@ vector<double> LDmatrix::get_hapfreqs(double V1, double V2, double D){
 	double f11, f10, f01, p1, p2;
 	double tmpf11_1 = D+ tmpp1_1* tmpp2_1;
 	double tmpf11_2 = D+ tmpp1_2* tmpp2_1;
-	if (tmpf11_1 < tmpp1_1 and tmpf11_1 < tmpp2_1){
+
+	//cout << tmpf11_1 << " "<< tmpf11_2 << " "<< tmpp1_1 << " "<< tmpp1_2 << " "<< tmpp2_1 << " "<< tmpp2_2 << "\n";
+	if (tmpf11_1 < tmpp1_1 and tmpf11_1 < tmpp2_1 and tmpp1_1 + tmpp2_1 - tmpf11_1 < 1){
 		f11 = tmpf11_1;
 		p1 = tmpp1_1;
 		p2 = tmpp2_1;
 		f10 = p1- f11;
 		f01 = p2 - f11;
 	}
-	else if(tmpf11_2 < tmpp1_2 and tmpf11_2 < tmpp2_1){
+	else if(tmpf11_2 < tmpp1_2 and tmpf11_2 < tmpp2_1 and tmpp1_2 + tmpp2_2 - tmpf11_2 < 1){
 		f11 = tmpf11_2;
 		p1 = tmpp1_2;
 		p2 = tmpp2_1;
