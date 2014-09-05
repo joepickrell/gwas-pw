@@ -49,10 +49,6 @@ void Fgwas_params::print_stdout(){
 	cout << ":: Output stem: "<< outstem << "\n";
 	cout << ":: K: " << K << "\n";
 	cout << ":: V: " << V << "\n";
-	//cout << ":: Ridge penalty: "<< ridge_penalty << "\n";
-	//cout << ":: Case-control?: ";
-	//if (cc) cout << "yes\n";
-	//else cout << "no\n";
 	cout << ":: Fine-mapping?: ";
 	if (finemap) cout << "yes\n";
 	else cout << "no\n";
@@ -62,20 +58,15 @@ void Fgwas_params::print_stdout(){
 	cout << ":: MCMC: ";
 	if (MCMC) cout << "yes\n";
 	else cout <<"no\n";
-	//cout << ":: MCMC_"
-	//cout << ":: Onlyp: ";
-	//if (onlyp) cout << "yes\n";
-	//else cout <<"no\n";
-	//cout << ":: 10-fold cross-validation?: ";
-	//if (xv) cout << "yes\n";
-	//else cout << "no\n";
-	//cout << ":: Pairwise?: ";
-	//if (pairwise) cout << "yes\n";
-	//else cout << "no\n";
-	//cout << ":: Drop chromosome: ";
-	//if (!dropchr) cout << "None\n";
-	//else cout << chrtodrop <<"\n";
-
+	if (overlap){
+		cout <<":: Overlapping cohorts: yes\n";
+		cout <<":: Correlation: "<< cor << "\n";
+		cout <<":: LD file: "<< ldfile<< "\n";
+		cout <<":: Nhap: "<< Nhap << "\n";
+	}
+	else{
+		cout << ":: Overlapping cohorts: no\n";
+	}
 	cout << ":: SNP annotations:";
 	for (vector<string>::iterator it = wannot.begin(); it != wannot.end(); it++) cout << " "<< *it; cout << "\n";
 	cout << ":: Distance models:";

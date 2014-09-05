@@ -26,6 +26,7 @@ int main(){
 	p.overlap = true;
 	p.ldfile = "/Users/jkpickrell/projects/gwas-pw/covariance_matrix/all_ldfiles";
 	p.K = 2;
+	p.Nhap = 100;
 	SNPs_PW s(&p);
 	s.llk();
 	//cout << s.d[0].BF1+s.d[1].BF2_C(&s.d[0], 0.0235308159933, 0, 0.0745772458041) << "\n";

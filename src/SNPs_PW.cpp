@@ -1029,7 +1029,8 @@ double SNPs_PW::llk(int which){
 
 				double tmp2_4 = snppri.at(i).at(0)+snppri.at(j).at(1)+d[i].BF1+d[j].BF2_C(&d[i], params->cor, Rj);
 				double tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF1+d[i].BF2_C(&d[j],params->cor, Ri);
-
+				//cout << Rj.first << " " << Rj.second << " " << params->cor << " "<< d[j].BF2_C(&d[i], params->cor, Rj) << "\n";
+				//cout << Ri.first << " "<< Ri.second << " " << params->cor << " "<< d[i].BF2_C(&d[j], params->cor, Ri) << "\n";
 				//if (d[i].BF1+d[j].BF2_C(&d[i], D, params->cor, tmpVj)  > d[i].BF1+d[j].BF2+3){
 
 				//	cout << d[i].id << " "<< d[j].id << " "<< tmp2_4 << " "<< d[i].BF1+d[j].BF2_C(&d[i], D, params->cor, tmpVj) << " "<< tmp2_42 <<  " "<< d[j].BF1+d[i].BF2_C(&d[j], D, params->cor, tmpVi) << "\n";

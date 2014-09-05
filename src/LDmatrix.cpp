@@ -166,6 +166,7 @@ pair<double, double> LDmatrix::get_R(int p1, int p2){
 		dC.push_back(tmp);
 	}
 	double VR = dC[0]*delta[0] + dC[1]*delta[1]+dC[2]*delta[2];
+	//cout << "in LD "<< R << " " << VR << "\n";
 	return(make_pair(R, VR));
 }
 
@@ -177,7 +178,7 @@ vector<double> LDmatrix::get_delta(vector<double> fs){
 	double t2 = (-fs[2]*p*p - fs[0]*q*q) / (p*p*q*q);
 	double t3 = 1/(p-1);
 	toreturn.push_back(t1);toreturn.push_back(t2);toreturn.push_back(t3);
-	//cout << t1 << " "<< t2 << " "<< t3 << "\n";
+	//cout << "delta "<< t1 << " "<< t2 << " "<< t3 << "\n";
 	return toreturn;
 }
 vector<vector<double> > LDmatrix::get_cov(vector<double> fs){
@@ -187,6 +188,10 @@ vector<vector<double> > LDmatrix::get_cov(vector<double> fs){
 		for (int i =0 ; i < 3; i++) tmp.push_back(0.0);
 		toreturn.push_back(tmp);
 	}
+	//for (int i = 0; i < 3; i++){
+	//	cout << fs[i] << " ";
+	//}
+	//cout << " f_in_cov\n";
 	for (int i = 0; i < 3; i++){
 		for (int j = i; j< 3; j++){
 			if (i == j) toreturn[i][j] = fs[i] *(1-fs[i])/(double)Nhap;
@@ -239,7 +244,7 @@ vector<double> LDmatrix::get_hapfreqs(double V1, double V2, double D){
 	//cout << p1 << " "<< p2 << "\n";
 	toreturn.push_back(f11); toreturn.push_back(f10); toreturn.push_back(f01); toreturn.push_back(1-f11-f01-f10);
 	//for (vector<double>::iterator it = toreturn.begin(); it != toreturn.end(); it++) cout << *it << " ";
-	//cout << "\n";
+	//cout << " hap\n";
 	return(toreturn);
 
 }
