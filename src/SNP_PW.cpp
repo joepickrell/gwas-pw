@@ -180,7 +180,7 @@ double SNP_PW::BF2_C(SNP_PW * s1,  double C, pair<double, double> R, double VarR
 	double newV1, newV2;
 
 	//if highly correlated, set conditional effect to 0;
-	if (R.first> 0.8){
+	if (fabs(R.first) > 0.8){
 		tmpB1 = 0;
 		tmpB2 = 0;
 		newV1 = V1;
