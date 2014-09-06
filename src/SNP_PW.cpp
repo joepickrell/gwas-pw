@@ -177,24 +177,36 @@ double SNP_PW::BF2_C(SNP_PW * s1,  double C, pair<double, double> R, double VarR
 
 	//correct betas
 
+	double newV1, newV2;
+
+	//if highly correlated, set conditional effect to 0;
+	if (R.first> 0.8){
+		tmpB1 = 0;
+		tmpB2 = 0;
+		newV1 = V1;
+		newV2 = V2;
+
+	}
+	else{
 	//cout<< tmpB1 << " "<< beta1_1 << " ";
-	tmpB1 = tmpB1 - beta1_1*R.first;
-	tmpB2 = tmpB2 - beta1_2*R.first;
+		tmpB1 = tmpB1 - beta1_1*R.first;
+		tmpB2 = tmpB2 - beta1_2*R.first;
 
-	//correct variances
-	double ratio1 = s1->V1/V1; // ~ N1 p1 ( 1-p1)/  N2 p2 (1-p2)
-	ratio1 = ratio1/VarR; //VarR = p1(1-p1)/ p2(1-p2), so ~ N1/N2
-	if (ratio1 < 1) ratio1 = 1;
+		//correct variances
+		double ratio1 = s1->V1/V1; // ~ N1 p1 ( 1-p1)/  N2 p2 (1-p2)
+		ratio1 = ratio1/VarR; //VarR = p1(1-p1)/ p2(1-p2), so ~ N1/N2
+		if (ratio1 < 1) ratio1 = 1;
 
-	double ratio2 = s1->V2/V2;
-	ratio2 = ratio2/VarR;
-	if (ratio2 < 1) ratio2 = 1;
+		double ratio2 = s1->V2/V2;
+		ratio2 = ratio2/VarR;
+		if (ratio2 < 1) ratio2 = 1;
 
-	//cout << id << " "<< ratio1 << " " <<V1 << " "<< s1->V1 << " "<< ratio2 << " "<< VarR<<" ratios\n";
+		//cout << id << " "<< ratio1 << " " <<V1 << " "<< s1->V1 << " "<< ratio2 << " "<< VarR<<" ratios\n";
 
-	double newV1 = ratio1*V1+ s1->V1*( 2*R.second - (1/ratio1)* R.first *R.first);
-	double newV2 = ratio2*V2+ s1->V2*( 2*R.second - (1/ratio2)* R.first *R.first);
+		newV1 = ratio1*V1+ s1->V1*( 2*R.second - (1/ratio1)* R.first *R.first);
+		newV2 = ratio2*V2+ s1->V2*( 2*R.second - (1/ratio2)* R.first *R.first);
 
+	}
 	//new Z-scores
 	//cout << id << " "<<V1<< " " <<  s1->V1 << " "<< newV1 << " "<< newV2 << " "<< R.first << " "<< R.second << "\n";
 	double tmpZ1 = tmpB1/ sqrt(newV1);
