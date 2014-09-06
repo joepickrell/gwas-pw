@@ -1034,7 +1034,7 @@ double SNPs_PW::llk(int which){
 
 				//SNP j affects pheno 1, BF at SNP i for pheno 2 conditional on SNPj
 				double tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF1+d[i].BF2_C(&d[j],params->cor, Ri, VarR_i);
-				cout << d[i].id << " "<< d[j].id << " "<< d[i].BF2 << " "<< d[i].BF2_C(&d[j],params->cor, Ri, VarR_i) <<  " "<< d[j].BF2 << " "<< d[j].BF2_C(&d[i], params->cor, Rj, VarR_j)<<"\n";
+				//cout << d[i].id << " "<< d[j].id << " "<< d[i].BF2 << " "<< d[i].BF2_C(&d[j],params->cor, Ri, VarR_i) <<  " "<< d[j].BF2 << " "<< d[j].BF2_C(&d[i], params->cor, Rj, VarR_j)<<"\n";
 				//cout << Rj.first << " " << Rj.second << " " << params->cor << " "<< d[j].BF2_C(&d[i], params->cor, Rj, VarR_j) << "\n";
 				//cout << Ri.first << " "<< Ri.second << " " << params->cor << " "<< d[i].BF2_C(&d[j], params->cor, Ri, VarR_i) << "\n";
 				//if (d[i].BF1+d[j].BF2_C(&d[i], D, params->cor, tmpVj)  > d[i].BF1+d[j].BF2+3){
