@@ -40,6 +40,9 @@ Fgwas_params::Fgwas_params(){
 	}
 	cor = 0;
 	Nhap = 0;
+	bedseg = false;
+	segment_bedfile = "";
+	MCMC = false;
 }
 
 void Fgwas_params::print_stdout(){
@@ -47,7 +50,8 @@ void Fgwas_params::print_stdout(){
 	cout << ":::Parameter settings::::\n";
 	cout << ":: Input file: "<< infile << "\n";
 	cout << ":: Output stem: "<< outstem << "\n";
-	cout << ":: K: " << K << "\n";
+	if (!bedseg) cout << ":: K: " << K << "\n";
+	else cout << ":: Segment bedfile: "<< segment_bedfile << "\n";
 	cout << ":: V: " << V << "\n";
 	cout << ":: Fine-mapping?: ";
 	if (finemap) cout << "yes\n";

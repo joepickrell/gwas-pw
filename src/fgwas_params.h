@@ -65,7 +65,8 @@ public:
 	double MCMC_gauss_SD;
 	double cor;
 	bool overlap;
-	bool MCMC;
+	bool MCMC, bedseg;
+	string segment_bedfile;
 	int Nhap;
 };
 

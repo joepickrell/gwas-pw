@@ -21,6 +21,7 @@ void printopts(){
         //cout << "-w [string] which annotation(s) to use. Separate multiple annotations with plus signs\n";
         //cout << "-dists [string:string] the name of the distance annotation(s) and the file(s) containing the distance model(s)\n";
         cout << "-k [integer] block size in number of SNPs (5000)\n";
+        cout << "-dists [string:string] the name of the distance annotation(s) and the file(s) containing the distance model(s)\n";
         cout << "-nburn [integer] iterations of burn-in (10000)\n";
         cout << "-nsamp [integer] iterations of sampling (100000)\n";
         cout << "-jumpsd [float] SD of normally distributed MCMC jumps (0.44)\n";
@@ -68,15 +69,12 @@ int main(int argc, char *argv[]){
 
     //set K
     if (cmdline.HasSwitch("-k")) p.K = atoi(cmdline.GetArgument("-k", 0).c_str());
+    if (cmdline.HasSwitch("-bed")) {
+    	p.bedseg = true;
+    	p.segment_bedfile = cmdline.GetArgument("-bed", 0);
+    }
 
-    //if (cmdline.HasSwitch("-p")) p.ridge_penalty = atof(cmdline.GetArgument("-p", 0).c_str());
-    //if (cmdline.HasSwitch("-xv")) p.xv = true;
     if (cmdline.HasSwitch("-print")) p.print = true;
-    //if (cmdline.HasSwitch("-onlyp")) p.onlyp = true;
-    //if (cmdline.HasSwitch("-cond")){
-    //	p.cond = true;
-    //	p.testcond_annot = cmdline.GetArgument("-cond", 0);
-    //}
 
     //names of the phenotypes, expecting header like NAME1_Z NAME1_V NAME2_Z NAME2_V
     if (cmdline.HasSwitch("-phenos")){
