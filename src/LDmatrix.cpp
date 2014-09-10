@@ -237,9 +237,19 @@ vector<double> LDmatrix::get_hapfreqs(double V1, double V2, double D){
 		f10 = p1 -f11;
 		f01 = p2 - f11;
 	}
-
+	else if (D < 0.01 and (V1 < 0.01 or V2 < 0.01)){
+		f11 = tmpp1_1* tmpp2_1;
+		p1 = tmpp1_1;
+		p2 = tmpp2_1;
+		f10 = p1- f11;
+		f01 = p2 - f11;
+	}
 	else{
-		cerr << "ERROR: trouble getting haplotype frequencies from V1: "<<V1 <<" V2: "<< V2 << "D: "<< D<< "\n";
+		cerr << "ERROR: trouble getting haplotype frequencies from V1: "<<V1 <<" V2: "<< V2 << " D: "<< D<< "\n";
+		exit(1);
+	}
+	if (f11< 0 or f10 < 0 or f01 < 0 or f11+f01+f10 >1 or f11 >1 or f10 > 1 or f01 >1 or f11+f01+f10 < 0){
+		cerr << "ERROR: trouble getting haplotype frequencies from V1: "<<V1 <<" V2: "<< V2 << " D: "<< D<< " (negative haplotype fs)\n";
 		exit(1);
 	}
 	vector<double> toreturn;
