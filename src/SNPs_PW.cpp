@@ -63,13 +63,19 @@ SNPs_PW::SNPs_PW(Fgwas_params *p){
 void SNPs_PW::check_input(){
 
 	double meansize = 0.0;
+	double meannsnp = 0.0;
+	int minnsnp = 1000000000;
+	int maxsnp = 0;
 	int nseg = segments.size();
 	for (vector<pair<int, int> >::iterator it = segments.begin(); it != segments.end(); it++){
 
 		int st = it->first;
 		int sp = it->second;
 		int toadd = d[sp-1].pos- d[st].pos;
-
+		int l = sp-st;
+		if (l < minnsnp) minnsnp = l;
+		if (l > maxsnp) maxsnp = l;
+		meannsnp += (double) l / (double) nseg;
 
 		meansize += ((double) toadd/ 1000000.0) / (double) nseg;
 
@@ -87,7 +93,9 @@ void SNPs_PW::check_input(){
 		}
 	}
 
-	cout << "Number of segments: "<< segments.size()<< "\nMean segment size: "<< meansize<< " Mb\n";
+	cout << "Number of segments: "<< segments.size()<< "\nMean segment size: "<< meansize<< " Mb ("<< meannsnp << " SNPs)\n";
+	cout << "Minimum number of SNPs/segment: "<< minnsnp << "\n";
+	cout << "Maximum number of SNPs/segment: "<< maxsnp << "\n";
 	if (meansize > 10.0){
 		cout << "\n****\n**** WARNING: mean segment size is over 10Mb, this often causes convergence problems (in human data). Consider reducing window size (using -k).\n****\n\n"; cout.flush();
 	}
@@ -151,6 +159,7 @@ map<string, vector<pair< int, int> > > SNPs_PW::read_bedfile(string bedfile){
 	return toreturn;
 
 }
+
 void SNPs_PW::make_segments(string bedfile){
 	segments.clear();
 	map<string, vector<pair<int, int> > > bedsegs = read_bedfile(bedfile);
@@ -861,6 +870,7 @@ void SNPs_PW::make_chrsegments(){
 		string tmpchr = d[i].chr;
 		if (tmpchr != startchr){
 			int end = i;
+			chrnames.push_back(startchr);
 			chrsegments.push_back(make_pair(start, end));
 			start = i;
 			startpos = d[i].pos;
