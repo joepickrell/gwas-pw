@@ -45,6 +45,7 @@ int main(int argc, char *argv[]){
     //get the input file
     if (cmdline.HasSwitch("-i")) p.infile = cmdline.GetArgument("-i", 0).c_str();
     else{
+    	cerr << "ERROR: missing input file (-i)\n";
         printopts();
         exit(1);
     }
@@ -53,6 +54,7 @@ int main(int argc, char *argv[]){
 
     //LD file
     if (cmdline.HasSwitch("-ld")) {
+    	p.overlap = true;
     	p.ldfile = cmdline.GetArgument("-ld", 0);
     	if (cmdline.HasSwitch("-nhap")) p.Nhap = atoi(cmdline.GetArgument("-nhap", 0).c_str());
     	else{
@@ -62,9 +64,9 @@ int main(int argc, char *argv[]){
     	}
     }
     else if (cmdline.HasSwitch("-cor")){
-    	cerr << "ERROR: single cohort, need an LD file";
-    	printopts();
-    	exit(1);
+    	cerr << "WARNING: including correlation, did you mean to include an LD file?";
+    	//printopts();
+    	//exit(1);
     }
 
     //set K
@@ -136,7 +138,7 @@ int main(int argc, char *argv[]){
      }
     if (cmdline.HasSwitch("-cor")){
         	p.cor = atof(cmdline.GetArgument("-cor", 0).c_str());
-        	p.overlap = true;
+        	//p.overlap = true;
        }
     if (cmdline.HasSwitch("-prior")){
     	if (cmdline.GetArgumentCount("-prior") != 5) {

@@ -1163,16 +1163,19 @@ double SNPs_PW::llk(int which){
 				pair<double, double> Rj = ld.get_R(d[j].pos, d[i].pos); //this is D/Var( V_j );
 
 				//SNP i affects pheno 1, BF at SNP j for pheno 2 conditional on SNPi
-				double tmp2_4 = snppri.at(i).at(0)+snppri.at(j).at(1)+d[i].BF1+d[j].BF2_C(&d[i], params->cor, Rj, VarR_j);
+				double BFj_ci = d[j].BF2_C(&d[i], params->cor, Rj, VarR_j);
+				double tmp2_4 = snppri.at(i).at(0)+snppri.at(j).at(1)+d[i].BF1+BFj_ci;
 
 				//SNP j affects pheno 1, BF at SNP i for pheno 2 conditional on SNPj
-				double tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF1+d[i].BF2_C(&d[j],params->cor, Ri, VarR_i);
-				//cout << d[i].id << " "<< d[j].id << " "<< d[i].BF2 << " "<< d[i].BF2_C(&d[j],params->cor, Ri, VarR_i) <<  " "<< d[j].BF2 << " "<< d[j].BF2_C(&d[i], params->cor, Rj, VarR_j)<<"\n";
+				double BFi_cj = d[i].BF2_C(&d[j],params->cor, Ri, VarR_i);
+				double tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF1+ BFi_cj;
+
+
+				cout << d[i].id << " "<< d[j].id << " "<< d[i].BF2 << " "<< BFi_cj <<  " "<< d[j].BF2 << " "<< BFi_cj <<"\n";
 				//cout << Rj.first << " " << Rj.second << " " << params->cor << " "<< d[j].BF2_C(&d[i], params->cor, Rj, VarR_j) << "\n";
 				//cout << Ri.first << " "<< Ri.second << " " << params->cor << " "<< d[i].BF2_C(&d[j], params->cor, Ri, VarR_i) << "\n";
-				//if (d[i].BF1+d[j].BF2_C(&d[i], D, params->cor, tmpVj)  > d[i].BF1+d[j].BF2+3){
-
-				//	cout << d[i].id << " "<< d[j].id << " "<< tmp2_4 << " "<< d[i].BF1+d[j].BF2_C(&d[i], D, params->cor, tmpVj) << " "<< tmp2_42 <<  " "<< d[j].BF1+d[i].BF2_C(&d[j], D, params->cor, tmpVi) << "\n";
+				//if (d[i].BF1+d[j].BF2_C(&d[i], params->cor, Rj, VarR_j)  > d[i].BF1+d[j].BF2+3){
+				//	cout << d[i].id << " "<< d[j].id << " "<< tmp2_4 << " "<< d[i].BF1+d[j].BF2_C(&d[i], params->cor, Rj, VarR_j) << " "<< tmp2_42 <<  " "<< d[j].BF1+d[i].BF2_C(&d[j], params->cor, Ri, VarR_i) << "\n";
 
 				//}
 				tmp2add4 = sumlog(tmp2add4, tmp2_4);

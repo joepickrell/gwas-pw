@@ -17,7 +17,7 @@ Fgwas_params::Fgwas_params(){
 	dannot.clear();
 	distmodels.clear();
 	segannot.clear();
-	outstem = "fgwas";
+	outstem = "gwas-pw";
 	dropchr = false;
 	cc = false;
 	finemap = false;
@@ -62,21 +62,21 @@ void Fgwas_params::print_stdout(){
 	cout << ":: MCMC: ";
 	if (MCMC) cout << "yes\n";
 	else cout <<"no\n";
+	cout <<":: Correlation: "<< cor << "\n";
 	if (overlap){
 		cout <<":: Overlapping cohorts: yes\n";
-		cout <<":: Correlation: "<< cor << "\n";
 		cout <<":: LD file: "<< ldfile<< "\n";
 		cout <<":: Nhap: "<< Nhap << "\n";
 	}
 	else{
 		cout << ":: Overlapping cohorts: no\n";
 	}
-	cout << ":: SNP annotations:";
-	for (vector<string>::iterator it = wannot.begin(); it != wannot.end(); it++) cout << " "<< *it; cout << "\n";
-	cout << ":: Distance models:";
-	for (int i = 0; i < dannot.size(); i++)	cout << " " << dannot[i]<< ":" << distmodels[i];  cout << "\n";
-	cout << ":: Segment annotation (low quantile, high quantile):";
-	for (vector<string>::iterator it = segannot.begin(); it != segannot.end(); it++) cout << " "<< *it<<  " ("<< loquant << " "<< hiquant << ")"; cout << "\n";
+	//cout << ":: SNP annotations:";
+	//for (vector<string>::iterator it = wannot.begin(); it != wannot.end(); it++) cout << " "<< *it; cout << "\n";
+	//cout << ":: Distance models:";
+	//for (int i = 0; i < dannot.size(); i++)	cout << " " << dannot[i]<< ":" << distmodels[i];  cout << "\n";
+	//cout << ":: Segment annotation (low quantile, high quantile):";
+	//for (vector<string>::iterator it = segannot.begin(); it != segannot.end(); it++) cout << " "<< *it<<  " ("<< loquant << " "<< hiquant << ")"; cout << "\n";
 	//cout << ":: Conditional analysis of: " << testcond_annot << "\n";
 	cout << ":::::::::::::::::::::::::\n";
 	cout <<"\n\n";
