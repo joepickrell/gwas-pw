@@ -37,7 +37,7 @@ LDmatrix::LDmatrix(string infiles, string chr, vector<int> pos, int N){
 	chrom = chr;
 	minpos = index2pos[0];
 	maxpos = index2pos[pos.size()-1];
-	assert(minpos < maxpos);
+	assert(minpos <= maxpos);
 	int Nsnp = pos.size();
 	//cout << "here3\n"; cout.flush();
 	m = new boost::numeric::ublas::compressed_matrix<double>(Nsnp, Nsnp, Nsnp*2000);
