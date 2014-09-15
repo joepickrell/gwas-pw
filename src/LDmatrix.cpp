@@ -218,7 +218,7 @@ vector<double> LDmatrix::get_hapfreqs(double V1, double V2, double D){
 	double tmpp2_1 = (1.0 + sqrt(1-4.0*V2))/2.0;
 	double tmpp2_2 = (1.0 - sqrt(1-4.0*V2))/2.0;
 
-	double f11, f10, f01, p1, p2;
+	double f11, f10, f01, f00, p1, p2;
 	double tmpf11_1 = D+ tmpp1_1* tmpp2_1;
 	double tmpf11_2 = D+ tmpp1_2* tmpp2_1;
 
@@ -229,6 +229,7 @@ vector<double> LDmatrix::get_hapfreqs(double V1, double V2, double D){
 		p2 = tmpp2_1;
 		f10 = p1- f11;
 		f01 = p2 - f11;
+		f00 = 1-f11-f10-f01;
 	}
 	else if(tmpf11_2 < tmpp1_2 and tmpf11_2 < tmpp2_1 and tmpp1_2 + tmpp2_2 - tmpf11_2 < 1){
 		f11 = tmpf11_2;
@@ -236,6 +237,23 @@ vector<double> LDmatrix::get_hapfreqs(double V1, double V2, double D){
 		p2 = tmpp2_1;
 		f10 = p1 -f11;
 		f01 = p2 - f11;
+		f00 = 1-f11-f10-f01;
+	}
+	else if(tmpf11_2 < tmpp1_2 and tmpf11_2 < tmpp2_1 and tmpp1_2 + tmpp2_2 - tmpf11_2 < 1.01){
+		f11 = tmpf11_2;
+		p1 = tmpp1_2;
+		p2 = tmpp2_1;
+		f10 = p1 -f11;
+		f01 = p2 - f11;
+		f00 = 0;
+	}
+	else if (tmpf11_1 < tmpp1_1 and tmpf11_1 < tmpp2_1 and tmpp1_1 + tmpp2_1 - tmpf11_1 < 1.01){
+		f11 = tmpf11_1;
+		p1 = tmpp1_1;
+		p2 = tmpp2_1;
+		f10 = p1- f11;
+		f01 = p2 - f11;
+		f00 = 0;
 	}
 	else if (D < 0.01 and (V1 < 0.01 or V2 < 0.01)){
 		f11 = tmpp1_1* tmpp2_1;
@@ -243,18 +261,19 @@ vector<double> LDmatrix::get_hapfreqs(double V1, double V2, double D){
 		p2 = tmpp2_1;
 		f10 = p1- f11;
 		f01 = p2 - f11;
+		f00 = 1-f11-f10-f01;
 	}
 	else{
 		cerr << "ERROR: trouble getting haplotype frequencies from V1: "<<V1 <<" V2: "<< V2 << " D: "<< D<< "\n";
 		exit(1);
 	}
-	if (f11< 0 or f10 < 0 or f01 < 0 or f11+f01+f10 >1 or f11 >1 or f10 > 1 or f01 >1 or f11+f01+f10 < 0){
+	if (f11< 0 or f10 < 0 or f01 < 0 or f00 >1 or f11 >1 or f10 > 1 or f01 >1 or f00 < 0){
 		cerr << "ERROR: trouble getting haplotype frequencies from V1: "<<V1 <<" V2: "<< V2 << " D: "<< D<< " (negative haplotype fs)\n";
 		exit(1);
 	}
 	vector<double> toreturn;
 	//cout << p1 << " "<< p2 << "\n";
-	toreturn.push_back(f11); toreturn.push_back(f10); toreturn.push_back(f01); toreturn.push_back(1-f11-f01-f10);
+	toreturn.push_back(f11); toreturn.push_back(f10); toreturn.push_back(f01); toreturn.push_back(f00);
 	//for (vector<double>::iterator it = toreturn.begin(); it != toreturn.end(); it++) cout << *it << " ";
 	//cout << " hap\n";
 	return(toreturn);
