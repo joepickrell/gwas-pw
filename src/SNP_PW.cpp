@@ -191,7 +191,7 @@ double SNP_PW::BF2_C(SNP_PW * s1,  double C, pair<double, double> R, double VarR
 	//cout<< tmpB1 << " "<< tmpB2 << " ";
 		tmpB1 = tmpB1 - beta1_1*R.first;
 		tmpB2 = tmpB2 - beta1_2*R.first;
-		cout << tmpB1 << " "<< tmpB2 << " "<< R.first << " betas before after\n";
+		//cout << tmpB1 << " "<< tmpB2 << " "<< R.first << " betas before after\n";
 		//correct variances
 		double ratio1 = s1->V1/V1; // ~ N1 p1 ( 1-p1)/  N2 p2 (1-p2)
 		ratio1 = ratio1/VarR; //VarR = p1(1-p1)/ p2(1-p2), so ~ N1/N2

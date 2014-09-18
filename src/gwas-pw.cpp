@@ -64,7 +64,7 @@ int main(int argc, char *argv[]){
     	}
     }
     else if (cmdline.HasSwitch("-cor")){
-    	cerr << "WARNING: including correlation, did you mean to include an LD file?";
+    	cerr << "WARNING: including correlation, did you mean to include an LD file?\n";
     	//printopts();
     	//exit(1);
     }

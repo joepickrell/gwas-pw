@@ -23,7 +23,7 @@ public:
 	int minpos, maxpos, Nhap;
 	double get_ld(int, int);
 	pair<double, double> get_R(int, int);
-	vector<double> get_hapfreqs(double, double, double);
+	vector<double> get_hapfreqs(double, double, double, int, int);
 	vector<vector<double> > get_cov(vector<double>);
 	vector<double> get_delta(vector<double>);
 private:

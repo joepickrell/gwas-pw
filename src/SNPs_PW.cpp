@@ -1171,7 +1171,7 @@ double SNPs_PW::llk(int which){
 				double tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF1+ BFi_cj;
 
 
-				cout << d[i].id << " "<< d[j].id << " "<< d[i].BF2 << " "<< BFi_cj <<  " "<< d[j].BF2 << " "<< BFi_cj <<"\n";
+				//cout << d[i].id << " "<< d[j].id << " "<< d[i].BF2 << " "<< BFi_cj <<  " "<< d[j].BF2 << " "<< BFi_cj <<"\n";
 				//cout << Rj.first << " " << Rj.second << " " << params->cor << " "<< d[j].BF2_C(&d[i], params->cor, Rj, VarR_j) << "\n";
 				//cout << Ri.first << " "<< Ri.second << " " << params->cor << " "<< d[i].BF2_C(&d[j], params->cor, Ri, VarR_i) << "\n";
 				//if (d[i].BF1+d[j].BF2_C(&d[i], params->cor, Rj, VarR_j)  > d[i].BF1+d[j].BF2+3){

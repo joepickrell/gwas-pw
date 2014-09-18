@@ -153,7 +153,7 @@ pair<double, double> LDmatrix::get_R(int p1, int p2){
 	double V1 = get_ld(p1, p1);
 	double V2 = get_ld(p2, p2);
 	double R = D/V1;
-	vector<double> hapfreqs = get_hapfreqs(V1, V2, D);
+	vector<double> hapfreqs = get_hapfreqs(V1, V2, D, p1, p2);
 	vector<vector<double> > C = get_cov(hapfreqs);
 	vector<double> delta = get_delta(hapfreqs);
 
@@ -211,7 +211,7 @@ vector<vector<double> > LDmatrix::get_cov(vector<double> fs){
 }
 
 
-vector<double> LDmatrix::get_hapfreqs(double V1, double V2, double D){
+vector<double> LDmatrix::get_hapfreqs(double V1, double V2, double D, int pos1, int pos2){
 	double tmpp1_1 = (1.0 + sqrt(1-4.0*V1))/2.0;
 	double tmpp1_2 = (1.0 - sqrt(1-4.0*V1))/2.0;
 
@@ -239,37 +239,24 @@ vector<double> LDmatrix::get_hapfreqs(double V1, double V2, double D){
 		f01 = p2 - f11;
 		f00 = 1-f11-f10-f01;
 	}
-	else if(tmpf11_2 < tmpp1_2 and tmpf11_2 < tmpp2_1 and tmpp1_2 + tmpp2_2 - tmpf11_2 < 1.01){
-		f11 = tmpf11_2;
-		p1 = tmpp1_2;
-		p2 = tmpp2_1;
-		f10 = p1 -f11;
-		f01 = p2 - f11;
-		f00 = 0;
-	}
-	else if (tmpf11_1 < tmpp1_1 and tmpf11_1 < tmpp2_1 and tmpp1_1 + tmpp2_1 - tmpf11_1 < 1.01){
-		f11 = tmpf11_1;
-		p1 = tmpp1_1;
-		p2 = tmpp2_1;
-		f10 = p1- f11;
-		f01 = p2 - f11;
-		f00 = 0;
-	}
-	else if (D < 0.01 and (V1 < 0.01 or V2 < 0.01)){
-		f11 = tmpp1_1* tmpp2_1;
-		p1 = tmpp1_1;
-		p2 = tmpp2_1;
-		f10 = p1- f11;
-		f01 = p2 - f11;
-		f00 = 1-f11-f10-f01;
-	}
-	else{
-		cerr << "ERROR: trouble getting haplotype frequencies from V1: "<<V1 <<" V2: "<< V2 << " D: "<< D<< "\n";
-		exit(1);
-	}
+	// rare pathological cases give negative haplotype frequencies, set those to zero
 	if (f11< 0 or f10 < 0 or f01 < 0 or f00 >1 or f11 >1 or f10 > 1 or f01 >1 or f00 < 0){
-		cerr << "ERROR: trouble getting haplotype frequencies from V1: "<<V1 <<" V2: "<< V2 << " D: "<< D<< " (negative haplotype fs)\n";
-		exit(1);
+		cerr << "WARNING: trouble getting haplotype frequencies from V1: "<<V1 <<" ("<< pos1<<") V2: "<< V2 << " ("<< pos2 << ") D: "<< D<< " (negative haplotype fs)\n";
+		if (f11 < 0) f11 = 0;
+		if (f10 < 0) f10 = 0;
+		if (f01 < 0) f01 = 0;
+		if (f00 < 0) f00 = 0;
+		if (f11 > 1) f11 = 1;
+		if (f10 > 1) f10 = 1;
+		if (f01 > 1) f01 = 1;
+		if (f00 > 1) f00 = 1;
+		 //renormalize
+		double sum = f11+f10+f01+f00;
+		f11 = f11/sum;
+		f10 = f10/sum;
+		f01 = f01/sum;
+		f00 = f00/sum;
+		//exit(1);
 	}
 	vector<double> toreturn;
 	//cout << p1 << " "<< p2 << "\n";
