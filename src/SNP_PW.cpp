@@ -218,7 +218,12 @@ double SNP_PW::BF2_C(SNP_PW * s1,  double C, pair<double, double> R, double VarR
 
 	double tmp = tmpZ2*tmpZ2*r- 2*C*tmpZ1*tmpZ2*(1-sqrt(1-r));
 	toreturn += tmp/ (2*(1-C*C)) ;
-
+	if (!isfinite(toreturn) || isnan(toreturn)){
+		cout << id << " "<<V1<< " " <<  s1->V1 << " "<< newV1 << " "<< newV2 << " "<< R.first << " "<< R.second << "\n";
+		cout << id << " " <<  Z1 << " "<< Z2 << " "<< tmpZ1 << " "<< tmpZ2 << " Zs\n";
+		cerr << "ERROR: infinite or NaN conditional Bayes factor for "<< id << " conditional on "<< s1->id << "\n";
+		exit(1);
+	}
 	return toreturn;
 }
 

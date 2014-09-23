@@ -705,7 +705,7 @@ void SNPs_PW::print(){
 void SNPs_PW::print(string outfile, string outfile2){
 	ogzstream out(outfile.c_str());
 	ogzstream out2(outfile2.c_str());
-	out << "id chr pos logBF_1 logBF_2 logBF_3 Z_1 V_1 Z_2 V_2 pi_1 pi_2 pi_3 PPA_1 PPA_2 PPA_3 chunk";
+	out << "id chr pos logBF_1 logBF_2 logBF_3 Z_"<< params->pheno1<<" V_"<<params->pheno1<<" Z_"<< params->pheno2 << " V_"<<params->pheno2<<" pi_1 pi_2 pi_3 PPA_1 PPA_2 PPA_3 chunk";
 	out2 << "chunk NSNP chr st sp max_abs_Z_"<< params->pheno1<<" max_abs_Z_"<<params->pheno2<<" logBF_1 logBF_2 logBF_3 logBF_4 pi_1 pi_2 pi_3 pi_4 PPA_1 PPA_2 PPA_3 PPA_4";
 	for (vector<string>::iterator it = annotnames.begin(); it != annotnames.end(); it++) out << " "<< *it;
 	out << "\n";
@@ -723,9 +723,15 @@ void SNPs_PW::print(string outfile, string outfile2){
 		}
 		double maxZ1 = 0;
 		double maxZ2 = 0;
+		double sumlbf1 = -1000;
+		double sumlbf2 = -1000;
+		double sumlbf3 = -1000;
 		for (int i = stindex; i < spindex; i++){
 			double Z1 = fabs(d[i].Z1);
 			double Z2 = fabs(d[i].Z2);
+			sumlbf1 = sumlog(sumlbf1, d[i].BF1);
+			sumlbf2 = sumlog(sumlbf2, d[i].BF2);
+			sumlbf3 = sumlog(sumlbf3, d[i].BF3);
 			if (Z1> maxZ1) maxZ1 = Z1;
 			if (Z2> maxZ2) maxZ2 = Z2;
 		}
@@ -752,8 +758,7 @@ void SNPs_PW::print(string outfile, string outfile2){
 		for (int i = 0; i < nsegannot; i++) out2 << " "<< segannot[segnum][i];
 		out2 << "\n";
 		for (int i =stindex ; i < spindex; i++){
-
-			out << d[i].id << " "<< d[i].chr << " "<< d[i].pos << " "<< d[i].BF1 << " "<< d[i].BF2 << " " << d[i].BF3<< " "<< d[i].Z1 <<  " " << d[i].V1 << " "<< d[i].Z2 <<  " " << d[i].V2<< " "<< snppri[i][0]<< " "<< snppri[i][1]<< " "<< snppri[i][2] << " "<< segnum;
+			out << d[i].id << " "<< d[i].chr << " "<< d[i].pos << " "<< d[i].BF1 << " "<< d[i].BF2 << " " << d[i].BF3<< " "<< d[i].Z1 <<  " " << d[i].V1 << " "<< d[i].Z2 <<  " " << d[i].V2<< " "<< snppri[i][0]<< " "<< snppri[i][1]<< " "<< snppri[i][2] << " " << exp(d[i].BF1- sumlbf1) << " "<< exp(d[i].BF2- sumlbf2) << " "<< exp(d[i].BF3- sumlbf3) << " "<< segnum;
 			for (int j = 0; j < annotnames.size(); j++) out << " "<< d[i].annot[j];
 			out << "\n";
 		}
