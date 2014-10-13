@@ -1,4 +1,4 @@
-
+# approximate BFs using multivarite Wakefield approximation
 
 approxBF = function(g, p){
 	lm1 = summary(lm(p[,1] ~g))$coef

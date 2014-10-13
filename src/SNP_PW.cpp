@@ -201,17 +201,17 @@ double SNP_PW::BF2_C(SNP_PW * s1,  double C, pair<double, double> R, double VarR
 		ratio2 = ratio2/VarR;
 		if (ratio2 < 1) ratio2 = 1;
 
-		//cout << "\n"<< id << " "<< ratio1 << " " <<V1 << " "<< s1->V1 << " "<< ratio2 << " "<< VarR<<" ratios\n";
+		cout << "\n"<< id << " "<< ratio1 << " " <<V1 << " "<< s1->V1 << " "<< ratio2 << " "<< VarR<<" ratios\n";
 
 		newV1 = ratio1*V1+ s1->V1*( 2*R.second - (1/ratio1)* R.first *R.first);
 		newV2 = ratio2*V2+ s1->V2*( 2*R.second - (1/ratio2)* R.first *R.first);
 
 	}
 	//new Z-scores
-	//cout << id << " "<<V1<< " " <<  s1->V1 << " "<< newV1 << " "<< newV2 << " "<< R.first << " "<< R.second << "\n";
+	cout << id << " "<<V1<< " " <<  s1->V1 << " "<< newV1 << " "<< newV2 << " "<< R.first << " "<< R.second << "\n";
 	double tmpZ1 = tmpB1/ sqrt(newV1);
 	double tmpZ2 = tmpB2/sqrt(newV2);
-	//cout << id << " " <<  Z1 << " "<< Z2 << " "<< tmpZ1 << " "<< tmpZ2 << " Zs\n";
+	cout << id << " " <<  Z1 << " "<< Z2 << " "<< tmpZ1 << " "<< tmpZ2 << " Zs\n";
 	//BF
 	double r = W/ (newV2+W);
 	toreturn += log ( sqrt(1-r) );
