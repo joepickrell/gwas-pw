@@ -1179,10 +1179,10 @@ double SNPs_PW::llk(int which){
 				//cout << d[i].id << " "<< d[j].id << " "<< d[i].BF2 << " "<< BFi_cj <<  " "<< d[j].BF2 << " "<< BFi_cj <<"\n";
 				//cout << Rj.first << " " << Rj.second << " " << params->cor << " "<< d[j].BF2_C(&d[i], params->cor, Rj, VarR_j) << "\n";
 				//cout << Ri.first << " "<< Ri.second << " " << params->cor << " "<< d[i].BF2_C(&d[j], params->cor, Ri, VarR_i) << "\n";
-				//if (d[i].BF1+d[j].BF2_C(&d[i], params->cor, Rj, VarR_j)  > d[i].BF1+d[j].BF2+3){
-				//	cout << d[i].id << " "<< d[j].id << " "<< tmp2_4 << " "<< d[i].BF1+d[j].BF2_C(&d[i], params->cor, Rj, VarR_j) << " "<< tmp2_42 <<  " "<< d[j].BF1+d[i].BF2_C(&d[j], params->cor, Ri, VarR_i) << "\n";
+				if (d[i].BF1+d[j].BF2_C(&d[i], params->cor, Rj, VarR_j)  > d[i].BF1+d[j].BF2+3){
+					cout << d[i].id << " "<< d[j].id << " "<< d[i].BF1+d[j].BF2 << " "<< d[i].BF1+d[j].BF2_C(&d[i], params->cor, Rj, VarR_j) << " "<< d[j].BF1+d[i].BF2 <<  " "<< d[j].BF1+d[i].BF2_C(&d[j], params->cor, Ri, VarR_i) << "\n";
 
-				//}
+				}
 				tmp2add4 = sumlog(tmp2add4, tmp2_4);
 
 				tmp2add4 = sumlog(tmp2add4, tmp2_42);
