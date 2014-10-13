@@ -24,7 +24,7 @@ using namespace std;
 class SNP_PW{
 public:
 	SNP_PW();
-	SNP_PW(string, string, int, double, double, double, double, vector<bool>, vector<int>, vector<vector<pair<int, int> > >, double, double); //for pairwise
+	SNP_PW(string, string, int, double, double, double, double, vector<bool>, vector<int>, vector<vector<pair<int, int> > >, vector<double>, double); //for pairwise
 	string id;
 	string chr;
 	int pos;
@@ -33,15 +33,17 @@ public:
 	double Z2;
 
 	double f, N1, N2;
-	double V1, V2, W;
+	double V1, V2;
+	vector<double> W; //prior variances
 	double BF1; // Bayes factor for configuration [1,0]
 	double BF2; // [0,1]
 	double BF3; // [1,1]
 
 	//corrected BFs including other SNP in LD
-	double BF1_C(SNP_PW*, double, pair<double, double>);
+	//double BF1_C(SNP_PW*, double, pair<double, double>);
+	double BF2_C_ind(SNP_PW*, double, pair<double, double>, double, double);
 	double BF2_C(SNP_PW*, double, pair<double, double>, double);
-	double BF3_C(SNP_PW*, double, pair<double, double>);
+	//double BF3_C(SNP_PW*, double, pair<double, double>);
 
 	//return betas
 	double get_beta1();
@@ -56,9 +58,13 @@ public:
 	void append_distannots(vector<vector<pair<int, int> > >); // convert distances to annotations according to distance models
 	double approx_v2();
 	double approx_v1();
+	double sumlog(double, double);
 	double calc_logBF1(double);
+	double calc_logBF1_ind(double, double);
 	double calc_logBF2(double);
+	double calc_logBF2_ind(double, double);
 	double calc_logBF3(double);
+	double calc_logBF3_ind(double, double);
 	int nannot;
 	double get_x(vector<double>);
 	//double get_x_cond(vector<double>, double);

@@ -11,7 +11,7 @@ SNP_PW::SNP_PW(){
 
 
 
-SNP_PW::SNP_PW(string rs, string c, int p, double Z, double ZZ, double V, double VV, vector<bool> an, vector<int> ds, vector<vector<pair<int, int> > > dmodels, double prior, double cor){
+SNP_PW::SNP_PW(string rs, string c, int p, double Z, double ZZ, double V, double VV, vector<bool> an, vector<int> ds, vector<vector<pair<int, int> > > dmodels, vector<double> prior, double cor){
 	//for pairwise
 	id = rs;
 	chr = c;
@@ -20,7 +20,9 @@ SNP_PW::SNP_PW(string rs, string c, int p, double Z, double ZZ, double V, double
 	Z2 = ZZ;
 	V1 = V;
 	V2 = VV;
-	W = prior;
+	W.clear();
+	for (vector<double>::iterator it = prior.begin(); it != prior.end(); it++) W.push_back(*it);
+
 	for (vector<bool>::iterator it = an.begin(); it != an.end(); it++) {
 		annot.push_back(*it);
 		if (*it) annot_weight.push_back(1.0);
@@ -106,9 +108,10 @@ double SNP_PW::get_x_cond(vector<double> lambda, double lambdac){
 	return toreturn;
 }
 */
-double SNP_PW::calc_logBF1(double C){
+
+double SNP_PW::calc_logBF1_ind(double C, double WW){
 	double toreturn = 0;
-	double r = W/ (V1+W);
+	double r = WW/ (V1+WW);
 	toreturn += log ( sqrt(1-r) );
 
 	double tmp = Z1*Z1*r- 2*C*Z1*Z2*(1-sqrt(1-r));
@@ -117,7 +120,21 @@ double SNP_PW::calc_logBF1(double C){
 	//toreturn += - (Z*Z*r/2);
 	return toreturn;
 }
+double SNP_PW::calc_logBF1(double C){
+	double toreturn = calc_logBF1_ind(C, W[0]);
+	if (W.size() >1){
+		for (int i = 1; i < W.size(); i++) toreturn  = sumlog(toreturn, calc_logBF1_ind(C, W[i]));
+	}
+	toreturn = toreturn - log(W.size());
+	return toreturn;
+}
 
+double SNP_PW::sumlog(double logx, double logy){
+        if (logx > logy) return logx + log(1 + exp(logy-logx));
+        else return logy + log(1 + exp(logx-logy));
+}
+
+/*
 double SNP_PW::BF1_C(SNP_PW* s1, double C, pair<double, double> R){
 	// testing for an effect only on phenotype 1. Regress out effect beta1_1 from phenotype 1, beta1_2 from phenotype 2.
 	// Z_cor1 = (beta_1 - beta1_1*D/ tmpV)/SE
@@ -153,9 +170,10 @@ double SNP_PW::BF1_C(SNP_PW* s1, double C, pair<double, double> R){
 	return toreturn;
 
 }
-double SNP_PW::calc_logBF2(double C){
+*/
+double SNP_PW::calc_logBF2_ind(double C, double WW){
 	double toreturn = 0;
-	double r = W/ (V2+W);
+	double r = WW/ (V2+WW);
 	toreturn += log ( sqrt(1-r) );
 
 	double tmp = Z2*Z2*r- 2*C*Z1*Z2*(1-sqrt(1-r));
@@ -164,7 +182,17 @@ double SNP_PW::calc_logBF2(double C){
 	return toreturn;
 }
 
-double SNP_PW::BF2_C(SNP_PW * s1,  double C, pair<double, double> R, double VarR){
+double SNP_PW::calc_logBF2(double C){
+	double toreturn = calc_logBF2_ind(C, W[0]);
+	if (W.size() >1){
+		for (int i = 1; i < W.size(); i++) toreturn  = sumlog(toreturn, calc_logBF2_ind(C, W[i]));
+	}
+	toreturn = toreturn - log(W.size());
+	return toreturn;
+}
+
+
+double SNP_PW::BF2_C_ind(SNP_PW * s1,  double C, pair<double, double> R, double VarR, double WW){
 	double toreturn = 0;
 
 	//get betas
@@ -201,19 +229,19 @@ double SNP_PW::BF2_C(SNP_PW * s1,  double C, pair<double, double> R, double VarR
 		ratio2 = ratio2/VarR;
 		if (ratio2 < 1) ratio2 = 1;
 
-		cout << "\n"<< id << " "<< ratio1 << " " <<V1 << " "<< s1->V1 << " "<< ratio2 << " "<< VarR<<" ratios\n";
+		//cout << "\n"<< id << " "<< ratio1 << " " <<V1 << " "<< s1->V1 << " "<< ratio2 << " "<< VarR<<" ratios\n";
 
 		newV1 = ratio1*V1+ s1->V1*( 2*R.second - (1/ratio1)* R.first *R.first);
 		newV2 = ratio2*V2+ s1->V2*( 2*R.second - (1/ratio2)* R.first *R.first);
 
 	}
 	//new Z-scores
-	cout << id << " "<<V1<< " " <<  s1->V1 << " "<< newV1 << " "<< newV2 << " "<< R.first << " "<< R.second << "\n";
+	//cout << id << " "<<V1<< " " <<  s1->V1 << " "<< newV1 << " "<< newV2 << " "<< R.first << " "<< R.second << "\n";
 	double tmpZ1 = tmpB1/ sqrt(newV1);
 	double tmpZ2 = tmpB2/sqrt(newV2);
-	cout << id << " " <<  Z1 << " "<< Z2 << " "<< tmpZ1 << " "<< tmpZ2 << " Zs\n";
+	//cout << id << " " <<  Z1 << " "<< Z2 << " "<< tmpZ1 << " "<< tmpZ2 << " Zs\n";
 	//BF
-	double r = W/ (newV2+W);
+	double r = WW/ (newV2+WW);
 	toreturn += log ( sqrt(1-r) );
 
 	double tmp = tmpZ2*tmpZ2*r- 2*C*tmpZ1*tmpZ2*(1-sqrt(1-r));
@@ -227,10 +255,22 @@ double SNP_PW::BF2_C(SNP_PW * s1,  double C, pair<double, double> R, double VarR
 	return toreturn;
 }
 
-double SNP_PW::calc_logBF3( double C){
+
+double SNP_PW::BF2_C(SNP_PW * s1,  double C, pair<double, double> R, double VarR){
+	double toreturn = BF2_C_ind( s1, C, R, VarR, W[0]);
+	if (W.size() >1){
+		for (int i = 1; i < W.size(); i++) toreturn  = sumlog(toreturn, BF2_C_ind(s1, C, R, VarR, W[i]));
+	}
+	toreturn = toreturn - log(W.size());
+	return toreturn;
+
+}
+
+
+double SNP_PW::calc_logBF3_ind( double C, double WW){
 	double toreturn = 0;
-	double r1 = W/ (V1+W);
-	double r2 = W/ (V2+W);
+	double r1 = WW/ (V1+WW);
+	double r2 = WW/ (V2+WW);
 	toreturn += log ( sqrt(1-r1) ) + log(sqrt(1-r2));
 
 	double tmp = Z1*Z1*r1+Z2*Z2*r2- 2*C*Z1*Z2*(1-sqrt(1-r1)*sqrt(1-r2));
@@ -239,6 +279,16 @@ double SNP_PW::calc_logBF3( double C){
 	return toreturn;
 }
 
+double SNP_PW::calc_logBF3( double C){
+	double toreturn = calc_logBF3_ind(C, W[0]);
+	if (W.size() >1){
+		for (int i = 1; i < W.size(); i++) toreturn  = sumlog(toreturn, calc_logBF3_ind(C, W[i]));
+	}
+	toreturn = toreturn - log(W.size());
+	return toreturn;
+}
+
+/*
 double SNP_PW::BF3_C(SNP_PW* s1, double C, pair<double, double> R){
 	double toreturn = 0;
 
@@ -275,7 +325,7 @@ double SNP_PW::BF3_C(SNP_PW* s1, double C, pair<double, double> R){
 	return toreturn;
 
 }
-
+*/
 double SNP_PW::approx_v1(){
 	double toreturn;
 	toreturn = 2*f*(1-f) * (double) N1;
