@@ -91,6 +91,8 @@ public:
 	void GSL_optim_ridge();
 	void GSL_optim_ridge_fine();
 	double llk(int);
+	void get_condZ(int, ogzstream &);
+	void get_all_condZ();
 	double llk();
 	double llk_ridge();
 

@@ -1043,6 +1043,52 @@ double SNPs::llk_ridge(){
 	return toreturn;
 }
 */
+void SNPs_PW::get_all_condZ(){
+	string outfile = params->outstem +".condZ.gz";
+	ogzstream out(outfile.c_str());
+	out << "SNP Z_1 V_1 Z_2 V_2 BF_1 BF_2 conditional_on R CZ_1 CV_1 CZ_2 CV_2 CBF_2\n";
+	for (int i = 0; i < segments.size(); i++) get_condZ(i, out);
+}
+void SNPs_PW::get_condZ(int which, ogzstream & out){
+	// conditional Z scores for all pairs of SNPs in a segment
+	//
+	if (!params->overlap){
+		cerr<< "ERROR: calling conditional Z scores but no LD matrix\n";
+		exit(1);
+	}
+	else{
+		pair<int, int> seg = segments[which];
+		int st = seg.first;
+		int sp = seg.second;
+
+		vector<int> poss;
+		for (int i = st; i < sp ; i++) poss.push_back(d[i].pos);
+		LDmatrix ld(params->ldfile, d[st].chr, poss, params->Nhap);
+		for (int i = st; i < sp ; i++){
+			for (int j = i+1; j < sp ; j++){
+				double tmpVi = ld.get_ld(d[i].pos, d[i].pos);
+				double tmpVj = ld.get_ld(d[j].pos, d[j].pos);
+
+
+				double  VarR_i = tmpVi/tmpVj; //this is pi (1-pi) / (pj(1-pj))
+				double VarR_j = tmpVj/tmpVi; //this is pj (1-pj)/ (pi (1-pi))
+
+				pair<double, double> Ri = ld.get_R(d[i].pos, d[j].pos); //this is D/Var( V_i )
+				pair<double, double> Rj = ld.get_R(d[j].pos, d[i].pos); //this is D/Var( V_j );
+
+				//conditional effects of SNP j
+				pair<pair<double, double>, pair<double, double> > ef1 = d[j].condZ(&d[i], Rj, VarR_j);
+				out << d[j].id << " "<< d[j].Z1 << " " << d[j].V1 << " " << d[j].Z2 << " "<< d[j].V2 << " "<< d[j].BF1<< " "<< d[j].BF2 << " "<< d[i].id << " " << Rj.first << " " << ef1.first.first/sqrt(ef1.first.second) << " "<< ef1.first.second << " "<<ef1.second.first/sqrt(ef1.second.second) << " "<< ef1.second.second << " "<< d[j].BF2_C(&d[i], params->cor, Rj, VarR_j) <<"\n";
+
+				//conditional effects of SNP i
+				pair<pair<double, double>, pair<double, double> > ef2 = d[i].condZ(&d[j], Ri, VarR_i);
+				out << d[i].id << " "<< d[i].Z1 << " " << d[i].V1 << " " << d[i].Z2 << " "<< d[i].V2 << " "<< d[i].BF1 << " "<< d[i].BF2 << " "<< d[j].id << " "<< Ri.first << " " <<ef2.first.first/sqrt(ef2.first.second) << " "<< ef2.first.second << " "<<ef2.second.first/sqrt(ef2.second.second) << " "<< ef2.second.second << " "<< d[i].BF2_C(&d[j], params->cor, Ri, VarR_i)<< "\n";
+
+
+			}
+		}
+	}
+}
 
 double SNPs_PW::llk(int which){
 	//
@@ -1162,7 +1208,7 @@ double SNPs_PW::llk(int which){
 				double  VarR_i = tmpVi/tmpVj; //this is pi (1-pi) / (pj(1-pj))
 				double VarR_j = tmpVj/tmpVi; //this is pj (1-pj)/ (pi (1-pi))
 
-				//cout << d[i].id << " "<< d[j].id << " "<< VarR_i << " "<< VarR_j << "\n";
+
 
 				pair<double, double> Ri = ld.get_R(d[i].pos, d[j].pos); //this is D/Var( V_i )
 				pair<double, double> Rj = ld.get_R(d[j].pos, d[i].pos); //this is D/Var( V_j );
@@ -1175,14 +1221,6 @@ double SNPs_PW::llk(int which){
 				double BFi_cj = d[i].BF2_C(&d[j],params->cor, Ri, VarR_i);
 				double tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF1+ BFi_cj;
 
-
-				//cout << d[i].id << " "<< d[j].id << " "<< d[i].BF2 << " "<< BFi_cj <<  " "<< d[j].BF2 << " "<< BFi_cj <<"\n";
-				//cout << Rj.first << " " << Rj.second << " " << params->cor << " "<< d[j].BF2_C(&d[i], params->cor, Rj, VarR_j) << "\n";
-				//cout << Ri.first << " "<< Ri.second << " " << params->cor << " "<< d[i].BF2_C(&d[j], params->cor, Ri, VarR_i) << "\n";
-				//if (d[i].BF1+d[j].BF2_C(&d[i], params->cor, Rj, VarR_j)  > d[i].BF1+d[j].BF2+3){
-				//	cout << d[i].id << " "<< d[j].id << " "<< d[i].BF1+d[j].BF2 << " "<< d[i].BF1+d[j].BF2_C(&d[i], params->cor, Rj, VarR_j) << " "<< d[j].BF1+d[i].BF2 <<  " "<< d[j].BF1+d[i].BF2_C(&d[j], params->cor, Ri, VarR_i) << "\n";
-
-				//}
 				tmp2add4 = sumlog(tmp2add4, tmp2_4);
 
 				tmp2add4 = sumlog(tmp2add4, tmp2_42);

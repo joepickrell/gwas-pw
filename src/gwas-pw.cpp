@@ -33,7 +33,7 @@ void printopts(){
         cout << "\n";
 }
 
-
+bool printcond = false;
 int main(int argc, char *argv[]){
 	Fgwas_params p;
 
@@ -51,7 +51,7 @@ int main(int argc, char *argv[]){
     }
     //get the output file
     if (cmdline.HasSwitch("-o")) p.outstem = cmdline.GetArgument("-o", 0);
-
+    if (cmdline.HasSwitch("-pcond")) printcond = true;
     //LD file
     if (cmdline.HasSwitch("-ld")) {
     	p.overlap = true;
@@ -165,6 +165,7 @@ int main(int argc, char *argv[]){
 
 
     SNPs_PW s(&p);
+    if (printcond) s.get_all_condZ();
     s.GSL_optim();
     vector<double> ml;
     for (int i = 0; i < 5; i++)ml.push_back(s.pi[i]);
@@ -181,6 +182,7 @@ int main(int argc, char *argv[]){
 	if (p.print) s.print(p.outstem+".bfs.gz", p.outstem+".segbfs.gz");
 	//if (p.finemap) return 0;
     if (p.MCMC) s.MCMC(r);
+
 	return 0;
 }
 
