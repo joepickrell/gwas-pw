@@ -271,6 +271,46 @@ double SNP_PW::BF2_C_ind(SNP_PW * s1,  double C, pair<double, double> R, double 
 }
 
 
+double SNP_PW::BF1_C_ind(SNP_PW * s1,  double C, pair<double, double> R, double VarR, double WW){
+	double toreturn = 0;
+
+	pair<pair<double, double>, pair<double, double> > neweffects = condZ(s1, R, VarR);
+	pair<double, double> effect1 = neweffects.first;
+	pair<double, double> effect2 = neweffects.second;
+
+	double newV1 = effect1.second;
+	double tmpZ1 = effect1.first/sqrt(effect1.second);
+	double tmpZ2 =effect2.first/sqrt(effect2.second);
+
+	//BF
+	double r = WW/ (newV1+WW);
+	toreturn += log ( sqrt(1-r) );
+
+	double tmp = tmpZ1*tmpZ1*r- 2*C*tmpZ1*tmpZ2*(1-sqrt(1-r));
+	toreturn += tmp/ (2*(1-C*C)) ;
+	if (!isfinite(toreturn) || isnan(toreturn)){
+		cerr << "ERROR: infinite or NaN conditional Bayes factor for "<< id << " conditional on "<< s1->id << "\n";
+		exit(1);
+	}
+	return toreturn;
+}
+
+
+
+
+
+double SNP_PW::BF1_C(SNP_PW * s1,  double C, pair<double, double> R, double VarR){
+	double toreturn = BF1_C_ind( s1, C, R, VarR, W[0]);
+	if (W.size() >1){
+		for (int i = 1; i < W.size(); i++) toreturn  = sumlog(toreturn, BF1_C_ind(s1, C, R, VarR, W[i]));
+	}
+	toreturn = toreturn - log(W.size());
+	return toreturn;
+
+}
+
+
+
 double SNP_PW::BF2_C(SNP_PW * s1,  double C, pair<double, double> R, double VarR){
 	double toreturn = BF2_C_ind( s1, C, R, VarR, W[0]);
 	if (W.size() >1){

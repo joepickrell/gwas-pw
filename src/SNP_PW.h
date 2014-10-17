@@ -40,7 +40,8 @@ public:
 	double BF3; // [1,1]
 
 	//corrected BFs including other SNP in LD
-	//double BF1_C(SNP_PW*, double, pair<double, double>);
+	double BF1_C_ind(SNP_PW*, double, pair<double, double>, double, double);
+	double BF1_C(SNP_PW*, double, pair<double, double>, double);
 	double BF2_C_ind(SNP_PW*, double, pair<double, double>, double, double);
 	double BF2_C(SNP_PW*, double, pair<double, double>, double);
 	pair<pair<double, double>, pair<double, double> > condZ(SNP_PW*, pair<double, double>, double);
