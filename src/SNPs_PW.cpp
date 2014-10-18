@@ -1220,18 +1220,18 @@ double SNPs_PW::llk(int which){
 				double BFj_ci, tmp2_4, BFi_cj, tmp2_42;
 				if (!params->rev){
 					//SNP i affects pheno 1, BF at SNP j for pheno 2 conditional on SNPi
-					double BFj_ci = d[j].BF2_C(&d[i], params->cor, Rj, VarR_j);
-					double tmp2_4 = snppri.at(i).at(0)+snppri.at(j).at(1)+d[i].BF1+BFj_ci;
+					BFj_ci = d[j].BF2_C(&d[i], params->cor, Rj, VarR_j);
+					tmp2_4 = snppri.at(i).at(0)+snppri.at(j).at(1)+d[i].BF1+BFj_ci;
 					//SNP j affects pheno 1, BF at SNP i for pheno 2 conditional on SNPj
-					double BFi_cj = d[i].BF2_C(&d[j],params->cor, Ri, VarR_i);
-					double tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF1+ BFi_cj;
+					BFi_cj = d[i].BF2_C(&d[j],params->cor, Ri, VarR_i);
+					tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF1+ BFi_cj;
 				}
 				else{
-					double BFj_ci = d[j].BF1_C(&d[i], params->cor, Rj, VarR_j);
-					double tmp2_4 = snppri.at(i).at(0)+snppri.at(j).at(1)+d[i].BF2+BFj_ci;
+					BFj_ci = d[j].BF1_C(&d[i], params->cor, Rj, VarR_j);
+					tmp2_4 = snppri.at(i).at(0)+snppri.at(j).at(1)+d[i].BF2+BFj_ci;
 
-					double BFi_cj = d[i].BF1_C(&d[j],params->cor, Ri, VarR_i);
-					double tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF2+ BFi_cj;
+					BFi_cj = d[i].BF1_C(&d[j],params->cor, Ri, VarR_i);
+					tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF2+ BFi_cj;
 				}
 
 
