@@ -33,6 +33,7 @@ Fgwas_params::Fgwas_params(){
 	nsamp = 100000;
 	overlap = false;
 	sampfreq = 10;
+	rev = false;
 	MCMC_gauss_SD = sqrt(1.0/5.0);
 	//alpha_prop = 50.0;
 	for (int i = 0; i < 5; i++) {

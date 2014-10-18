@@ -68,6 +68,7 @@ public:
 	bool MCMC, bedseg;
 	string segment_bedfile;
 	int Nhap;
+	bool rev;
 };
 
 

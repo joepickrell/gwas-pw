@@ -68,7 +68,7 @@ int main(int argc, char *argv[]){
     	//printopts();
     	//exit(1);
     }
-
+    if (cmdline.HasSwitch("-rev")) p.rev = true;
     //set K
     if (cmdline.HasSwitch("-k")) p.K = atoi(cmdline.GetArgument("-k", 0).c_str());
     if (cmdline.HasSwitch("-bed")) {
