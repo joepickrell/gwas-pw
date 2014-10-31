@@ -1090,6 +1090,7 @@ void SNPs_PW::get_condZ(int which, ogzstream & out){
 	}
 }
 
+
 double SNPs_PW::llk(int which){
 	//
 	// M0: no SNPs affect any trait

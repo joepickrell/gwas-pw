@@ -119,6 +119,7 @@ public:
 
 	void check_input();
 	vector<double> get_segbfs(int);
+
 };
 
 
