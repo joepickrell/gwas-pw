@@ -29,7 +29,7 @@ addBFs = function(d, C = 0, W = c(0.01, 0.1, 0.5)){
 
 optim_no_overlap = function(d, W = c(0.01, 0.1, 0.5)){
 	d = addBFs(d, W = W)
-	o = optimize(llk_no_overlap, d = d, W = W, interval = c(-20, 20))
+	o = optimize(llk_no_overlap, d = d, interval = c(-20, 20))
 	return(o)
 }
 
