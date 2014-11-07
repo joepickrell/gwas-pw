@@ -7,13 +7,22 @@ rev = function(d){
 	d$V_1 = d$V_2
 	d$Z_2 = tmpz
 	d$V_2 = tmpv
-	d[d$MODEL == 4,]$MODEL = 5
-	d[d$MODEL == "4_2",]$MODEL = 6
+	
+	if(sum(d$MODEL == 4) >0){
+		d[d$MODEL == 4,]$MODEL = 5
+	}
+	if (sum(d$MODEL == "4_2") > 0){
+		d[d$MODEL == "4_2",]$MODEL = 6
+	}
 	d[d$MODEL == 1,]$MODEL = 7
 	d[d$MODEL == 2,]$MODEL = 1
 	d[d$MODEL == 7,]$MODEL = 2
-	d[d$MODEL == 6,]$MODEL = 4
-	d[d$MODEL == 5,]$MODEL = "4_2"
+	if (sum(d$MODEL == 6)> 0){
+		d[d$MODEL == 6,]$MODEL = 4
+	}
+	if (sum(d$MODEL == 5)>0){
+		d[d$MODEL == 5,]$MODEL = "4_2"
+	}
 	
 	return(d)
 }
