@@ -41,7 +41,7 @@ ploteffect = function(d){
         abline(0, dm[1], col = "red")
 	#l1 = summary(lm(tmp$B2 ~ tmp$B1+0))
 	#abline(0, l1$coef[1], col= "red")
-	
+	legend("topleft", c("M1", "M2", "M3"), pch = 20, col = c("green", "blue", "red"))	
 }
 
 ploteffect_lm = function(d){

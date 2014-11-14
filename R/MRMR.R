@@ -1,4 +1,4 @@
-source("approxBF.R")
+source("/Users/jkpickrell/Documents/workspace/gwas-pw/R/approxBF.R")
 
 sumlog = function(logx, logy){
        if (logx > logy) {
@@ -30,14 +30,14 @@ addBFs = function(d, C = 0, W = c(0.01, 0.1, 0.5)){
 optim_no_overlap = function(d, W = c(0.01, 0.1, 0.5)){
 	d = addBFs(d, W = W)
 	o = optimize(llk_no_overlap, d = d, interval = c(-20, 20))
-	return(o)
+	return(list(o =o, d = d))
 }
 
 
 optim_samepheno = function(d, W = c(0.01, 0.1, 0.5)){
         d = addBFs(d, W = W)
         o = optimize(llk_samepheno, d = d, W = W, interval = c(-0.99, 0.99))
-        return(o)
+        return(list(o = o, d = d))
 }
 
 
@@ -45,15 +45,27 @@ optim_1_causes_2 = function(d, W = c(0.01, 0.1, 0.5)){
         d = addBFs(d, W = W)
 	init = c(0, 0)
 	o = optim(init, llk_1_causes_2, d = d, W = W, method = "L-BFGS-B", lower = c(-20, -0.999), upper = c(20, 0.999))
-	return(o)
+       	wz1 = which(names(d) == "Z_1")
+        wz2 = which(names(d) == "Z_2")
+        wv1 = which(names(d) == "V_1")
+        wv2 = which(names(d) == "V_2")
+        d$BF3 = apply(d[,c(wz1, wz2, wv1, wv2)], 1, FUN = function(x){ return( avgBF3s(x[1], x[2], x[3], x[4], o$par[2], W = W))})
+	return(list(o = o, d = d))
 }
+
 
 
 optim_2_causes_1 = function(d, W = c(0.01, 0.1, 0.5)){
         d = addBFs(d, W = W)
         init = c(0, 0)
         o = optim(init, llk_2_causes_1, d = d, W = W, method = "L-BFGS-B", lower = c(-20, -0.999), upper = c(20, 0.999))
-        return(o)
+       	print("here")
+	wz1 = which(names(d) == "Z_1")
+        wz2 = which(names(d) == "Z_2")
+        wv1 = which(names(d) == "V_1")
+        wv2 = which(names(d) == "V_2")
+        d$BF3 = apply(d[,c(wz1, wz2, wv1, wv2)], 1, FUN = function(x){ return( avgBF3s(x[1], x[2], x[3], x[4], o$par[2], W = W))})
+        return(list(o = o, d = d))
 }
 
 
@@ -61,7 +73,12 @@ optim_indep_effect = function(d, W = c(0.01, 0.1, 0.5)){
         d = addBFs(d, W = W)
         init = c(0, 0)
         o = optim(init, llk_indep_effect, d = d, W = W, method = "L-BFGS-B", lower = c(-20, -20), upper = c(20, 20))
-        return(o)
+        wz1 = which(names(d) == "Z_1")
+        wz2 = which(names(d) == "Z_2")
+        wv1 = which(names(d) == "V_1")
+        wv2 = which(names(d) == "V_2")
+        d$BF3 = apply(d[,c(wz1, wz2, wv1, wv2)], 1, FUN = function(x){ return( avgBF3s(x[1], x[2], x[3], x[4], o$par[2], W = W))})
+        return(list(o = o, d = d))
 }
 
 

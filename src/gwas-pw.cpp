@@ -52,6 +52,15 @@ int main(int argc, char *argv[]){
     //get the output file
     if (cmdline.HasSwitch("-o")) p.outstem = cmdline.GetArgument("-o", 0);
     if (cmdline.HasSwitch("-pcond")) printcond = true;
+    if (cmdline.HasSwitch("-v")) {
+     	p.V.clear();
+     	vector<string> strs;
+     	string s = cmdline.GetArgument("-v", 0);
+     	boost::split(strs, s ,boost::is_any_of(","));
+     	for (int i  = 0; i < strs.size(); i++) {
+     		p.V.push_back( atof(strs[i].c_str()) );
+     	}
+     }
     //LD file
     if (cmdline.HasSwitch("-ld")) {
     	p.overlap = true;
