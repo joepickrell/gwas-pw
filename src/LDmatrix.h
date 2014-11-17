@@ -9,7 +9,7 @@
 #define LDMATRIX_H_
 
 
-#include "fgwas_params.h"
+#include "gwaspw_params.h"
 using namespace std;
 
 class LDmatrix{

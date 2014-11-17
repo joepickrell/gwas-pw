@@ -10,7 +10,7 @@
 
 
 #include "SNPs_PW.h"
-#include "fgwas_params.h"
+#include "gwaspw_params.h"
 #include "LDmatrix.h"
 using namespace std;
 

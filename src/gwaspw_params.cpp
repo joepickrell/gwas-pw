@@ -5,7 +5,7 @@
  *      Author: pickrell
  */
 
-#include "fgwas_params.h"
+#include "gwaspw_params.h"
 using namespace std;
 
 Fgwas_params::Fgwas_params(){
@@ -42,6 +42,7 @@ Fgwas_params::Fgwas_params(){
 	cor = 0;
 	Nhap = 0;
 	bedseg = false;
+	numberedseg = false;
 	segment_bedfile = "";
 	MCMC = false;
 }
@@ -58,6 +59,9 @@ void Fgwas_params::print_stdout(){
 	cout << "\n";
 	cout << ":: Fine-mapping?: ";
 	if (finemap) cout << "yes\n";
+	else cout << "no\n";
+	cout << ":: Numbered segments?: ";
+	if (numberedseg) cout << "yes\n";
 	else cout << "no\n";
 	cout << ":: Print: ";
 	if (print) cout << "yes\n";

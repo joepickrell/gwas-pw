@@ -94,11 +94,11 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_gwas_pw_OBJECTS = CmdLine.$(OBJEXT) gwas-pw.$(OBJEXT) \
 	gzstream.$(OBJEXT) SNP_PW.$(OBJEXT) SNPs_PW.$(OBJEXT) \
-	fgwas_params.$(OBJEXT) LDmatrix.$(OBJEXT)
+	gwaspw_params.$(OBJEXT) LDmatrix.$(OBJEXT)
 gwas_pw_OBJECTS = $(am_gwas_pw_OBJECTS)
 gwas_pw_LDADD = $(LDADD)
 am_test_OBJECTS = LDmatrix.$(OBJEXT) test.$(OBJEXT) gzstream.$(OBJEXT) \
-	fgwas_params.$(OBJEXT) SNP_PW.$(OBJEXT) SNPs_PW.$(OBJEXT)
+	gwaspw_params.$(OBJEXT) SNP_PW.$(OBJEXT) SNPs_PW.$(OBJEXT)
 test_OBJECTS = $(am_test_OBJECTS)
 test_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_$(V))
@@ -249,8 +249,8 @@ top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
 DISTCHECK_CONFIGURE_FLAGS = LDFLAGS=-L/opt/local/lib CXXFLAGS=-I/opt/local/include
-gwas_pw_SOURCES = CmdLine.cpp gwas-pw.cpp gzstream.cpp SNP_PW.cpp SNPs_PW.cpp fgwas_params.cpp LDmatrix.cpp
-test_SOURCES = LDmatrix.cpp test.cpp gzstream.cpp fgwas_params.cpp SNP_PW.cpp SNPs_PW.cpp
+gwas_pw_SOURCES = CmdLine.cpp gwas-pw.cpp gzstream.cpp SNP_PW.cpp SNPs_PW.cpp gwaspw_params.cpp LDmatrix.cpp
+test_SOURCES = LDmatrix.cpp test.cpp gzstream.cpp gwaspw_params.cpp SNP_PW.cpp SNPs_PW.cpp
 noinst_HEADERS = gzstream.h CmdLine.h fgwas_params.h SNP_PW.h SNPs_PW.h
 all: all-am
 
@@ -347,8 +347,8 @@ include ./$(DEPDIR)/CmdLine.Po
 include ./$(DEPDIR)/LDmatrix.Po
 include ./$(DEPDIR)/SNP_PW.Po
 include ./$(DEPDIR)/SNPs_PW.Po
-include ./$(DEPDIR)/fgwas_params.Po
 include ./$(DEPDIR)/gwas-pw.Po
+include ./$(DEPDIR)/gwaspw_params.Po
 include ./$(DEPDIR)/gzstream.Po
 include ./$(DEPDIR)/test.Po
 

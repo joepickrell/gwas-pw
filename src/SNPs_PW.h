@@ -9,7 +9,7 @@
 #define SNPS_PW_H_
 
 #include "SNP_PW.h"
-#include "fgwas_params.h"
+#include "gwaspw_params.h"
 #include "LDmatrix.h"
 using namespace std;
 
