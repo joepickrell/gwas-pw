@@ -424,7 +424,7 @@ void SNPs_PW::load_snps_pw(string infile, vector<string> annot, vector<string> d
  	}
 	else V2index = header_index["V_"+params->pheno2];
 
-	if (header_index.find("SEGNUMBER") == header_index.end() && params->finemap){
+	if (header_index.find("SEGNUMBER") == header_index.end() && (params->finemap || params->numberedseg)){
    		cerr << "ERROR: cannot find SEGNUMBER in header\n";
    		exit(1);
    	}
@@ -472,7 +472,7 @@ void SNPs_PW::load_snps_pw(string infile, vector<string> annot, vector<string> d
     	}
 
     	SNP_PW s(rs, chr , pos, Z1, Z2, V1, V2, an, dists, dmodels, params->V, params->cor);
-    	if (params->finemap){
+    	if (params->finemap || params->numberedseg){
     		int snumber = atoi(line[segnumberindex].c_str());
     		s.chunknumber = snumber;
     	}

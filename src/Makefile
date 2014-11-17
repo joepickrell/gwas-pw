@@ -170,7 +170,7 @@ BOOST_LDFLAGS = -L/opt/local/lib
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
-CPPFLAGS =  -I/opt/local/include
+CPPFLAGS = -I/opt/local/include -I/opt/local/include
 CXX = g++
 CXXDEPMODE = depmode=gcc3
 CXXFLAGS = -g -O2
@@ -251,7 +251,7 @@ top_srcdir = ..
 DISTCHECK_CONFIGURE_FLAGS = LDFLAGS=-L/opt/local/lib CXXFLAGS=-I/opt/local/include
 gwas_pw_SOURCES = CmdLine.cpp gwas-pw.cpp gzstream.cpp SNP_PW.cpp SNPs_PW.cpp gwaspw_params.cpp LDmatrix.cpp
 test_SOURCES = LDmatrix.cpp test.cpp gzstream.cpp gwaspw_params.cpp SNP_PW.cpp SNPs_PW.cpp
-noinst_HEADERS = gzstream.h CmdLine.h fgwas_params.h SNP_PW.h SNPs_PW.h
+noinst_HEADERS = gzstream.h CmdLine.h gwaspw_params.h SNP_PW.h SNPs_PW.h
 all: all-am
 
 .SUFFIXES:
