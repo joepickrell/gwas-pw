@@ -189,9 +189,10 @@ int main(int argc, char *argv[]){
 		outr << "pi_"<< i <<" "<< cis.at(i-sti).second.first << " "<< ml[i]<< " "<< cis.at(i-sti).second.second << "\n";
 	}
 	outr.close();
+    if (p.MCMC) s.MCMC(r);
 	if (p.print) s.print(p.outstem+".bfs.gz", p.outstem+".segbfs.gz");
 	//if (p.finemap) return 0;
-    if (p.MCMC) s.MCMC(r);
+
 
 	return 0;
 }

@@ -29,8 +29,8 @@ Fgwas_params::Fgwas_params(){
 	pairwise = true;
 	pheno1 = "NA";
 	pheno2 = "NA";
-	burnin = 10000;
-	nsamp = 100000;
+	burnin = 5000;
+	nsamp = 50000;
 	overlap = false;
 	sampfreq = 10;
 	rev = false;
