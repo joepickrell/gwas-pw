@@ -69,6 +69,7 @@ public:
 	string segment_bedfile;
 	int Nhap;
 	bool rev;
+	bool numberedseg;
 };
 
 

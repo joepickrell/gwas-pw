@@ -78,6 +78,7 @@ int main(int argc, char *argv[]){
     	//exit(1);
     }
     if (cmdline.HasSwitch("-rev")) p.rev = true;
+    if (cmdline.HasSwitch("-numbered")) p.numberedseg = true;
     //set K
     if (cmdline.HasSwitch("-k")) p.K = atoi(cmdline.GetArgument("-k", 0).c_str());
     if (cmdline.HasSwitch("-bed")) {

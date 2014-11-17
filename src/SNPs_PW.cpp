@@ -27,7 +27,7 @@ SNPs_PW::SNPs_PW(Fgwas_params *p){
 		exit(1);
 	}
 	//make segments
-	if (params->finemap) make_segments_finemap();
+	if (params->finemap || params->numberedseg) make_segments_finemap();
 	else{
 		make_chrsegments();
 		if (params->bedseg) make_segments(params->segment_bedfile);
@@ -851,7 +851,7 @@ void SNPs_PW::make_segments_finemap(){
 	for (int i = 1; i < d.size(); i++){
 		int testseg = d[i].chunknumber;
 		if (testseg < wseg){
-			cerr<< "ERROR: segment number "<< testseg << " occurs after "<< wseg << ". For fine-mapping, order the input file by SEGNUMBER.\n";
+			cerr<< "ERROR: segment number "<< testseg << " occurs after "<< wseg << ". For numbered segments/finemapping, order the input file by SEGNUMBER.\n";
 			exit(1);
 		}
 		if (testseg > wseg) {
