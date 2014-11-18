@@ -1333,9 +1333,9 @@ void SNPs_PW::MCMC(gsl_rng *r){
 	outr << "# " << spi3/ (double) ns << " : mean pi_3\n";
 	outr << "# " << spi4/ (double) ns << " : mean pi_4\n";
 	pi[1] = spi1/ (double) ns;
-	pi[2] = spi1/ (double) ns;
-	pi[3] = spi1/ (double) ns;
-	pi[4] = spi1/ (double) ns;
+	pi[2] = spi2/ (double) ns;
+	pi[3] = spi3/ (double) ns;
+	pi[4] = spi4/ (double) ns;
 }
 
 int SNPs_PW::MCMC_update(gsl_rng *r){
