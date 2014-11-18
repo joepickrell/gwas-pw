@@ -22,8 +22,8 @@ void printopts(){
         //cout << "-dists [string:string] the name of the distance annotation(s) and the file(s) containing the distance model(s)\n";
         cout << "-k [integer] block size in number of SNPs (5000)\n";
         cout << "-dists [string:string] the name of the distance annotation(s) and the file(s) containing the distance model(s)\n";
-        cout << "-nburn [integer] iterations of burn-in (10000)\n";
-        cout << "-nsamp [integer] iterations of sampling (100000)\n";
+        cout << "-nburn [integer] iterations of burn-in (5000)\n";
+        cout << "-nsamp [integer] iterations of sampling (50000)\n";
         cout << "-jumpsd [float] SD of normally distributed MCMC jumps (0.44)\n";
         cout << "-prior [float] [float] [float] [float] [float] logistic normal prior on fractions (0,0,0,0,0)\n";
         cout << "-cor [float] correlation btw measurements of quantitative traits for studies of a single cohort [defaults to separate cohorts]\n";
