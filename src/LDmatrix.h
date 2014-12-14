@@ -15,6 +15,7 @@ using namespace std;
 class LDmatrix{
 public:
 	LDmatrix();
+	~LDmatrix();
 	LDmatrix(string, string, vector<int>, int);
 	void print();
 	void process_infilelist(string);

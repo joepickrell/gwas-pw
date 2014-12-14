@@ -10,7 +10,9 @@
 LDmatrix::LDmatrix(){
 
 }
-
+LDmatrix::~LDmatrix(){
+	delete m;
+}
 
 LDmatrix::LDmatrix(string infiles, string chr, vector<int> pos, int N){
 
