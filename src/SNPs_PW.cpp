@@ -1015,6 +1015,11 @@ double SNPs_PW::llk(){
 	for (int i = 0; i < segments.size(); i++) toreturn += llk(i);
 	data_llk = toreturn;
 	if (!precomputed) precomputed = true;
+
+	// add on prior on proportions (for MAP estimator)
+	// this is primarily for numerical stability
+	double pi_lk = lnvecdens(alpha, params->alpha_prior);
+	toreturn = toreturn+pi_lk;
 	return toreturn;
 }
 
