@@ -52,6 +52,8 @@ void Fgwas_params::print_stdout(){
 	cout << ":::Parameter settings::::\n";
 	cout << ":: Input file: "<< infile << "\n";
 	cout << ":: Output stem: "<< outstem << "\n";
+	cout << ":: Phenotype 1: "<< pheno1 << "\n";
+	cout << ":: Phenotype 2: "<< pheno2 << "\n";
 	if (!bedseg) cout << ":: K: " << K << "\n";
 	else cout << ":: Segment bedfile: "<< segment_bedfile << "\n";
 	cout << ":: V: ";
