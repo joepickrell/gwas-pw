@@ -1011,7 +1011,7 @@ void SNPs::set_priors_cond(int which){
 */
 double SNPs_PW::llk(){
 	if (!precomputed) seg_toadd.clear();
-	double toreturn = 0;
+	double toreturn = -1000;
 	for (int i = 0; i < segments.size(); i++) toreturn += llk(i);
 	data_llk = toreturn;
 	if (!precomputed) precomputed = true;
@@ -1223,6 +1223,9 @@ double SNPs_PW::llk(int which){
 					//SNP i affects pheno 1, BF at SNP j for pheno 2 conditional on SNPi
 					BFj_ci = d[j].BF2_C(&d[i], params->cor, Rj, VarR_j);
 					tmp2_4 = snppri.at(i).at(0)+snppri.at(j).at(1)+d[i].BF1+BFj_ci;
+					//if (BFj_ci > d[j].calc_logBF2(params->cor)+3){
+					//	cout << d[j].id << " "<< d[i].id << " "<< Rj.first << " "<< BFj_ci << " "<< d[j].calc_logBF2(params->cor) << "\n";
+					//}
 					//SNP j affects pheno 1, BF at SNP i for pheno 2 conditional on SNPj
 					BFi_cj = d[i].BF2_C(&d[j],params->cor, Ri, VarR_i);
 					tmp2_42 = snppri.at(i).at(1)+snppri.at(j).at(0)+d[j].BF1+ BFi_cj;

@@ -225,20 +225,28 @@ pair<pair<double, double>, pair<double, double> > SNP_PW::condZ(SNP_PW * s1, pai
 		double ratio1 = s1->V1/V1; // ~ N1 p1 ( 1-p1)/  N2 p2 (1-p2)
 		ratio1 = ratio1/VarR; //VarR = p1(1-p1)/ p2(1-p2), so ~ N1/N2
 		if (ratio1 < 1) ratio1 = 1;
-
+		if (id == "rs1281116"  && s1->id == "4-8244167"){
+			cout << ratio1 << " "<< R.first << " "<< VarR <<"\n";
+		}
 		double ratio2 = s1->V2/V2;
 		ratio2 = ratio2/VarR;
 		if (ratio2 < 1) ratio2 = 1;
-
+		if (id == "rs1281116"  && s1->id == "4-8244167"){
+				cout << ratio2 << " "<< R.first << " "<< VarR <<"\n";
+		}
 		//cout << "\n"<< id << " "<< ratio1 << " " <<V1 << " "<< s1->V1 << " "<< ratio2 << " "<< VarR<<" ratios\n";
 
 		newV1 = ratio1*V1+ s1->V1*( 2*R.second - (1/ratio1)* R.first *R.first);
 		newV2 = ratio2*V2+ s1->V2*( 2*R.second - (1/ratio2)* R.first *R.first);
 
 	}
+
 	//return conditional betas, standard errors
 	double tmpZ1 = tmpB1/ sqrt(newV1);
 	double tmpZ2 = tmpB2/sqrt(newV2);
+	if (id == "rs1281116"  && s1->id == "4-8244167"){
+		cout <<  id <<" "<< s1->id << " "<< tmpZ1 << " "<< tmpZ2 << " "<< tmpB1 << " "<< newV1 << " "<< tmpB2 << " "<< newV2 <<"\n";
+	}
 	toreturn.first.first = tmpB1;
 	toreturn.first.second = newV1;
 	toreturn.second.first = tmpB2;
