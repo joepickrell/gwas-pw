@@ -1391,7 +1391,7 @@ int SNPs_PW::MCMC_update(gsl_rng *r){
 
 double SNPs_PW::lnvecdens(vector<double> current, vector<double> prior){
 	vector<double> tmp;
-	for (int i = 0; i < 5; i++) tmp.push_back( lndgauss(current[i]-prior[i], 1));
+	for (int i = 0; i < 5; i++) tmp.push_back( lndgauss(current[i]-prior[i], 3));
 	double toreturn = tmp[0];
 	for (int i = 1; i < 5; i++) toreturn+= tmp[i];
 	return toreturn;
