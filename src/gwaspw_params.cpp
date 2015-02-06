@@ -36,8 +36,9 @@ Fgwas_params::Fgwas_params(){
 	rev = false;
 	MCMC_gauss_SD = sqrt(1.0/5.0);
 	//alpha_prop = 50.0;
-	for (int i = 0; i < 5; i++) {
-		alpha_prior.push_back(0);
+	alpha_prior.push_back(0);
+	for (int i = 0; i < 4; i++) {
+		alpha_prior.push_back(-2);
 	}
 	cor = 0;
 	Nhap = 0;
