@@ -1,6 +1,6 @@
 # approximate BFs using multivarite Wakefield approximation
 library(mvtnorm)
-approxBF = function(g, p){
+approxBF = function(g, p, cc = 0){
 	lm1 = summary(lm(p[,1] ~g))$coef
 	lm2 = summary(lm(p[,2]~ g))$coef
 	Z1 = lm1[2,1]/lm1[2,2]
