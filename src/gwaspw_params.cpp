@@ -11,7 +11,7 @@ using namespace std;
 Fgwas_params::Fgwas_params(){
 	K = 5000;
 	V.push_back(0.01); V.push_back(0.1); V.push_back(0.5);
-	print = false;
+	print = true;
 	zformat = true;
 	wannot.clear();
 	dannot.clear();

@@ -12,24 +12,27 @@ using namespace std;
 
 
 void printopts(){
-        cout << "\ngwas-pw v0.0\n";
+        cout << "\ngwas-pw v0.1\n";
         cout << "by Joe Pickrell (jkpickrell@nygenome.org)\n\n";
-        cout << "-i [file name] input file w/ Z-scores\n";
+        cout << "-i [file name] input file w/ Z-scores, variances in beta estimates\n";
         cout << "-phenos [string] [string] names of the phenotypes\n";
         cout << "-o [string] stem for names of output files\n";
-        cout << "-ld [string] input file with LD matrices\n";
+        cout << "-bed [file name] read block positions from a .bed file\n";
+        cout << "-noprint don't print the Bayes factors\n";
+        //cout << "-ld [string] input file with LD matrices\n";
         //cout << "-w [string] which annotation(s) to use. Separate multiple annotations with plus signs\n";
         //cout << "-dists [string:string] the name of the distance annotation(s) and the file(s) containing the distance model(s)\n";
         cout << "-k [integer] block size in number of SNPs (5000)\n";
-        cout << "-dists [string:string] the name of the distance annotation(s) and the file(s) containing the distance model(s)\n";
-        cout << "-nburn [integer] iterations of burn-in (5000)\n";
-        cout << "-nsamp [integer] iterations of sampling (50000)\n";
-        cout << "-jumpsd [float] SD of normally distributed MCMC jumps (0.44)\n";
-        cout << "-prior [float] [float] [float] [float] [float] logistic normal prior on fractions (0,0,0,0,0)\n";
-        cout << "-cor [float] correlation btw measurements of quantitative traits for studies of a single cohort [defaults to separate cohorts]\n";
-        cout << "-nhap [int] number of haplotypes used in the estimatation of the covariance matrix\n";
-        cout << "-fine do fine-mapping\n";
-        cout << "-mcmc do MCMC\n";
+        cout << "-cor [float] expected correlation in summary statistics under the null [0]\n";
+        //cout << "-dists [string:string] the name of the distance annotation(s) and the file(s) containing the distance model(s)\n";
+        //cout << "-nburn [integer] iterations of burn-in (5000)\n";
+        //cout << "-nsamp [integer] iterations of sampling (50000)\n";
+        //cout << "-jumpsd [float] SD of normally distributed MCMC jumps (0.44)\n";
+        //cout << "-prior [float] [float] [float] [float] [float] logistic normal prior on fractions (0,0,0,0,0)\n";
+
+        //cout << "-nhap [int] number of haplotypes used in the estimatation of the covariance matrix\n";
+        //cout << "-fine do fine-mapping\n";
+        //cout << "-mcmc do MCMC\n";
         cout << "\n";
 }
 
@@ -73,7 +76,7 @@ int main(int argc, char *argv[]){
     	}
     }
     else if (cmdline.HasSwitch("-cor")){
-    	cerr << "WARNING: including correlation, did you mean to include an LD file?\n";
+    	//cerr << "WARNING: including correlation, did you mean to include an LD file?\n";
     	//printopts();
     	//exit(1);
     }
@@ -86,7 +89,7 @@ int main(int argc, char *argv[]){
     	p.segment_bedfile = cmdline.GetArgument("-bed", 0);
     }
 
-    if (cmdline.HasSwitch("-print")) p.print = true;
+    if (cmdline.HasSwitch("-noprint")) p.print = false;
 
     //names of the phenotypes, expecting header like NAME1_Z NAME1_V NAME2_Z NAME2_V
     if (cmdline.HasSwitch("-phenos")){
@@ -95,6 +98,7 @@ int main(int argc, char *argv[]){
      	p.pheno2 = cmdline.GetArgument("-phenos", 1);
      }
     else{
+    	cerr << "ERROR: missing phenotypes (-pheno)\n";
         printopts();
         exit(1);
     }
