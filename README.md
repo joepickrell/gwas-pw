@@ -22,7 +22,7 @@ After downloading gwas-pw-0.1.tar.gz at the link above, run:
 
 >make
 
-This will create an executable file called fgwas in the src directory. The most common compilation error is that the configure script cannot find Boost or GSL. You may have to tell the script explicitly where to find them. For example, on OS X using macports, installations go to the non-standard path /opt/local/lib. To configure in this case, replace the above configure step with:
+This will create an executable file called gwas-pw in the src directory. The most common compilation error is that the configure script cannot find Boost or GSL. You may have to tell the script explicitly where to find them. For example, on OS X using macports, installations go to the non-standard path /opt/local/lib. To configure in this case, replace the above configure step with:
 
 >./configure LDFLAGS=-L/opt/local/lib
 
