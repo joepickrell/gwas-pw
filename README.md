@@ -28,6 +28,5 @@ This will create an executable file called gwas-pw in the src directory. The mos
 
 Example data is available in the example_data/ directory. To ensure that gwas-pw is working, run:
 
-gwas-pw -i example_data/aam_height_example.gz -bed example_data/all_fourier_ls.bed -phenos AAM HEIGHT
-
+>gwas-pw -i example_data/aam_height_example.gz -bed example_data/all_fourier_ls.bed -phenos AAM HEIGHT
 
