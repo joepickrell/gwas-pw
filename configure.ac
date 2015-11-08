@@ -1,4 +1,4 @@
-AC_INIT([fgwas], [0.03], [joepickrell@gmail.com], [fgwas], [http://gwas.googlecode.com/])
+AC_INIT([gwas-pw], [0.02], [joepickrell@gmail.com], [gwas-pw], [https://github.com/joepickrell/gwas-pw])
 AC_PROG_CXX
 AM_INIT_AUTOMAKE([foreign tar-pax -Wall -Werror])
 AC_CONFIG_HEADERS([config.h])

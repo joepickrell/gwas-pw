@@ -17,25 +17,25 @@
 #define HAVE_LIBZ 1
 
 /* Name of package */
-#define PACKAGE "fgwas"
+#define PACKAGE "gwas-pw"
 
 /* Define to the address where bug reports for this package should be sent. */
 #define PACKAGE_BUGREPORT "joepickrell@gmail.com"
 
 /* Define to the full name of this package. */
-#define PACKAGE_NAME "fgwas"
+#define PACKAGE_NAME "gwas-pw"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "fgwas 0.03"
+#define PACKAGE_STRING "gwas-pw 0.02"
 
 /* Define to the one symbol short name of this package. */
-#define PACKAGE_TARNAME "fgwas"
+#define PACKAGE_TARNAME "gwas-pw"
 
 /* Define to the home page for this package. */
-#define PACKAGE_URL "http://gwas.googlecode.com/"
+#define PACKAGE_URL "https://github.com/joepickrell/gwas-pw"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "0.03"
+#define PACKAGE_VERSION "0.02"
 
 /* Version number of package */
-#define VERSION "0.03"
+#define VERSION "0.02"
