@@ -11,12 +11,12 @@ gwas-pw depends on:
 - the [Boost Libraries](http://www.boost.org)
 
 ###Quick Start###
-The most up-to-date release is: version 0.1. See ["Releases"](https://github.com/joepickrell/gwas-pw/releases) above.
-After downloading gwas-pw-0.1.tar.gz at the link above, run:
+The most up-to-date release is: version 0.21. See ["Releases"](https://github.com/joepickrell/gwas-pw/releases) above.
+After downloading gwas-pw-0.21.tar.gz at the link above, run:
 
->tar -xvf gwas-pw-0.1.tar.gz
+>tar -xvf gwas-pw-0.21.tar.gz
 
->cd gwas-pw-0.1
+>cd gwas-pw-0.21
 
 >./configure
 
