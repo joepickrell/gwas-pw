@@ -91,3 +91,19 @@ There are three output files:
 17. chunk: the internal numerical identifer for the segment this SNP falls in
 
 -[output].MLE contains the estimated regional prior probabilites of each model (same as in [output].segbfs.gz)
+
+###Options###
+
+-i [file name] name of the input file, in the format described above
+
+-phenos [string] [string] names of the phenotypes, such the the Z scores are in columns labeled Z_[pheno1] and Z_[pheno2]
+
+-o [string] stem for names of output files
+
+-bed [file name] gwas-pw splits the genome into approximately independent blocks. To input these blocks from a .bed file, use this option. We recommend using the bed files available from https://bitbucket.org/nygcresearch/ldetect-data
+
+-noprint don't print the Bayes factors
+
+-k [integer] as an alternative to spliting the genome into blocks based on the bed file, input the number of SNPs per block. If neither -k or -bed is specified, this defaults to blocks of 5,000 SNPs
+
+-cor [float] if the two GWAS were performed using overlapping cohorts, use this flag to specify the expected correlation in summary statistics under the null (defaults to zero)
