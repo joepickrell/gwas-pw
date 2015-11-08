@@ -12,7 +12,7 @@ using namespace std;
 
 
 void printopts(){
-        cout << "\ngwas-pw v0.1\n";
+        cout << "\ngwas-pw v0.21\n";
         cout << "by Joe Pickrell (jkpickrell@nygenome.org)\n\n";
         cout << "-i [file name] input file w/ Z-scores, variances in beta estimates\n";
         cout << "-phenos [string] [string] names of the phenotypes\n";
