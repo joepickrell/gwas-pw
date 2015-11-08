@@ -70,4 +70,24 @@ There are three output files:
 18. PPA_3: posterior probability of model 3 
 19. PPA_4: posterior probability of model 4
 
+-[output].bfs.gz contains a line for each SNP in the genome. The columns are:
 
+1. id: SNP identifier
+2. chr: chromosome 
+3: pos: position
+4. logBF_1: ln(Bayes factor measure the suppport for model 1 at the SNP) 
+5. logBF_2: ln(Bayes factor measure the suppport for model 2 at the SNP) 
+6. logBF_3: ln(Bayes factor measure the suppport for model 3 at the SNP) 
+7. Z_[pheno1]: Z-score for association to phenotype 1
+8. V_[pheno1]: variance in the effect size estimate for phenotype 1
+9. Z_[pheno2]: Z-score for association to phenotype 2
+10. V_[pheno2]: variance in the effect size estimate for phenotype 2 
+11. pi_1: prior on this SNP being the causal one under model 1 
+12. pi_2: prior on this SNP being the causal one under model 2 
+13. pi_3: prior on this SNP being the causal one under model 3 
+14. PPA_1: posterior probability that this SNP is the causal one under model 1
+15. PPA_2: posterior probability that this SNP is the causal one under model 2 
+16. PPA_3: posterior probability that this SNP is the causal one under model 3
+17. chunk: the internal numerical identifer for the segment this SNP falls in
+
+-[output].MLE contains the estimated regional prior probabilites of each model (same as in [output].segbfs.gz)
