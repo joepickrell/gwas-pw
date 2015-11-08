@@ -48,26 +48,26 @@ Note the [pheno1] and [pheno2] will be supplied by you at the command line.
 
 There are three output files:
 
-1. [output].segbfs.gz contains a line for each segment of the genome. The columns are:
+-[output].segbfs.gz contains a line for each segment of the genome. The columns are:
 
--chunk: the internal numerical identifer for the segment
--NSNP: the number of SNPs in the segment
--chr: chromosome 
--st: star position
--sp: end position 
--max_abs_Z_[pheno1]: the maximum absolute value of the Z-score for phenotype 1 in the region 
--max_abs_Z_[pheno2]: the maximum absolute value of the Z-score for phenotype 2 in the region 
--logBF_1: ln(regional Bayes factor supporting model 1 [association only to phenotype 1] versus the null)
--logBF_2: ln(regional Bayes factor supporting model 2 [association only to phenotype 2] versus the null) 
--logBF_3: ln(regional Bayes factor supporting model 3 [shared association to both phenotypes] versus the null) 
--logBF_4: ln(regional Bayes factor supporting model 3 [two distinct associations, one to each phenotype] versus the null) 
--pi_1: prior on model 1 
--pi_2: prior on model 2
--pi_3: prior on model 3 
--pi_4: prior on model 4 
--PPA_1: posterior probability of model 1 
--PPA_2: posterior probability of model 2 
--PPA_3: posterior probability of model 3 
--PPA_4: posterior probability of model 4
+1. chunk: the internal numerical identifer for the segment
+2. NSNP: the number of SNPs in the segment
+3. chr: chromosome 
+4. st: star position
+5. sp: end position 
+6. max_abs_Z_[pheno1]: the maximum absolute value of the Z-score for phenotype 1 in the region 
+7. max_abs_Z_[pheno2]: the maximum absolute value of the Z-score for phenotype 2 in the region 
+8. logBF_1: ln(regional Bayes factor supporting model 1 [association only to phenotype 1] versus the null)
+9. logBF_2: ln(regional Bayes factor supporting model 2 [association only to phenotype 2] versus the null) 
+10. logBF_3: ln(regional Bayes factor supporting model 3 [shared association to both phenotypes] versus the null) 
+11. logBF_4: ln(regional Bayes factor supporting model 3 [two distinct associations, one to each phenotype] versus the null) 
+12. pi_1: prior on model 1 
+13. pi_2: prior on model 2
+14. pi_3: prior on model 3 
+15. pi_4: prior on model 4 
+16. PPA_1: posterior probability of model 1 
+17. PPA_2: posterior probability of model 2 
+18. PPA_3: posterior probability of model 3 
+19. PPA_4: posterior probability of model 4
 
 
