@@ -96,7 +96,7 @@ There are three output files:
 
 -i [file name] name of the input file, in the format described above
 
--phenos [string] [string] names of the phenotypes, such the the Z scores are in columns labeled Z_[pheno1] and Z_[pheno2]
+-phenos [string] [string] names of the phenotypes, such as the Z scores are in columns labeled Z_[pheno1] and Z_[pheno2]
 
 -o [string] stem for names of output files
 
